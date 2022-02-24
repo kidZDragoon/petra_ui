@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.propensi.a03</groupId>
-	<artifactId>a03</artifactId>
+	<artifactId>Propensi_A03</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>a03</name>
 	<description>Propensi A03</description>
