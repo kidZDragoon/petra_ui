@@ -1,4 +1,4 @@
-package com.propensi.a03.a03;
+package com.propensi.a03;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
