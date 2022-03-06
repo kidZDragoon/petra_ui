@@ -37,10 +37,10 @@ hotfix:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
-    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
   environment:
-    name: staging
-    url: https://$HEROKU_APP_STAGING.herokuapp.com
+    name: production
+    url: https://$HEROKU_APP.herokuapp.com
   only:
     - hotfix
 
