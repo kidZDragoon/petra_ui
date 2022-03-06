@@ -5,8 +5,8 @@ stages:
 maven-build:
   image: maven:3-jdk-11
   stage: build
-#  script: "mvn clean install -Dmaven.test.skip=true"
-  script: "mvn -T 1C clean install -Dmaven.test.skip -DskipTests"
+  script: "mvn clean install -Dmaven.test.skip=true"
+#  script: "mvn -T 1C clean install -Dmaven.test.skip -DskipTests"
   artifacts:
     paths:
       - target/*.jar
