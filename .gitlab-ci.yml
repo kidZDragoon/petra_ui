@@ -2,32 +2,21 @@ stages:
   - build
   - deploy
 
-#maven-build:
-#  image: maven:3-jdk-11
-#  stage: build
-#  script: "mvn clean install -Dmaven.test.skip=true -f /a03/pom.xml"
-##  script: "mvn -T 1C clean install -Dmaven.test.skip -DskipTests"
-#  artifacts:
-#    paths:
-#      - target/*.jar
-
-deploy-heroku-production:
+production:
   stage: deploy
   image: ruby:2.6
   before_script:
      - gem install dpl
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
-     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-#     - export HEROKU_API_KEY=$HEROKU_API_KEY
-#     - heroku run --app $HEROKU_APP_NAME migrate
+     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
   environment:
      name: production
-     url: https://$HEROKU_APP_PRODUCTION.herokuapp.com
+     url: https://$HEROKU_APP.herokuapp.com
   only:
      - master
 
-deploy-heroku-staging:
+staging:
   stage: deploy
   image: ruby:2.6
   before_script:
@@ -35,8 +24,6 @@ deploy-heroku-staging:
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
      - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-#     - export HEROKU_API_KEY=$HEROKU_API_KEY
-#     - heroku run --app $HEROKU_APP_NAME_STAGING migrate
   environment:
      name: staging
      url: https://$HEROKU_APP_STAGING.herokuapp.com
