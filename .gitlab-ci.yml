@@ -35,8 +35,8 @@ deploy-heroku-staging:
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
      - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-   #   - export HEROKU_API_KEY=$HEROKU_API_KEY
-   #   - heroku run --app $HEROKU_APP_NAME_STAGING migrate
+     - export HEROKU_API_KEY=$HEROKU_API_KEY
+     - heroku run --app $HEROKU_APP_NAME_STAGING migrate
   environment:
      name: staging
      url: https://$HEROKU_APP_STAGING.herokuapp.com
