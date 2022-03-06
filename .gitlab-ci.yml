@@ -29,3 +29,31 @@ staging:
      url: https://$HEROKU_APP_STAGING.herokuapp.com
   only:
      - staging
+
+hotfix:
+  stage: deploy
+  image: ruby:2.6
+  before_script:
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+  environment:
+    name: staging
+    url: https://$HEROKU_APP_STAGING.herokuapp.com
+  only:
+    - hotfix
+
+coldfix:
+  stage: deploy
+  image: ruby:2.6
+  before_script:
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+  environment:
+    name: staging
+    url: https://$HEROKU_APP_STAGING.herokuapp.com
+  only:
+    - coldfix
