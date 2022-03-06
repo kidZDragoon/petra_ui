@@ -10,7 +10,7 @@ maven-build:
     paths:
       - target/*.jar
 
- deploy-heroku-production:
+deploy-heroku-production:
   stage: deploy
   image: ruby:2.6
   before_script:
@@ -26,7 +26,7 @@ maven-build:
   only:
      - master
 
- deploy-heroku-staging:
+deploy-heroku-staging:
   stage: deploy
   image: ruby:2.6
   before_script:
