@@ -1,6 +1,7 @@
 import axios from "axios";
 export default axios.create({
-    baseURL: "https://propensi-a03-staging.herokuapp.com/api",
+    // baseURL: "http://localhost:8080/api",
+    baseURL: process.env.REACT_APP_API_URL,
     headers: {
         "Content-type": "application/json"
     }

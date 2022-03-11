@@ -1,5 +1,4 @@
 stages:
-  - build
   - deploy
 
 production:
@@ -10,6 +9,7 @@ production:
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
      - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+     - heroku config:set SPRING_PROFILES_ACTIVE=production
   environment:
      name: production
      url: https://$HEROKU_APP.herokuapp.com
@@ -23,7 +23,9 @@ staging:
      - gem install dpl
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
+     - heroku config:set MAVEN_CUSTOM_OPTS="-P staging"
      - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+     - heroku config:set SPRING_PROFILES_ACTIVE=staging
   environment:
      name: staging
      url: https://$HEROKU_APP_STAGING.herokuapp.com
@@ -38,6 +40,7 @@ hotfix:
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - heroku config:set SPRING_PROFILES_ACTIVE=production
   environment:
     name: staging
     url: https://$HEROKU_APP_STAGING.herokuapp.com
@@ -52,6 +55,7 @@ coldfix:
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - heroku config:set SPRING_PROFILES_ACTIVE=staging
   environment:
     name: staging
     url: https://$HEROKU_APP_STAGING.herokuapp.com
