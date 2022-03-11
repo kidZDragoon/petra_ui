@@ -7,6 +7,8 @@ production:
   before_script:
      - gem install dpl
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+     - heroku config:set MAVEN_CUSTOM_OPTS="-P production"
+     - heroku config:set SPRING_PROFILES_ACTIVE=production
   script:
      - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
      - heroku config:set SPRING_PROFILES_ACTIVE=production
@@ -22,10 +24,10 @@ staging:
   before_script:
      - gem install dpl
      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-  script:
      - heroku config:set MAVEN_CUSTOM_OPTS="-P staging"
-     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
      - heroku config:set SPRING_PROFILES_ACTIVE=staging
+  script:
+     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   environment:
      name: staging
      url: https://$HEROKU_APP_STAGING.herokuapp.com
@@ -38,9 +40,10 @@ hotfix:
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - heroku config:set MAVEN_CUSTOM_OPTS="-P staging"
+    - heroku config:set SPRING_PROFILES_ACTIVE=staging
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-    - heroku config:set SPRING_PROFILES_ACTIVE=production
   environment:
     name: staging
     url: https://$HEROKU_APP_STAGING.herokuapp.com
@@ -53,9 +56,10 @@ coldfix:
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - heroku config:set MAVEN_CUSTOM_OPTS="-P staging"
+    - heroku config:set SPRING_PROFILES_ACTIVE=staging
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-    - heroku config:set SPRING_PROFILES_ACTIVE=staging
   environment:
     name: staging
     url: https://$HEROKU_APP_STAGING.herokuapp.com
