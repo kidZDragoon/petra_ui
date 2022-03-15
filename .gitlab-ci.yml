@@ -5,31 +5,31 @@ production:
   stage: deploy
   image: ruby:2.6
   before_script:
-     - gem install dpl
-     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-     - heroku config:set SPRING_PROFILES_ACTIVE=production
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - heroku config:set SPRING_PROFILES_ACTIVE=production
   script:
-     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
-     - heroku config:set SPRING_PROFILES_ACTIVE=deploy
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    - heroku config:set SPRING_PROFILES_ACTIVE=deploy
   environment:
-     name: production
-     url: https://$HEROKU_APP.herokuapp.com
+    name: production
+    url: https://$HEROKU_APP.herokuapp.com
   only:
-     - master
+    - master
 
 staging:
   stage: deploy
   image: ruby:2.6
   before_script:
-     - gem install dpl
-     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-     - heroku config:set SPRING_PROFILES_ACTIVE=deploy
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - heroku config:set SPRING_PROFILES_ACTIVE=deploy
   script:
-     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   environment:
-     name: staging
-     url: https://$HEROKU_APP_STAGING.herokuapp.com
+    name: staging
+    url: https://$HEROKU_APP_STAGING.herokuapp.com
   only:
-     - staging
-     - hotfix
-     - coldfix
+    - staging
+    - hotfix
+    - coldfix
