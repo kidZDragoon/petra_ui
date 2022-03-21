@@ -154,7 +154,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_propensi',
         'USER': 'aditdj',
-        'PASSWORD': 'aditdj'
+        'PASSWORD': 'aditdj',
     }
 }
 
