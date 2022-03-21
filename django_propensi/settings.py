@@ -119,6 +119,7 @@ DATABASES = {
         'NAME': 'django_propensi',
         'USER': 'aditdj',
         'PASSWORD': 'aditdj',
+        'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
     }
 }
 
