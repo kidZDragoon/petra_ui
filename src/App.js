@@ -3,10 +3,10 @@ import {Link} from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from './logo.svg'; // Tell Webpack this JS file uses this image
-
+import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
 
 class App extends React.Component {
@@ -24,46 +24,21 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        console.log('masuk didmount')
-
-        this.setState({
-            username: "",
-            full_name: "",
-            email: "",
-            loggedIn: false,
-        })
-
         try {
             let token = localStorage.getItem("ssoui")
-
-            console.log('token')
-            console.log(token)
-
             token = JSON.parse(token)
-            console.log('token_dict')
-            console.log(token)
-
             AuthenticationDataService.user(token)
                 .then(response => {
                     this.setState({
                         username: response.data.username,
                         full_name: response.data.first_name + ' ' + response.data.last_name,
                         email: response.data.email,
+                        loggedIn: true,
                     });
                     document.getElementById("login").innerHTML = ''
                     document.getElementById("logout").innerHTML = 'Halo, ' + this.state.full_name
-
-                    console.log(response.data);
                 })
-
-                .catch(e => {
-                    console.log(e);
-                })
-
-        } catch {
-
-        }
-
+        } catch {}
     }
 
     popUpLogin() {
@@ -81,7 +56,6 @@ class App extends React.Component {
             "message", (e) => {
                     if (SSOWindow) {
                         SSOWindow.close()
-                        console.log(e)
                     }
                     const data = e.data
                     resolve(data)
@@ -94,31 +68,18 @@ class App extends React.Component {
     }
 
     logout() {
-        console.log('masuk logout')
-
         let token = localStorage.getItem("ssoui")
-
-        console.log('token')
-        console.log(token)
-
         token = JSON.parse(token)
-        console.log('token_dict')
-        console.log(token)
-
         AuthenticationDataService.user(token)
-            .then(response => {
+            .then(() => {
                 this.setState({
-                    username: response.data.username,
-                    full_name: response.data.first_name + ' ' + response.data.last_name,
-                    email: response.data.email,
-                });
-
-                console.log(response.data);
-            localStorage.removeItem("ssoui")
-            })
-
-            .catch(e => {
-                console.log(e);
+                    username: "",
+                    full_name: "",
+                    email: "",
+                    loggedIn: false,
+                })
+                localStorage.removeItem("ssoui")
+                window.location.reload()
             })
     }
 
@@ -150,10 +111,10 @@ class App extends React.Component {
                             <Nav.Link href="#features">Karya Ilmiah Saya</Nav.Link>
                             <Nav.Link href="#pricing">Karya Ilmiah Favorit</Nav.Link>
                         </Nav>
+
                         <Nav>
                             <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                            {/*<Nav.Link id="logout"></Nav.Link>*/}
-                            <Nav.Link id="logout" onClick={this.logout}></Nav.Link>
+                            <Nav.Link id="logout" onClick={this.logout}/>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

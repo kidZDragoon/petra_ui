@@ -32,47 +32,19 @@ ALLOWED_HOSTS = ['*']
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-#         'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework.authentication.BasicAuthentication',
-#     ),
-# }
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication'
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.AllowAny'
-#     ),
-#
-#     # 'rest_framework.permissions.IsAuthenticated',
-#     # 'rest_framework.permissions.IsAdminUser',
-#     # 'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-#     # 'DEFAULT_AUTHENTICATION_CLASSES': (
-#     #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-#     # ),
-# }
-
 JWT_AUTH = {
-    'JWT_ENCODE_HANDLER':    'rest_framework_jwt.utils.jwt_encode_handler',
-    'JWT_DECODE_HANDLER':    'rest_framework_jwt.utils.jwt_decode_handler',
-    'JWT_PAYLOAD_HANDLER':    'rest_framework_jwt.utils.jwt_payload_handler',
-    'JWT_PAYLOAD_GET_USER_ID_HANDLER':    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
-    'JWT_RESPONSE_PAYLOAD_HANDLER':    'rest_framework_jwt.utils.jwt_response_payload_handler',
-    'JWT_SECRET_KEY': 'SakamataChloeTerbaik',    #di ganti
+    'JWT_ENCODE_HANDLER': 'rest_framework_jwt.utils.jwt_encode_handler',
+    'JWT_DECODE_HANDLER': 'rest_framework_jwt.utils.jwt_decode_handler',
+    'JWT_PAYLOAD_HANDLER': 'rest_framework_jwt.utils.jwt_payload_handler',
+    'JWT_PAYLOAD_GET_USER_ID_HANDLER': 'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'rest_framework_jwt.utils.jwt_response_payload_handler',
+    'JWT_SECRET_KEY': 'SakamataChloeTerbaik',  # di ganti
     'JWT_GET_USER_SECRET_KEY': None,
     'JWT_PUBLIC_KEY': None,
     'JWT_PRIVATE_KEY': None,
@@ -103,10 +75,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'propensi',
     'rest_framework',
-    # 'rest_framework_jwt',
-    # 'rest_framework_simplejwt',
     'corsheaders',
-    # 'auth_jwt',
 
 ]
 
@@ -126,8 +95,7 @@ ROOT_URLCONF = 'django_propensi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -146,10 +114,6 @@ WSGI_APPLICATION = 'django_propensi.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_propensi',
@@ -180,17 +144,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -203,6 +159,7 @@ django_heroku.settings(locals())
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
+
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
@@ -217,4 +174,4 @@ SSO_UI_ORG_DETAIL_FILE_PATH = 'propensi/static/ssoui/orgcode.json'
 SSO_UI_ORG_DETAIL_LANG = "id"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-SECURE_CROSS_ORIGIN_OPENER_POLICY = 'unsafe-none' #penting
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
