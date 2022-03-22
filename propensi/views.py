@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
-from propensi.models_auth import Profile, User, save_user_attributes
-from propensi.models import KaryaIlmiah
+from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer
 
 from rest_framework_jwt.settings import api_settings
@@ -20,10 +19,15 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    originURL = "http://localhost:8000/"
-    serverURL = "http://localhost:8000/login/"
+    # originURL = "http://localhost:8000/"
+    originURL = "https://propensi-a03-staging.herokuapp.com/"
+    # originURL = "https://propensi-a03.herokuapp.com/"
 
-    http = urllib3.PoolManager()
+    # serverURL = "http://localhost:8000/login/"
+    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    # serverURL = "https://propensi-a03.herokuapp.com/login/"
+
+    http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     link = f"https://sso.ui.ac.id/cas2/serviceValidate?ticket={request.GET.get('ticket', '')}&service={serverURL}"
     response = http.request('GET', link)
     rawdata = response.data.decode('utf-8')
@@ -36,7 +40,7 @@ def login(request):
     try:
         user = User.objects.get(email=f'{data.get("cas:user", "")}@ui.ac.id')
         profile = Profile.objects.get(user=user)
-    except User.DoesNotExist:
+    except:
         if data.get("cas:user"):
             username = data.get("cas:user")
 

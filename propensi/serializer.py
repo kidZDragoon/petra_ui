@@ -1,7 +1,7 @@
 from dataclasses import field
 from pyexpat import model
 from rest_framework import serializers
-from .models_auth import User, Profile
+from .models import User, Profile
 from .models import KaryaIlmiah
 
 class UserSerializer(serializers.ModelSerializer):
