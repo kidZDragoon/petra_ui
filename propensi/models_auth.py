@@ -1,11 +1,8 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-# from .models import User
 
 import json
 # Create your models here.
@@ -15,6 +12,7 @@ LANG = settings.SSO_UI_ORG_DETAIL_LANG
 
 with open(settings.SSO_UI_ORG_DETAIL_FILE_PATH, 'r') as ORG_CODE_FILE:
     ORG_CODE.update(json.load(ORG_CODE_FILE))
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -32,16 +30,19 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+
 @receiver(post_save, sender=User)
-def create_user_profile(instance, created, **kwargs):
+def create_user_profile(instance, created):
     if created:
         Profile.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
-def save_user_profile(instance, **kwargs):
+def save_user_profile(instance):
     instance.profile.save()
 
-def save_user_attributes(user, attributes, **kwargs):
+
+def save_user_attributes(user, attributes):
     user.save()
     profile = user.profile
     profile.role = attributes['peran_user']
