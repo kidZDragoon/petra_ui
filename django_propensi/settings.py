@@ -15,9 +15,16 @@ from datetime import timedelta
 # import dj_database_url
 import django_heroku
 import os
+import dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().root.root
+
+# dotenv_file = os.path.join(BASE_DIR, ".env")
+# if os.path.isfile(dotenv_file):
+#     dotenv.load_dotenv(dotenv_file)
 
 # Add this line
 PRODUCTION = os.environ.get('DATABASE_URL') != None
@@ -127,10 +134,12 @@ DATABASES = {
     }
 }
 
+# DATABASES['production'] = dj_database_url.config(conn_max_age=600)
+
 # Add this line
 # If Using Heroku Environemnt, then Use Database Setting on Heroku
-# if PRODUCTION:
-#     DATABASES['default'] = dj_database_url.config()
+if PRODUCTION:
+    DATABASES['default'] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -171,7 +180,7 @@ django_heroku.settings(locals())
 STATIC_URL = '/static/'
 
 # Place static in the same location as webpack build files
-STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 
 # If you want to serve user uploaded files add these settings
@@ -185,3 +194,7 @@ SSO_UI_ORG_DETAIL_LANG = "id"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
+
+# Add this line
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
