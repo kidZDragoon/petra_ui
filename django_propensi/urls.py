@@ -9,5 +9,6 @@ urlpatterns = [
     path('', index, name='index'),
     path('login/', views.login, name='login'),
     path('admin/', admin.site.urls),
-    path('api/', include('propensi.urls'))
+    path('api/', include('propensi.urls')),
+    
 ]
