@@ -21,8 +21,6 @@ staging:
   stage: deploy
   image: ruby:2.6
   before_script:
-    - curl -sSL https://get.docker.com/ | sh
-    - docker image prune -f
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
