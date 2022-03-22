@@ -15,7 +15,7 @@ from datetime import timedelta
 # import dj_database_url
 import django_heroku
 import os
-import dotenv
+# import dotenv
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -180,7 +180,7 @@ django_heroku.settings(locals())
 STATIC_URL = '/static/'
 
 # Place static in the same location as webpack build files
-# STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 
 # If you want to serve user uploaded files add these settings
@@ -196,5 +196,5 @@ CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
 
 # Add this line
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
