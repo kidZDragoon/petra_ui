@@ -17,6 +17,7 @@ production:
   only:
     - master
 
+#
 staging:
   stage: deploy
   image: ruby:2.6
