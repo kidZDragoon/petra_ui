@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from propensi.models import Profile, User, save_user_attributes
+from propensi.models_auth import Profile, User, save_user_attributes
 from propensi.serializer import UserSerializer, ProfileSerializer
 
 from rest_framework_jwt.settings import api_settings
