@@ -92,33 +92,36 @@ class App extends React.Component {
 
     render() {
         return (
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Container>
-                    <Navbar.Brand>
-                        <Link to={"/"} className="nav-link">
-                        <img
-                            src={logo}
-                            width="90"
-                            height="45"
-                            className="d-inline-block align-top"
-                            alt="React Bootstrap logo"
-                        />
-                        </Link>
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="#features">Karya Ilmiah Saya</Nav.Link>
-                            <Nav.Link href="#pricing">Karya Ilmiah Favorit</Nav.Link>
-                        </Nav>
+            <div>
+                <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+                    <Container>
+                        <Navbar.Brand>
+                            <Link to={"/"} className="nav-link">
+                            <img
+                                src={logo}
+                                width="90"
+                                height="45"
+                                className="d-inline-block align-top"
+                                alt="React Bootstrap logo"
+                            />
+                            </Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                        <Navbar.Collapse id="responsive-navbar-nav">
+                            <Nav className="me-auto">
+                                <Nav.Link href="#features">Karya Ilmiah Saya</Nav.Link>
+                                <Nav.Link href="#pricing">Karya Ilmiah Favorit</Nav.Link>
+                            </Nav>
 
-                        <Nav>
-                            <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                            <Nav.Link id="logout" onClick={this.logout}/>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
+                            <Nav>
+                                <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                <Nav.Link id="logout" onClick={this.logout}/>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+                <Link to={"/KaryaIlmiah/1"}>karya ilmiah</Link>
+            </div>
         );
     }
 }

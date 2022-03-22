@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
-from propensi.models import Profile, User, save_user_attributes
-from propensi.serializer import UserSerializer, ProfileSerializer
+from propensi.models_auth import Profile, User, save_user_attributes
+from propensi.models import KaryaIlmiah
+from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer
 
 from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.generics import RetrieveAPIView
 
 import urllib3
 import xmltodict
@@ -90,3 +92,7 @@ class ProfileView(APIView):
         profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
+
+class KaryaIlmiahView(RetrieveAPIView): #auto pk
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KaryaIlmiahSeriliazer
