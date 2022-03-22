@@ -21,7 +21,7 @@ def login(request):
     originURL = "http://localhost:8000/"
     serverURL = "http://localhost:8000/login/"
 
-    http = urllib3.PoolManager()
+    http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     link = f"https://sso.ui.ac.id/cas2/serviceValidate?ticket={request.GET.get('ticket', '')}&service={serverURL}"
     response = http.request('GET', link)
     rawdata = response.data.decode('utf-8')
