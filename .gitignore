@@ -5,6 +5,12 @@
 /.pnp
 .pnp.js
 
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+
 # testing
 /coverage
 

@@ -118,7 +118,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_propensi',
         'USER': 'aditdj',
-        'PASSWORD': 'aditdj'
+        'PASSWORD': 'aditdj',
+        'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
     }
 }
 
