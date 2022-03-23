@@ -66,7 +66,7 @@ export default class Detail extends Component {
         axios.get('api/download/'+ this.state.fileURI, { 
             responseType: 'blob',
         }).then(res => {
-            fileDownload(res.data, 'filename.pdf');
+            fileDownload(res.data, this.state.judul+'.pdf');
             console.log(res);
         }).catch(err => {
             console.log(err);

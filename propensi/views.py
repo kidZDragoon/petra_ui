@@ -23,6 +23,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 import urllib3
 import xmltodict
 import jwt
+import urllib
+import requests
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -148,13 +150,16 @@ class SemesterView(APIView):
 
 @api_view(['GET'])
 def DownloadPDF(self, path):
-    path_to_file = "https://storage.googleapis.com/petra-ui/files" + path
-    response = HttpResponse(path_to_file)
+    print("masuk")
+    file_url = "https://storage.googleapis.com/petra-ui/files/" + path
+    print(file_url)
+    file = requests.get(file_url, stream=True)
+    response = HttpResponse(file)
     response['Content-Disposition'] = 'attachment'
     return response
 
 class CariKaril(ListCreateAPIView):
-    # queryset = KaryaIlmiah.objects.all()
+    # queryset = KaryaIlmiah.objec,ts.all()
     serializer_class = KarilSeriliazer
     filter_backends = [DjangoFilterBackend]
     filterset_field = ['judul', 'authors']
