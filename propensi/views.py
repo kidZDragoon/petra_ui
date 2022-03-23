@@ -115,11 +115,13 @@ class KaryaIlmiahView(RetrieveAPIView): #auto pk
 
 
 class CharInFilter(BaseInFilter, CharFilter):
+    print('menghalo')
     pass
 
 
 class KarilFilterYearAndType(FilterSet):
-    tahun = NumberFilter(field_name='tglVerifikasi__year', lookup_expr='exact')
+    print('menghalo')
+    tahun = NumberFilter(field_name='tglDisetujui__year', lookup_expr='exact')
     jenis = CharInFilter(field_name='jenis', lookup_expr='in')
     class Meta:
         model = KaryaIlmiah
@@ -169,11 +171,12 @@ def DownloadPDF(self, path):
 
 
 class CariKaril(ListAPIView):
+    print('masuk sini')
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KarilSeriliazer
     filterset_class = KarilFilterYearAndType
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['judul', 'authors']
+    search_fields = ['judul', 'author']
     # filter_fields = [KarilFilterYear, {'jenis:'}]
 
     # def get_queryset(self):
@@ -194,5 +197,6 @@ class CariKaril(ListAPIView):
 
 
 class HasilKaril(RetrieveAPIView):
+    print('menghalo')
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer

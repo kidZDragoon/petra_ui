@@ -39,9 +39,9 @@ const SearchList = () => {
 
   const getKarilQuery = () => {
     let karilType = [];
-    if (tesis) karilType.push('tesis');
-    if (skripsi) karilType.push('skripsi');
-    if (disertasi) karilType.push('disertasi');
+    if (tesis) karilType.push('Tesis');
+    if (skripsi) karilType.push('Skripsi');
+    if (disertasi) karilType.push('Disertasi');
     let query = karilType.join();
     return query;
   }
