@@ -37,14 +37,25 @@ def login(request):
     serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
-    http = urllib3.PoolManager(cert_reqs='CERT_NONE')
+    # http = urllib3.PoolManager(cert_reqs='CERT_NONE')
+    http = urllib3.PoolManager()
     link = f"https://sso.ui.ac.id/cas2/serviceValidate?ticket={request.GET.get('ticket', '')}&service={serverURL}"
     response = http.request('GET', link)
+    print('response')
+    print(response)
+
     rawdata = response.data.decode('utf-8')
+    print('raw data')
+    print(rawdata)
 
     data = xmltodict.parse(rawdata)
+    print('data xmltodict')
+    print(data)
+
     data = data.get('cas:serviceResponse', {}).get(
         'cas:authenticationSuccess', {})
+    print('data serviceresponse')
+    print(data)
 
     user = None
     profile = None
