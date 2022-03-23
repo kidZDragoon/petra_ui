@@ -130,7 +130,7 @@ export default class Detail extends Component {
                     <button id={classes["features"]} onClick={this.showCite}>
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
-                    {this.state.isFavorite == false ? (
+                    {this.state.isFavorite === false ? (
                         <button id={classes["features"]} onClick={this.favoriteControl}>
                             <Heart/> &nbsp;Tambahkan ke favorit
                         </button>

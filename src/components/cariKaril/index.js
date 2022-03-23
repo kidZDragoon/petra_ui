@@ -1,16 +1,11 @@
-import React, {Component} from "react";
-// import axios from "axios";
-import axiosInstance from "axios";
-
-import classes from "./styles.module.css";
-import Card from "react-bootstrap/Card";
-import DownloadIcon from "@mui/icons-material/Download";
+import React, {useEffect, useState} from "react";
+import '../../index.css';
+import axios from "axios";
 import Box from "@mui/material/Box";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import "@fontsource/mulish";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   Checkbox,
   FormControl,
@@ -28,27 +23,49 @@ import CardKaril from "./card-karil.component";
 import { Search } from "@mui/icons-material";
 
 const SearchList = () => {
-  const [age, setAge] = React.useState("");
+  const [listKaril, setListKaril] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [year, setYear] = useState(null);
+  const [karilChecked, setKarilChecked] = useState({
+    tesis: false,
+    skripsi: false,
+    disertasi: false,
+  });
+  const { tesis, skripsi, disertasi } = karilChecked;
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  useEffect(() => {
+    fetchKaril();
+  },[keyword, year, karilChecked])
+
+  const getKarilQuery = () => {
+    let karilType = [];
+    if (tesis) karilType.push('tesis');
+    if (skripsi) karilType.push('skripsi');
+    if (disertasi) karilType.push('disertasi');
+    let query = karilType.join();
+    return query;
+  }
+
+  const fetchKaril = async () => {
+    let karilType = getKarilQuery();
+    let url = `/api/search/?search=${keyword}&tahun=${(year ? year.getFullYear() : "")}&jenis=${karilType}`
+    axios.get(url)
+      .then(response => {
+        setListKaril(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+    
+  const handleKarilTypeChange = (event) => {
+    setKarilChecked({
+      ...karilChecked,
+      [event.target.name]: event.target.checked,
+    });
   };
 
-  // const search = 'search';
-  // const [searchState, setSearch] = React.useState({
-  //   search: '',
-  //   posts: [],
-  // });
-
-  // useEffect(() => {
-	// 	axiosInstance.get(search + '/' + window.location.search).then((res) => {
-	// 		const allPosts = res.data;
-	// 		setAppState({ posts: allPosts });
-	// 		console.log(res.data);
-	// 	});
-	// }, [setAppState]);
-
-
+  console.log("DATA: ", listKaril)
   return (
     <Box py={8} px={12}>
       <Grid container spacing={8}>
@@ -61,14 +78,12 @@ const SearchList = () => {
               <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
                 Tahun
               </Typography>
-              <FormControl fullWidth>
-                <InputLabel>Tahun</InputLabel>
-                <Select value={age} label="Age" onChange={handleChange}>
-                  <MenuItem value={2020}>2020</MenuItem>
-                  <MenuItem value={2021}>2021</MenuItem>
-                  <MenuItem value={2022}>2022</MenuItem>
-                </Select>
-              </FormControl>
+              <DatePicker
+                selected={year}
+                onChange={(date) => setYear(date)}
+                showYearPicker
+                dateFormat="yyyy"
+              />
             </Box>
             <Box mt={4}>
               <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
@@ -76,20 +91,20 @@ const SearchList = () => {
               </Typography>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox defaultChecked />}
+                  control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
                   label="Skripsi"
                 />
                 <FormControlLabel
-                  control={<Checkbox defaultChecked />}
+                  control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
                   label="Tesis"
                 />
                 <FormControlLabel
-                  control={<Checkbox defaultChecked />}
+                  control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
                   label="Disertasi"
                 />
               </FormGroup>
             </Box>
-            <Box mt={4}>
+            {/* <Box mt={4}>
               <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
                 Kategori Topik
               </Typography>
@@ -115,7 +130,7 @@ const SearchList = () => {
                   label="Lorem Ipsum"
                 />
               </FormGroup>
-            </Box>
+            </Box> */}
           </Box>
         </Grid>
         <Grid item lg={9}>
@@ -127,6 +142,8 @@ const SearchList = () => {
               <TextField
                 label="Cari Karya Ilmiah"
                 fullWidth
+                value={keyword}
+                onChange={(event) => setKeyword(event.target.value)}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
@@ -137,23 +154,18 @@ const SearchList = () => {
               />
             </Box>
             <Box>
-              <Typography>Ditemukan 103 Karya Ilmiah</Typography>
-              <Box my={3}>
-                <CardKaril />
-              </Box>
-              <Box my={3}>
-                <CardKaril />
-              </Box>
-              <Box my={3}>
-                <CardKaril />
-              </Box>
+              <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
+              {listKaril.map((karil, idx) => 
+                <Box my={3} key={idx}>
+                  <CardKaril data={karil}/>
+                </Box>
+              )}
             </Box>
           </Box>
         </Grid>
       </Grid>
     </Box>
-  );
-
-};
-
+  );               
+  // }
+}
 export default SearchList;
