@@ -17,30 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('user', 'org_code', 'role', 'npm', 'faculty',
-                  'study_program', 'educational_program')
-
+        fields = ('id', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
         fields = "__all__"
         depth = 1
-
-    # fields = ["author", "npm", "judul", "tglDisetujui", "semesterDisetujui", "abstrak",
-    #         "jenis", "dosenPembimbing", "filePDF", "userPengunggah"]
-
-    # def to_representation(self, instance):
-    #     representation = dict()
-    #     representation["author"] = instance.author
-    #     representation["judul"] = instance.judul
-    #     representation["abstrak"] = instance.abstrak
-    #     representation["jenis"] = instance.jenis
-    #     representation["tglVerifikasi"] = instance.tglVerifikasi
-    #     representation["tglDisetujui"] = instance.tglDisetujui
-    #     representation["filePDF"] = instance.filePDF
-
-    #     return representation
 
 
 class DosenPembimbingField(serializers.PrimaryKeyRelatedField):
@@ -61,15 +44,7 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
 
     dosenPembimbing = DosenPembimbingField(queryset=Profile.objects.filter(role='verifikator'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
-    # jenis = serializers.ChoiceField(choices = JENIS_CHOICES)
-    # userPengunggah = serializers.SerializerMethodField('_user')
 
-    # # Use this method for the custom field
-    # def _user(self, obj):
-    #     print("get current authenticated user")
-    #     request = self.context.get('request', None)
-    #     if request:
-    #         return request.user
 
     def create(self, validated_data):
         author = validated_data['author']
@@ -81,19 +56,24 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
         jenis = validated_data['jenis']
         filePDF = validated_data['filePDF']
 
-        # queryset = Profile.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
         dosenPembimbing = validated_data['dosenPembimbing']
         semesterDisetujui = validated_data['semesterDisetujui']
-        # userPengunggah = self.context['request'].user
+        userPengunggah = validated_data['userPengunggah']
         statusVerifikasi = 0
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
-                        abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, status=statusVerifikasi)
-
+                        abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, status=statusVerifikasi, userPengunggah = userPengunggah)
         karyaIlmiah.save()
         return karyaIlmiah
 
 
+    class Meta:
+        model = KaryaIlmiah
+        fields = ["author", "npm", "judul", "tglDisetujui", "semesterDisetujui", "abstrak",
+                "jenis", "dosenPembimbing", "filePDF", "userPengunggah"]
+
+
 class VerificatorSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Profile
 
