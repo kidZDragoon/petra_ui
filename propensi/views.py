@@ -1,19 +1,25 @@
 from urllib import request
+from django.forms import DateField
 from django.shortcuts import render
 
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
     SemesterSerializer, KarilSeriliazer
+
 from rest_framework_jwt.settings import api_settings
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView
 
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, permissions, filters, viewsets
+
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
+# from django_filters import DateFilter
+from django_filters import BaseInFilter, CharFilter, NumberFilter
 
 import urllib3
 import xmltodict
@@ -110,6 +116,20 @@ class KaryaIlmiahView(RetrieveAPIView): #auto pk
     serializer_class = KaryaIlmiahSeriliazer
 
 
+class CharInFilter(BaseInFilter, CharFilter):
+    pass
+
+
+class KarilFilterYearAndType(FilterSet):
+    tahun = NumberFilter(field_name='tglVerifikasi__year', lookup_expr='exact')
+    jenis = CharInFilter(field_name='jenis', lookup_expr='in')
+    class Meta:
+        model = KaryaIlmiah
+        fields = (
+            'tahun',
+            'jenis')
+
+
 class daftarVerifikasiView(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
@@ -142,18 +162,29 @@ class SemesterView(APIView):
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
 
-class CariKaril(ListCreateAPIView):
-    # queryset = KaryaIlmiah.objects.all()
+class CariKaril(ListAPIView):
+    queryset = KaryaIlmiah.objects.all()
     serializer_class = KarilSeriliazer
-    filter_backends = [DjangoFilterBackend]
-    filterset_field = ['judul', 'authors']
-    # search_field = ['judul', 'authors']
+    filterset_class = KarilFilterYearAndType
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['judul', 'authors']
+    # filter_fields = [KarilFilterYear, {'jenis:'}]
 
     # def get_queryset(self):
     #     judul = self.request.GET.get('judul')
     #     queryset = KaryaIlmiah.objects.filter(judul__icontains=judul)
-
     #     return queryset
+
+# class CariKaril(viewsets.ModelViewSet):
+#     class Filter(FilterSet):
+#         class Meta:
+#             model = KaryaIlmiah
+
+#     filter_class = Filter
+#     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+#     search_fields = ['judul', 'authors']
+#     queryset = KaryaIlmiah.objects.all()
+#     serializer_class = KarilSeriliazer
 
 
 class HasilKaril(RetrieveAPIView):
