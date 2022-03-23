@@ -7,6 +7,7 @@ from django.dispatch import receiver
 import json
 import os
 import uuid
+from django.core.validators import FileExtensionValidator
 
 ORG_CODE = {}
 LANG = settings.SSO_UI_ORG_DETAIL_LANG
@@ -91,8 +92,11 @@ class KaryaIlmiah(models.Model):
 
     def get_upload_path(instance, filename):
         return os.path.join("files/%s" % instance.fileURI)
+    
+    def validate_file_extension(value):
+        pass
 
-    filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500)
+    filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500, validators=[FileExtensionValidator(['pdf'])])
 
 
 class Pengumuman(models.Model):

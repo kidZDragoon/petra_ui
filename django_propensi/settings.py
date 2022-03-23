@@ -16,6 +16,7 @@ import django_heroku
 import os
 # import dotenv
 import dj_database_url
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -198,3 +199,11 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
 # Add this line
 # PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'petra-ui'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    "django_propensi/clever-coast-345001-44e43c5bec88.json"
+)
