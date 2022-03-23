@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+        fields = ('id', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
     class Meta:
@@ -68,14 +68,12 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
         jenis = validated_data['jenis']
         filePDF = validated_data['filePDF']
 
-        # queryset = Profile.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
         dosenPembimbing = validated_data['dosenPembimbing']
         semesterDisetujui = validated_data['semesterDisetujui']
-        # userPengunggah = self.context['request'].user
+        userPengunggah = validated_data['userPengunggah']
         statusVerifikasi = 0
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
-                        abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, status=statusVerifikasi)
-        
+                        abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, status=statusVerifikasi, userPengunggah = userPengunggah)
         karyaIlmiah.save()
         return karyaIlmiah
 
