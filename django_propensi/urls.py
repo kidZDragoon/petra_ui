@@ -11,7 +11,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('admin/', admin.site.urls),
     path('api/', include('propensi.urls')),
-    
+
 ]
 
 if settings.DEBUG:

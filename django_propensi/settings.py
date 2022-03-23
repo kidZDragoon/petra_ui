@@ -14,9 +14,20 @@ from pathlib import Path
 from datetime import timedelta
 import django_heroku
 import os
+# import dotenv
+import dj_database_url
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().root.root
+
+# dotenv_file = os.path.join(BASE_DIR, ".env")
+# if os.path.isfile(dotenv_file):
+#     dotenv.load_dotenv(dotenv_file)
+
+# Add this line
+PRODUCTION = os.environ.get('DATABASE_URL') != None
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -25,7 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c107z^^ik2we(=ljwz&d8xke&y&6%qjjmpc#9i8x5^xe145w@q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -36,6 +47,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 JWT_AUTH = {
@@ -76,10 +88,13 @@ INSTALLED_APPS = [
     'propensi',
     'rest_framework',
     'corsheaders',
+    'storages',
+    'django_filters',
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',    # add this
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Whitenoise Middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -122,6 +137,13 @@ DATABASES = {
         'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
     }
 }
+
+# DATABASES['production'] = dj_database_url.config(conn_max_age=600)
+
+# Add this line
+# If Using Heroku Environemnt, then Use Database Setting on Heroku
+if PRODUCTION:
+    DATABASES['default'] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -176,3 +198,14 @@ SSO_UI_ORG_DETAIL_LANG = "id"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
+
+# Add this line
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'petra-ui'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    "django_propensi/clever-coast-345001-44e43c5bec88.json"
+)

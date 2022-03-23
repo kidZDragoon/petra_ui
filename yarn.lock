@@ -1249,6 +1249,11 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
+"@fontsource/mulish@^4.5.5":
+  "integrity" "sha512-wWYKygkWHIM+yd3X4XOPYnchuv5m/Cgp9cBqWzZtPGLrOnCA8x2J9IfEseuqQmkbv0RhUJEgiCNt5FiT+YZHmA=="
+  "resolved" "https://registry.npmjs.org/@fontsource/mulish/-/mulish-4.5.5.tgz"
+  "version" "4.5.5"
+
 "@humanwhocodes/config-array@^0.9.2":
   "integrity" "sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw=="
   "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.9.5.tgz"
@@ -1522,7 +1527,7 @@
     "@emotion/cache" "^11.7.1"
     "prop-types" "^15.7.2"
 
-"@mui/system@^5.5.2":
+"@mui/system@^5.5.1", "@mui/system@^5.5.2":
   "integrity" "sha512-OATYFI36nliud8xh0u+ZNqDo0jWjxpO0vZLlzqNB+ZtkR5Q/+1X3GgboA9ruiB8Rq+udnJlMBQNGW0qqjvAOHQ=="
   "resolved" "https://registry.npmjs.org/@mui/system/-/system-5.5.2.tgz"
   "version" "5.5.2"
@@ -8742,6 +8747,11 @@
   "version" "4.4.1"
   dependencies:
     "punycode" "^2.1.0"
+
+"urllib3@^0.0.1":
+  "integrity" "sha512-CeXltrCgk53F/cQKVNDF0uDx4/u4S+MnJRa2xfbZKMHTrPhndCQrC9BpiULC7QDPF/H9qOTY2lpSd5TnYfz2Fg=="
+  "resolved" "https://registry.npmjs.org/urllib3/-/urllib3-0.0.1.tgz"
+  "version" "0.0.1"
 
 "util-deprecate@^1.0.1", "util-deprecate@^1.0.2", "util-deprecate@~1.0.1":
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="

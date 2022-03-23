@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
@@ -43,6 +42,9 @@ class App extends React.Component {
 
     popUpLogin() {
         const serviceURL = "http://localhost:8000/login/"
+        // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+        // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
+
         const SSOWindow = window.open(
             new URL(
                 `https://sso.ui.ac.id/cas2/login?service=${encodeURIComponent(serviceURL)}`
@@ -109,8 +111,11 @@ class App extends React.Component {
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">
-                                <Nav.Link href="#features">Karya Ilmiah Saya</Nav.Link>
-                                <Nav.Link href="#pricing">Karya Ilmiah Favorit</Nav.Link>
+                                <Nav.Link href="#/KaryaIlmiah/1">Contoh</Nav.Link>
+                                <Nav.Link href="#/karya-ilmiah-saya/upload">Upload</Nav.Link>
+                                <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi</Nav.Link>
+                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                <Nav.Link href="#/AdvancedSearch">Advanced Search</Nav.Link>
                             </Nav>
 
                             <Nav>
@@ -120,7 +125,6 @@ class App extends React.Component {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-                <Link to={"/KaryaIlmiah/1"}>karya ilmiah</Link>
             </div>
         );
     }

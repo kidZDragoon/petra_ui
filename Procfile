@@ -1,1 +1,4 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar --spring.profiles.active=production
+release: python manage.py collectstatic
+release: python manage.py migrate propensi
+release: python manage.py migrate
+web: gunicorn django_propensi.wsgi --log-file -

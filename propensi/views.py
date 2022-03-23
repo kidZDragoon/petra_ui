@@ -1,21 +1,24 @@
 from importlib.resources import path
+from urllib import request
 from django.shortcuts import render
 
-from propensi.models_auth import Profile, User, save_user_attributes
-from propensi.models import KaryaIlmiah, Semester
-from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, KaryaIlmiahUploadSerializer
-from propensi.serializer import VerificatorSerializer, SemesterSerializer
+from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
+from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
+    KaryaIlmiahUploadSerializer, VerificatorSerializer, \
+    SemesterSerializer, KarilSeriliazer
 from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import api_view
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 import urllib3
 import xmltodict
@@ -28,7 +31,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 def login(request):
     originURL = "http://localhost:8000/"
+    # originURL = "https://propensi-a03-staging.herokuapp.com/"
+    # originURL = "https://propensi-a03.herokuapp.com/"
+
     serverURL = "http://localhost:8000/login/"
+    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     link = f"https://sso.ui.ac.id/cas2/serviceValidate?ticket={request.GET.get('ticket', '')}&service={serverURL}"
@@ -36,14 +44,15 @@ def login(request):
     rawdata = response.data.decode('utf-8')
 
     data = xmltodict.parse(rawdata)
-    data = data.get('cas:serviceResponse', {}).get('cas:authenticationSuccess', {})
+    data = data.get('cas:serviceResponse', {}).get(
+        'cas:authenticationSuccess', {})
 
     user = None
     profile = None
     try:
         user = User.objects.get(email=f'{data.get("cas:user", "")}@ui.ac.id')
         profile = Profile.objects.get(user=user)
-    except User.DoesNotExist:
+    except:
         if data.get("cas:user"):
             username = data.get("cas:user")
 
@@ -106,26 +115,30 @@ class KaryaIlmiahView(RetrieveAPIView): #auto pk
     serializer_class = KaryaIlmiahSeriliazer
 
 
+class daftarVerifikasiView(RetrieveAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KaryaIlmiahSeriliazer
+
+
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
-        print("masuk post")
-        print(request.user)
         karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(data=request.data)
 
         if karya_ilmiah_serializer.is_valid():
-            print("masuk is calid")
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class VerificatorView(APIView):
     def get(self, request):
         data = Profile.objects.filter(role="verifikator")
         serializer = VerificatorSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
 
 class SemesterView(APIView):
     def get(self, request):
@@ -135,10 +148,25 @@ class SemesterView(APIView):
 
 @api_view(['GET'])
 def DownloadPDF(self, path):
-    print("masuk")
-    path_to_file = MEDIA_ROOT + "/files/" + path
-    f = open(path_to_file, 'rb')
-    pdfFile = File(f)
-    response = HttpResponse(pdfFile.read())
+    path_to_file = "https://storage.googleapis.com/petra-ui/files" + path
+    response = HttpResponse(path_to_file)
     response['Content-Disposition'] = 'attachment'
     return response
+
+class CariKaril(ListCreateAPIView):
+    # queryset = KaryaIlmiah.objects.all()
+    serializer_class = KarilSeriliazer
+    filter_backends = [DjangoFilterBackend]
+    filterset_field = ['judul', 'authors']
+    # search_field = ['judul', 'authors']
+
+    # def get_queryset(self):
+    #     judul = self.request.GET.get('judul')
+    #     queryset = KaryaIlmiah.objects.filter(judul__icontains=judul)
+
+    #     return queryset
+
+
+class HasilKaril(RetrieveAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KaryaIlmiahSeriliazer
