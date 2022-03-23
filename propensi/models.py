@@ -72,6 +72,7 @@ class Semester(models.Model):
     semester = models.CharField(max_length=500)
 
 
+
 class KaryaIlmiah(models.Model):
     author = models.CharField(max_length=500)
     npm = models.CharField(max_length=15)
@@ -105,4 +106,3 @@ class Pengumuman(models.Model):
 class Kategori(models.Model):
     nama = models.CharField(max_length=50)
     listKaryaIlmiah = models.ManyToManyField(KaryaIlmiah)
-

@@ -105,6 +105,11 @@ class KaryaIlmiahView(RetrieveAPIView): #auto pk
     serializer_class = KaryaIlmiahSeriliazer
 
 
+class daftarVerifikasiView(RetrieveAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KaryaIlmiahSeriliazer
+
+
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
