@@ -55,7 +55,6 @@ export default class UploadKaryaIlmiah extends Component {
 
     // Untuk nampilin data pilihan dropdown saat pertama kali halaman dibuka
     componentDidMount() {
-        console.log("componentDidMount()");
         this.loadVerificatorData();
         this.loadSemesterData();
     }

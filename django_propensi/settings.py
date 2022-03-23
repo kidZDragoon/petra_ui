@@ -87,7 +87,7 @@ INSTALLED_APPS = [
     'propensi',
     'rest_framework',
     'corsheaders',
-
+    'storages',
 ]
 
 MIDDLEWARE = [
