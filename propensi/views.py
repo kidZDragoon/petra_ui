@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
-from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, KaryaIlmiahUploadSerializer
-from propensi.serializer import VerificatorSerializer, SemesterSerializer
+from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
+    KaryaIlmiahUploadSerializer, VerificatorSerializer, SemesterSerializer
 from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,12 +21,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    # originURL = "http://localhost:8000/"
-    originURL = "https://propensi-a03-staging.herokuapp.com/"
+    originURL = "http://localhost:8000/"
+    # originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    # serverURL = "http://localhost:8000/login/"
-    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    serverURL = "http://localhost:8000/login/"
+    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -109,22 +109,21 @@ class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
-        print("masuk post")
-        print(request.user)
         karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(data=request.data)
 
         if karya_ilmiah_serializer.is_valid():
-            print("masuk is calid")
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class VerificatorView(APIView):
     def get(self, request):
         data = Profile.objects.filter(role="verifikator")
         serializer = VerificatorSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
 
 class SemesterView(APIView):
     def get(self, request):

@@ -19,6 +19,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
 
+
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
@@ -39,13 +40,16 @@ class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
 
         return representation
 
+
 class DosenPembimbingField(serializers.PrimaryKeyRelatedField):
     def display_value(self, instance):
         return instance.user.first_name + " " + instance.user.last_name
 
+
 class SemesterDisetujuiField(serializers.PrimaryKeyRelatedField):
     def display_value(self, instance):
         return instance.semester
+
 
 class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
     dosenPembimbing = DosenPembimbingField(queryset=Profile.objects.filter(role='verifikator'))
@@ -61,7 +65,6 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
     #         return request.user
 
     def create(self, validated_data):
-        print("masuk serializer create")
         author = validated_data['author']
         npm = validated_data['npm']
         judul = validated_data['judul']
@@ -90,7 +93,6 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
 
 
 class VerificatorSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Profile
 
@@ -106,6 +108,7 @@ class VerificatorSerializer(serializers.ModelSerializer):
         representation["educational_program"] = instance.educational_program
 
         return representation
+
 
 class SemesterSerializer(serializers.ModelSerializer):
 

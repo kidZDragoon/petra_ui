@@ -52,32 +52,22 @@ export default class UploadKaryaIlmiah extends Component {
     //Untuk me-retrieve data verifikator dari backend buat ditampilin di dropdown
     async loadVerificatorData(){
         try {
-            console.log("masuk sini")
             const { data } = await axios.get("/api/get-verificator-data/");
-            console.log("dah keget")
             this.setState({ verificators: data.data }); //Set data verifikator sebagai state supaya bisa digunakan lagi
-            console.log("verificator data loaded");
-            console.log(this.state.verificators);
             
         } catch (error) {
             alert("Oops terjadi masalah pada server");
-            console.log(error);
         }
     }
 
-      //Untuk me-retrieve data semester dari backend buat ditampilin di dropdown
-      async loadSemesterData(){
+    //Untuk me-retrieve data semester dari backend buat ditampilin di dropdown
+    async loadSemesterData(){
         try {
-            console.log("masuk semester get")
             const { data } = await axios.get("/api/get-semester-data/");
-            console.log("dah keget smt")
             this.setState({ semesters: data.data }); //Set data verifikator sebagai state supaya bisa digunakan lagi
-            console.log("semester data loaded");
-            console.log(this.state.semesters);
-            
+
         } catch (error) {
             alert("Oops terjadi masalah pada server");
-            console.log(error);
         }
     }
 
@@ -85,21 +75,12 @@ export default class UploadKaryaIlmiah extends Component {
     handleChangeField(event) {
         const { name, value } = event.target;
         this.setState({ [name]: value });
-        console.log({name, value})
-        console.log(this.state.author);
-        console.log(this.state.filePDF);
-        console.log("hai");
     }
 
     handleFileField(event){
-        console.log("1 " + event.target);
-        console.log("2 " + event.target.files[0])
-        console.log("3 " + event.target.files[0].name)
         // const { name, value } = event.target;
         // console.log({name, value})
         this.setState({ filePDF: event.target.files[0]})
-        console.log("file " + this.state.filePDF);
-        console.log("name " + this.state.filePDF.name);
     }
 
     //Handle submit data form ke backend
@@ -107,8 +88,6 @@ export default class UploadKaryaIlmiah extends Component {
     async handleSubmit(event) {
         event.preventDefault();
         try {
-            console.log("halo")
-
             //Buat dictionary data untuk dikirim ke backend
             const data = {
                 author: this.state.author,
@@ -134,13 +113,6 @@ export default class UploadKaryaIlmiah extends Component {
             formData.append('dosenPembimbing', this.state.dosenPembimbing);
             formData.append('filePDF', this.state.filePDF);
 
-            console.log(data);
-            // for (var pair of formData.entries()) {
-            //     console.log(pair[0]+ ', ' + pair[1]); 
-            // }
-
-            //Kirim data ke backend
-            // const res =  await http.post("/unggah", data);
             const res = await axios.post(
                     "/api/unggah-karya-ilmiah/",
                     formData,
@@ -149,10 +121,7 @@ export default class UploadKaryaIlmiah extends Component {
                       }
                     }
                 )
-            console.log("terpanggil unggah")
-            console.log(res.status)
-            console.log(res.message)
-            console.log(res.result)
+
             this.setState({ result: res.result});
             
             //Reset state jadi kosong lagi
@@ -171,8 +140,6 @@ export default class UploadKaryaIlmiah extends Component {
 
         } catch (error) {
             alert("Oops terjadi masalah pada server");
-            console.log(error);
-            console.log(error.stack);
         }
     }
 
