@@ -27,18 +27,20 @@ class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
 
-    fields = ["author", "npm", "judul", "tglDisetujui", "semesterDisetujui", "abstrak",
-            "jenis", "dosenPembimbing", "filePDF", "userPengunggah"]
+    # fields = ["author", "npm", "judul", "tglDisetujui", "semesterDisetujui", "abstrak",
+    #         "jenis", "dosenPembimbing", "filePDF", "userPengunggah"]
 
-    def to_representation(self, instance):
-        representation = dict()
-        representation["author"] = instance.author
-        representation["judul"] = instance.judul
-        representation["abstrak"] = instance.abstrak
-        representation["jenis"] = instance.jenis
-        representation["tglVerifikasi"] = instance.tglVerifikasi
+    # def to_representation(self, instance):
+    #     representation = dict()
+    #     representation["author"] = instance.author
+    #     representation["judul"] = instance.judul
+    #     representation["abstrak"] = instance.abstrak
+    #     representation["jenis"] = instance.jenis
+    #     representation["tglVerifikasi"] = instance.tglVerifikasi
+    #     representation["tglDisetujui"] = instance.tglDisetujui
+    #     representation["filePDF"] = instance.filePDF
 
-        return representation
+    #     return representation
 
 
 class DosenPembimbingField(serializers.PrimaryKeyRelatedField):

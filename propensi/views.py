@@ -1,26 +1,24 @@
-from urllib import request
+from importlib.resources import path
 from django.forms import DateField
 from django.shortcuts import render
-
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
+# from django_filters import DateFilter
+from django_filters import BaseInFilter, CharFilter, NumberFilter
+from django_propensi.settings import BASE_DIR, MEDIA_ROOT
+from django.core.files import File
+from django.http import HttpResponse
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
     SemesterSerializer, KarilSeriliazer
-
-from rest_framework_jwt.settings import api_settings
-
+from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView
-
-from rest_framework import status, permissions, filters, viewsets
-
-from django_filters.rest_framework import DjangoFilterBackend, FilterSet
-# from django_filters import DateFilter
-from django_filters import BaseInFilter, CharFilter, NumberFilter
-
+from rest_framework.decorators import api_view
+from rest_framework_jwt.settings import api_settings
 import urllib3
 import xmltodict
 import jwt
@@ -160,6 +158,14 @@ class SemesterView(APIView):
         data = Semester.objects.all()
         serializer = SemesterSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def DownloadPDF(self, path):
+    path_to_file = "https://storage.googleapis.com/petra-ui/files" + path
+    response = HttpResponse(path_to_file)
+    response['Content-Disposition'] = 'attachment'
+    return response
 
 
 class CariKaril(ListAPIView):
