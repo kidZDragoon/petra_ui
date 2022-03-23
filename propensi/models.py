@@ -2,6 +2,7 @@ from django.db import models
 from propensi.models_auth import Profile
 import os
 import uuid
+from django.core.validators import FileExtensionValidator
 
 class Semester(models.Model):
     semester = models.CharField(max_length=500)
@@ -24,8 +25,11 @@ class KaryaIlmiah(models.Model):
 
     def get_upload_path(instance, filename):
         return os.path.join("files/%s" % instance.fileURI)
+    
+    def validate_file_extension(value):
+        pass
 
-    filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500)
+    filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500, validators=[FileExtensionValidator(['pdf'])])
 
 class Pengumuman(models.Model):
     judul = models.CharField(max_length=500)

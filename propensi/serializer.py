@@ -32,7 +32,6 @@ class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
         representation["judul"] = instance.judul
         representation["abstrak"] = instance.abstrak
         representation["jenis"] = instance.jenis
-        representation["filePDF"] = instance.filePDF.path
         representation["tglVerifikasi"] = instance.tglVerifikasi
 
         return representation
@@ -73,9 +72,9 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
         dosenPembimbing = validated_data['dosenPembimbing']
         semesterDisetujui = validated_data['semesterDisetujui']
         # userPengunggah = self.context['request'].user
-
+        statusVerifikasi = 0
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
-                        abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing)
+                        abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, status=statusVerifikasi)
         
         karyaIlmiah.save()
         return karyaIlmiah
