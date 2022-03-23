@@ -111,9 +111,11 @@ class App extends React.Component {
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">
-                                <Nav.Link href="#/KaryaIlmiah/1">Contoh Karya Ilmiah</Nav.Link>
-                                <Nav.Link href="#/karya-ilmiah-saya/upload">Upload Karya Ilmiah</Nav.Link>
-                                <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi Karya Ilmiah</Nav.Link>
+                                <Nav.Link href="#/KaryaIlmiah/1">Contoh</Nav.Link>
+                                <Nav.Link href="#/karya-ilmiah-saya/upload">Upload</Nav.Link>
+                                <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi</Nav.Link>
+                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                <Nav.Link href="#/AdvancedSearch">Advanced Search</Nav.Link>
                             </Nav>
 
                             <Nav>

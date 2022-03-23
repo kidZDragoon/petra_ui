@@ -10,13 +10,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
 
-from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
 
 import urllib3
 import xmltodict
@@ -145,7 +142,7 @@ class SemesterView(APIView):
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
 
-class CariKaril(generics.ListCreateAPIView):
+class CariKaril(ListCreateAPIView):
     # queryset = KaryaIlmiah.objects.all()
     serializer_class = KarilSeriliazer
     filter_backends = [DjangoFilterBackend]

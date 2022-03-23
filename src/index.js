@@ -13,13 +13,11 @@ ReactDOM.render(
     <HashRouter>
         <App />
         <Routes>
-            <Route>
             <Route path="/KaryaIlmiah/:id" element={<Detail/>}/>
             <Route path='/DaftarVerifikasi' element={<DaftarVerifikasi/>}/>
             <Route path="/karya-ilmiah-saya/upload" element={<UploadKaryaIlmiah/>} />
             <Route path="/Search" element={<SeachList/>}/>
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
-            </Route>
         </Routes>
     </HashRouter>,
 
