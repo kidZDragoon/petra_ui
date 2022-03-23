@@ -166,6 +166,6 @@ const SearchList = () => {
       </Grid>
     </Box>
   );               
-  // }
 }
+// }
 export default SearchList;
