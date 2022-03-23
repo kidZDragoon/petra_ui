@@ -10,7 +10,6 @@ production:
   script:
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
     - export HEROKU_API_KEY=$HEROKU_API_KEY
-    - heroku run --app $HEROKU_APPNAME python manage.py release
   environment:
     name: production
     url: https://$HEROKU_APP.herokuapp.com
@@ -26,7 +25,6 @@ staging:
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
     - export HEROKU_API_KEY=$HEROKU_API_KEY
-    - heroku run --app $HEROKU_APPNAME python manage.py release
   environment:
     name: staging
     url: https://$HEROKU_APP_STAGING.herokuapp.com
