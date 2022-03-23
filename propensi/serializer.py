@@ -17,7 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+        fields = ('user', 'org_code', 'role', 'npm', 'faculty',
+                  'study_program', 'educational_program')
 
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
@@ -51,6 +52,11 @@ class SemesterDisetujuiField(serializers.PrimaryKeyRelatedField):
 
 
 class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KaryaIlmiah
+        fields = ["author", "npm", "judul", "tglDisetujui", "semesterDisetujui", "abstrak",
+                "jenis", "dosenPembimbing", "filePDF", "userPengunggah"]
+
     dosenPembimbing = DosenPembimbingField(queryset=Profile.objects.filter(role='verifikator'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
     # jenis = serializers.ChoiceField(choices = JENIS_CHOICES)
@@ -80,15 +86,9 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
         statusVerifikasi = 0
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
                         abstrak=abstrak, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, status=statusVerifikasi)
-        
+
         karyaIlmiah.save()
         return karyaIlmiah
-
-
-    class Meta:
-        model = KaryaIlmiah
-        fields = ["author", "npm", "judul", "tglDisetujui", "semesterDisetujui", "abstrak",
-                "jenis", "dosenPembimbing", "filePDF", "userPengunggah"]
 
 
 class VerificatorSerializer(serializers.ModelSerializer):
@@ -110,7 +110,12 @@ class VerificatorSerializer(serializers.ModelSerializer):
 
 
 class SemesterSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Semester
         fields = ['id', 'semester']
+
+
+class KarilSeriliazer(serializers.ModelSerializer):
+    class Meta:
+        model = KaryaIlmiah
+        fields = "__all__"

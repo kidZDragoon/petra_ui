@@ -1,8 +1,10 @@
+from urllib import request
 from django.shortcuts import render
 
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
-    KaryaIlmiahUploadSerializer, VerificatorSerializer, SemesterSerializer
+    KaryaIlmiahUploadSerializer, VerificatorSerializer, \
+    SemesterSerializer, KarilSeriliazer
 from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,6 +12,11 @@ from rest_framework import status, permissions
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import RetrieveAPIView
+
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 import urllib3
 import xmltodict
@@ -35,7 +42,8 @@ def login(request):
     rawdata = response.data.decode('utf-8')
 
     data = xmltodict.parse(rawdata)
-    data = data.get('cas:serviceResponse', {}).get('cas:authenticationSuccess', {})
+    data = data.get('cas:serviceResponse', {}).get(
+        'cas:authenticationSuccess', {})
 
     user = None
     profile = None
@@ -135,3 +143,22 @@ class SemesterView(APIView):
         data = Semester.objects.all()
         serializer = SemesterSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+
+class CariKaril(generics.ListCreateAPIView):
+    # queryset = KaryaIlmiah.objects.all()
+    serializer_class = KarilSeriliazer
+    filter_backends = [DjangoFilterBackend]
+    filterset_field = ['judul', 'authors']
+    # search_field = ['judul', 'authors']
+
+    # def get_queryset(self):
+    #     judul = self.request.GET.get('judul')
+    #     queryset = KaryaIlmiah.objects.filter(judul__icontains=judul)
+
+    #     return queryset
+
+
+class HasilKaril(RetrieveAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KaryaIlmiahSeriliazer
