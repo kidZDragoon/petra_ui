@@ -37,8 +37,8 @@ def login(request):
     serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
-    # http = urllib3.PoolManager(cert_reqs='CERT_NONE')
-    http = urllib3.PoolManager()
+    http = urllib3.PoolManager(cert_reqs='CERT_NONE')
+    # http = urllib3.PoolManager()
     link = f"https://sso.ui.ac.id/cas2/serviceValidate?ticket={request.GET.get('ticket', '')}&service={serverURL}"
     response = http.request('GET', link)
     print('response')
@@ -63,17 +63,31 @@ def login(request):
         user = User.objects.get(email=f'{data.get("cas:user", "")}@ui.ac.id')
         profile = Profile.objects.get(user=user)
     except:
-        if data.get("cas:user"):
-            username = data.get("cas:user")
+        username = data.get("cas:user")
 
-            data = data.get("cas:attributes")
-            userData = {'username': username, 'email': f'{username}@ui.ac.id'}
-            profileData = {'email': f'{username}@ui.ac.id', 'kd_org': data.get('cas:kd_org'),
-                           'nama': data.get('cas:nama'), 'npm': data.get('cas:npm'),
-                           'peran_user': data.get('cas:peran_user'), }
+        data = data.get("cas:attributes")
+        userData = {'username': username, 'email': f'{username}@ui.ac.id'}
+        if data.get('cas:nip'): #dosen
+            profileData = {'email': f'{username}@ui.ac.id',
+                           'kd_org': '03.06.09.01', # S3 ilmu kesos, template.
+                           'nama': data.get('cas:nama'),
+                           'npm': data.get('cas:nip'), # nip
+                           'peran_user': 'dosen',
+                           }
             user = User.objects.create(**userData)
             profile = Profile.objects.get(user=user)
             save_user_attributes(user, profileData)
+
+        else: #mahasiswa
+            profileData = {'email': f'{username}@ui.ac.id',
+                           'kd_org': data.get('cas:kd_org'),
+                           'nama': data.get('cas:nama'),
+                           'npm': data.get('cas:npm'),
+                           'peran_user': 'mahasiswa',
+                           }
+        user = User.objects.create(**userData)
+        profile = Profile.objects.get(user=user)
+        save_user_attributes(user, profileData)
 
     payload = JWT_PAYLOAD_HANDLER(user)
     jwtToken = JWT_ENCODE_HANDLER(payload)
