@@ -51,7 +51,7 @@ export default class Detail extends Component {
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
             console.log(data)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
-            authors: data.authors, jenis: data.jenis, kategori: data.listKategori,
+            authors: data.author, jenis: data.jenis, kategori: data.listKategori,
             tglVerifikasi:data.tglVerifikasi})
            
         }catch(error){

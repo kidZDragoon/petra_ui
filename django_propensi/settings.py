@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-# import dj_database_url
 import django_heroku
 import os
 # import dotenv
@@ -130,7 +129,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_propensi',
         'USER': 'aditdj',
-        'PASSWORD': 'aditdj'
+        'PASSWORD': 'aditdj',
+        'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
     }
 }
 
