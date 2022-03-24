@@ -205,9 +205,7 @@ class SemesterView(APIView):
 
 @api_view(['GET'])
 def DownloadPDF(self, path):
-    print("masuk")
     file_url = "https://storage.googleapis.com/petra-ui/files/" + path
-    print(file_url)
     file = requests.get(file_url, stream=True)
     response = HttpResponse(file)
     response['Content-Disposition'] = 'attachment'
