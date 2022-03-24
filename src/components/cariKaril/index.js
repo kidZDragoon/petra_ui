@@ -30,8 +30,9 @@ const SearchList = () => {
     tesis: false,
     skripsi: false,
     disertasi: false,
+    nonskripsi: false,
   });
-  const { tesis, skripsi, disertasi } = karilChecked;
+  const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
 
   useEffect(() => {
     fetchKaril();
@@ -42,6 +43,7 @@ const SearchList = () => {
     if (tesis) karilType.push('Tesis');
     if (skripsi) karilType.push('Skripsi');
     if (disertasi) karilType.push('Disertasi');
+    if (nonskripsi) karilType.push('Non-skripsi');
     let query = karilType.join();
     return query;
   }
@@ -76,7 +78,7 @@ const SearchList = () => {
             </Typography>
             <Box mt={4}>
               <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Tahun
+                Tahun Publikasi
               </Typography>
               <DatePicker
                 selected={year}
@@ -101,6 +103,10 @@ const SearchList = () => {
                 <FormControlLabel
                   control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
                   label="Disertasi"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
+                  label="Non-skripsi"
                 />
               </FormGroup>
             </Box>
@@ -140,7 +146,7 @@ const SearchList = () => {
             </Typography>
             <Box my={5}>
               <TextField
-                label="Cari Karya Ilmiah"
+                label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
                 fullWidth
                 value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
@@ -157,7 +163,8 @@ const SearchList = () => {
               <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
               {listKaril.map((karil, idx) => 
                 <Box my={3} key={idx}>
-                  <CardKaril data={karil}/>
+                  <CardKaril 
+                  data={karil}/>
                 </Box>
               )}
             </Box>

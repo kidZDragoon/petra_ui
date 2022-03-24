@@ -14,6 +14,7 @@ import {BoxArrowDown} from "react-bootstrap-icons";
 import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
 import axios from "axios";
+var fileDownload = require('js-file-download');
 
 export default class Detail extends Component {
     constructor(props) {
@@ -35,13 +36,13 @@ export default class Detail extends Component {
             IEEEstyleU:"",
             IEEEstyleL:"",
             MLAstyleU:"",
-            MLAstyleL:""
+            MLAstyleL:"",
+            filePDF:""
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
     }
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
-        console.log(pathname);
         this.handleDetailKaryaIlimah(pathname);
     }
     async handleDetailKaryaIlimah(item,event){
@@ -51,15 +52,26 @@ export default class Detail extends Component {
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
             console.log(data)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
-            authors: data.authors, jenis: data.jenis, kategori: data.listKategori,
-            tglVerifikasi:data.tglVerifikasi})
+            authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
+            tglVerifikasi:data.tglDisetujui}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            
            
         }catch(error){
             alert("Oops terjadi masalah pada server")
-            console.log(error);
 
         }
     }
+    
+    handlePDFDownload = () => {
+        axios.get('api/download/'+ this.state.fileURI, { 
+            responseType: 'blob',
+        }).then(res => {
+            fileDownload(res.data, this.state.judul+'.pdf');
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
+    };
 
     showModal = () => {
         this.setState({isOpen:true})
@@ -78,12 +90,6 @@ export default class Detail extends Component {
         const date = new Date();
         var months = [ " ","January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December" ];
-        console.log(this.state.authors.split(" ")[2]);
-        console.log(this.state.authors.split(" ")[0].split("")[0]);
-        console.log(this.state.authors);
-        console.log(this.state.tglVerifikasi.split("-")[0]);
-        console.log(months[parseInt(this.state.tglVerifikasi.split("-")[1])]);
-        console.log(this.state.tglVerifikasi.split("-")[2]);
         const apaStyleDefault = "";
         const ieeeStyleDefaultU = "";
         const ieeeStyleDefaultL = "";
@@ -103,7 +109,6 @@ export default class Detail extends Component {
         const mlaStyleL = mlaStyleDefaultL.concat(", ", this.state.tglVerifikasi.split("-")[2], " ", months[parseInt(this.state.tglVerifikasi.split("-")[1])], " ", this.state.tglVerifikasi.split("-")[0],
         ", "
         );
-        console.log(apaStyle);
         this.setState({APAstyle:apaStyle, IEEEstyleU:ieeeStyleU,
             IEEEstyleL:ieeeStyleL, MLAstyleU:mlaStyleU, MLAstyleL:mlaStyleL})
     };
@@ -172,7 +177,8 @@ export default class Detail extends Component {
                     <ModalFooter className={classes.modalFooter}>
                         <button type="button" className="btn btn-primary" onClick={this.hideModal}
                                 id={classes["cancle"]}>Batal</button>
-                        <button type="button" className="btn btn-primary" id={classes["accept"]}>Ya</button>
+                        <button type="button" className="btn btn-primary" id={classes["accept"]}
+                        onClick={() => this.handlePDFDownload()}>Ya</button>
                     </ModalFooter>
 
                 </Modal>

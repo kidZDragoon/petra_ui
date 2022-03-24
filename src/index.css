@@ -18,13 +18,94 @@ code {
   padding-bottom: 120px;
 }
 
+.list {
+  text-align: left;
+  max-width: 750px;
+  margin: auto;
+}
+
+.modal {
+  height: 600px;
+  margin-top: 150px;
+  box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.08);
+}
+.modalHeader {
+  height: 100px;
+}
+.modalBody {
+  height: fit-content;
+}
+.modalFooter {
+  margin-right: 27px;
+}
+.modalCiteHeader {
+  height: 50px;
+}
+.close {
+  border: 0;
+  padding-left: 0px;
+  padding-top: 0px;
+  border-radius: 20px;
+  margin-bottom: 0px;
+  width: 32px;
+  height: 32px;
+  background-color: #d3d3d3;
+  text-align: center;
+  display: inline-block;
+}
+.cancel {
+  background-color: #f8f8f8;
+  border-color: #d26903;
+  color: #d26903;
+  width: 180px;
+  margin-right: 16px;
+}
+.close:hover {
+  background-color: rgba(210, 105, 48, 0.63);
+}
+.accept {
+  background-color: #d26903;
+  border-color: #d26903;
+  color: #ffffff;
+  width: 180px;
+}
+
+.check-container {
+  background: #41835d;
+  border-radius: 8px;
+  width: 56px;
+  height: 56px;
+  left: 0px;
+  top: 0px;
+}
+
 /* Button */
 .primary-btn {
-  padding: 8px 56px 8px 56px;
+  padding: 16px 56px 16px 56px;
   background: #d26930;
   box-shadow: 0px 2px 5px 0px rgba(210, 105, 48, 1);
   border: 0;
   border-radius: 8px;
+}
+
+.btn-full-width {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+}
+
+.btn-orange {
+  background-color: #d26930;
+  border: 0;
+}
+
+.btn-success-outline {
+  border-color: rgba(65, 131, 93, 1);
+  border-width: 4px;
+  border-radius: 8px;
+  background-color: #fff;
+  color: rgba(65, 131, 93, 1);
 }
 
 /* Text */
@@ -44,6 +125,14 @@ code {
   color: #d26930;
 }
 
+.text-white {
+  color: #ffffff;
+}
+
+.text-error {
+  color: #b9281f;
+}
+
 .text-main-header {
   font-family: Mulish;
   font-size: 48px;
@@ -59,8 +148,6 @@ code {
   font-weight: 900;
   line-height: 39px;
   letter-spacing: 0em;
-  margin-top: 8px;
-  margin-bottom: 8px;
 }
 
 .text-subheader {
@@ -142,8 +229,6 @@ code {
   font-weight: 400;
   line-height: 22px;
   letter-spacing: 0em;
-  margin-top: 8px;
-  margin-bottom: 8px;
 }
 
 .text-black-small {
@@ -171,4 +256,12 @@ code {
   font-weight: 400;
   line-height: 19px;
   letter-spacing: 0em;
+}
+
+.link {
+  color: black;
+}
+
+.link:hover {
+  color: #d26903;
 }

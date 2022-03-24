@@ -7,21 +7,18 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {BoxArrowDown} from "react-bootstrap-icons";
 import classes from "./styles.module.css";
+import {Link} from "react-router-dom";
 
 const CardKaril = ({data}) => {
   // const{judul, jenis, authors, tglVerifikasi} = props;
   const [isFavorite, setIsFavorite] = useState(false);
-
-  // favoriteControl = () => {
-  //   setIsFavorite(true)
-  // };
   
   return (
     <Card style={{}}>
       <Card.Body>
         <Row>
           <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
-          <Card.Title>{data.judul}</Card.Title>
+          <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
           <Card.Text>{data.author}</Card.Text>
         </Row>
