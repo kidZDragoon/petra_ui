@@ -1,36 +1,7 @@
 stages:
-  - build
   - deploy
 
 production:
-  stage: deploy
-  image: ruby:2.6
-  before_script:
-     - gem install dpl
-     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-  script:
-     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
-  environment:
-     name: production
-     url: https://$HEROKU_APP.herokuapp.com
-  only:
-     - master
-
-staging:
-  stage: deploy
-  image: ruby:2.6
-  before_script:
-     - gem install dpl
-     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-  script:
-     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-  environment:
-     name: staging
-     url: https://$HEROKU_APP_STAGING.herokuapp.com
-  only:
-     - staging
-
-hotfix:
   stage: deploy
   image: ruby:2.6
   before_script:
@@ -38,13 +9,14 @@ hotfix:
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    - export HEROKU_API_KEY=$HEROKU_API_KEY
   environment:
     name: production
     url: https://$HEROKU_APP.herokuapp.com
   only:
-    - hotfix
+    - master
 
-coldfix:
+staging:
   stage: deploy
   image: ruby:2.6
   before_script:
@@ -52,8 +24,11 @@ coldfix:
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - export HEROKU_API_KEY=$HEROKU_API_KEY
   environment:
     name: staging
     url: https://$HEROKU_APP_STAGING.herokuapp.com
   only:
+    - staging-django
+    - hotfix
     - coldfix

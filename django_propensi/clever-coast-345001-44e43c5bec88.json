@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "clever-coast-345001",
+  "private_key_id": "44e43c5bec88c46c6a5f09d658c7df997238d6ca",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDYpeJeEh/+V1D5\nM//N4CLToltfx3fP3JO5V82LFgtR77MOAlhQ1Hb/qhLvAsd623a+/MtkywAXZbsL\nN4KKTjpuGEzVXrxap9BbRR3XOK7VfCuvoukZuwwqfLIImM0e19G5LsV6XblH185p\nDGWHR5bYjF+kRtWIp1zrVOC4+xlm2F9rWbcNKxazc24Tg3DyS6lj4byyVSXMPmOl\nFCwBz4Cv+5PMwhYOOQBWcAwgzNY8AE00CrYkX8l/9rYWjAe3y51Xib/JkCsZhx1o\nv//9v1UqbvI8Q4F7x0gavnyAlwF1X0bWpRPdonnhdktQSopi7VfEyv/LOTQZ1kIe\nYw3KDXyzAgMBAAECggEAD/d5zXEMhpQs1ZDtg2DHcE2A6ngq7ljVUk2USnHfd7Rw\nv9GQbLSb6I/CQXc0+GsAP2cmHlGPuim3NUZsCoFlcQO9deQ7gXrosjFP17LHv9gc\n6B7bixfr952lCVkplOJXBIzb5P7PTuoqvjc5rFSsW11NFzBZQG8FPBrPTRLEdn3N\nDtzkY7oihNTgu/LpXOWbMW5p/OKF0RYc6qJyleBSM0QBMzR0LaAazpMIIhNzXTBX\nRCr2TK8nyHTV32crFwqCPJ1dxVCg6pehKpDeHr6rgLrmlVfbWH61aR0Pv5A3JDjG\nthRmKkuJdZWsKY8Ad+45TX6nCPNIXkYmwSrpHMKvwQKBgQD8SERnWwMl9ysxf5p4\nN+yfr+vodwleh7j3ZuHEjUKcp/KXWaawHI6SylTppXhu10TyfvrAx3jlZamQr6YR\n64iYDe85H2JFT71DVAzN9S2//FdSLFfJFyq/IAy6136PuaD2g8akpF4O5+Vg/+tb\n838boXK86yUIqfcj2aPuJrSHgwKBgQDb1y/aGsEacyvZvPPSC/FswwifX2qWoeog\naQ5ncCf4gxhVAUbkgj2J65/Qe1oNQY3au7p+jQ6DBgWTa+5qEsacLYiXRXRFqEMi\nJz+4d56AioGqcAsPnaOJToTD2n7OkeBKqP3MeHYllrXRcZhsFIxhd2iOy5poM2vx\ndwKiJYf/EQKBgQDJ6nk9E73YVBQxAMU8NN5hDKdOnn9UNmKXOLO34auPwGfMNQfR\nanm+CMyfWD2k0Qyw3WqKgtxDFfP6BmtvakkgEf8GhBTeDq0XRx0cdoBQaYHmFfGI\n0871u4wUusbj95lZ1CxXt+pEGdwfn5TbOm7gSX6Qr88rOQXBnr6yrC3PSwKBgF8i\ns2GWXGSe3KYgf/8xDew8Rpn5h73iGdimvgYDYjjIOppmsBApUIpD/mgRSXodGU9E\nGEO1tUb8LyOJ/KXItExX5BlahCO02kCIbandkikcR1rDm/XJCUFdSlUbU+7+7+o/\nUX3Pz4kavFoD56s2BT4Ul5ncAFkBj7/x+aDDzyORAoGAKs9vnJUvCNJ7WMn//Yra\n3csl0KdM6rv7BEIl5YJ483KJFqidACsb0C10UvNNoSJb9RqGfS9sA8nMaxwp5CxS\nNl3Cei2XJGnZ3lwgKso6MlZ+WIaravetD7DxB89PdXbZbhu8Mo5WZ8jwKRIWP5+3\nV05SxstwMgr+FENBF60N+cU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "petra-admin@clever-coast-345001.iam.gserviceaccount.com",
+  "client_id": "103272367079742897252",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/petra-admin%40clever-coast-345001.iam.gserviceaccount.com"
+}
