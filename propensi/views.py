@@ -112,7 +112,7 @@ class CharInFilter(BaseInFilter, CharFilter):
     pass
 
 class KarilFilterYearAndType(FilterSet):
-    tahun = NumberFilter(field_name='tglVerifikasi__year', lookup_expr='exact')
+    tahun = NumberFilter(field_name='tglDisetujui__year', lookup_expr='exact')
     jenis = CharInFilter(field_name='jenis', lookup_expr='in')
     class Meta:
         model = KaryaIlmiah
@@ -125,24 +125,7 @@ class CariKaril(generics.ListAPIView):
     serializer_class = KarilSeriliazer
     filterset_class = KarilFilterYearAndType
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['judul', 'authors']
-    # filter_fields = [KarilFilterYear, {'jenis:'}]
-
-    # def get_queryset(self):
-    #     judul = self.request.GET.get('judul')
-    #     queryset = KaryaIlmiah.objects.filter(judul__icontains=judul)
-    #     return queryset
-
-# class CariKaril(viewsets.ModelViewSet):
-#     class Filter(FilterSet):    
-#         class Meta:
-#             model = KaryaIlmiah
-
-#     filter_class = Filter
-#     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-#     search_fields = ['judul', 'authors']
-#     queryset = KaryaIlmiah.objects.all()
-#     serializer_class = KarilSeriliazer
+    search_fields = ['judul', 'author']
 
 
 class HasilKaril(RetrieveAPIView):

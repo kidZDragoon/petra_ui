@@ -22,8 +22,8 @@ const CardKaril = ({data}) => {
         <Row>
           <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
           <Card.Title>{data.judul}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{data.tglVerifikasi}</Card.Subtitle>
-          <Card.Text>{data.authors}</Card.Text>
+          <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
+          <Card.Text>{data.author}</Card.Text>
         </Row>
         <Row>
           <Card.Link id={classes["features"]}>
