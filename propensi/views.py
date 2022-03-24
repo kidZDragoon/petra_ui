@@ -22,6 +22,8 @@ from rest_framework_jwt.settings import api_settings
 import urllib3
 import xmltodict
 import jwt
+import urllib
+import requests
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -203,8 +205,9 @@ class SemesterView(APIView):
 
 @api_view(['GET'])
 def DownloadPDF(self, path):
-    path_to_file = "https://storage.googleapis.com/petra-ui/files" + path
-    response = HttpResponse(path_to_file)
+    file_url = "https://storage.googleapis.com/petra-ui/files/" + path
+    file = requests.get(file_url, stream=True)
+    response = HttpResponse(file)
     response['Content-Disposition'] = 'attachment'
     return response
 
