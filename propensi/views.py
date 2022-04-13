@@ -1,9 +1,10 @@
 from importlib.resources import path
 from django.forms import DateField
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 # from django_filters import DateFilter
 from django_filters import BaseInFilter, CharFilter, NumberFilter
+import pkg_resources
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
@@ -224,3 +225,15 @@ class CariKaril(ListAPIView):
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
+
+class DeleteKarilView(APIView):
+    def get(self, request, pk):
+        data = get_object_or_404(KaryaIlmiah, pk=pk)
+        serializer = KaryaIlmiahSeriliazer(data)
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        data = get_object_or_404(KaryaIlmiah, pk=pk)
+        data.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
