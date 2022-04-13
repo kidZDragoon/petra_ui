@@ -1,18 +1,27 @@
+.cardkaril {
+  border-radius: 16px;
+  box-shadow: inset;
+  box-shadow: 0 4px 8px 0 rgba(0.05, 0.05, 0.05, 0.05);
+  padding: 20px;
+  padding-bottom: 0;
+}
+
 #features {
-  margin-right: 18px;
+  /* margin-right: 18px; */
   color: #d26903;
   font-weight: 620;
-  margin-bottom: 20px;
   padding: auto;
   border: 0;
   background-color: #ffffff;
   /*background-color: #F8F8F8;*/
-  width: 140px;
+  /* width: 140px; */
+  align-self: flex-start;
+  margin-top: 20px;
 }
-#features:hover {
+/* #features:hover {
   background-color: #d26903;
   color: #f8f8f8;
-}
+} */
 
 .link {
   color: black;
@@ -31,6 +40,7 @@
   width: 35px;
   background-color: #d3d3d3;
 }
+
 #cancle {
   background-color: #f8f8f8;
   border-color: #d26903;
@@ -59,4 +69,8 @@
 
 .button-unduh {
   color: #d26903;
+}
+
+.seachbar {
+  border-radius: 60px;
 }

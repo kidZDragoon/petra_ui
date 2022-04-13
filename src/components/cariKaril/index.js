@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import "@fontsource/mulish";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import classes from "./styles.module.css";
 
 import {
   Checkbox,
@@ -110,33 +111,6 @@ const SearchList = () => {
                 />
               </FormGroup>
             </Box>
-            {/* <Box mt={4}>
-              <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Kategori Topik
-              </Typography>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-              </FormGroup>
-            </Box> */}
           </Box>
         </Grid>
         <Grid item lg={9}>
@@ -156,6 +130,7 @@ const SearchList = () => {
                       <Search />
                     </InputAdornment>
                   ),
+                  style: { borderRadius: 8 }
                 }}
               />
             </Box>

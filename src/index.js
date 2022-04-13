@@ -8,6 +8,8 @@ import DaftarVerifikasi from './components/verifikasi';
 import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SearchList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
+import EditKaryaIlmiah from './components/edit-karil';
+import Sidebar from './components/sidebar';
 
 
 ReactDOM.render(
@@ -20,6 +22,8 @@ ReactDOM.render(
             <Route path="/Search" element={<SearchList/>}/>
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
+            <Route path="/edit-karil/:id" element={<EditKaryaIlmiah/>} />
+            <Route path="/sidebar" element={<Sidebar/>}/>
         </Routes>
     </HashRouter>,
 
