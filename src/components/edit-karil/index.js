@@ -13,6 +13,7 @@ import axios from "axios";
 import Modal from 'react-bootstrap/Modal'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
+import InputGroup from 'react-bootstrap/InputGroup'
 import AuthenticationDataService from "../../services/authentication.service";
 
 export default class EditKaryaIlmiah extends Component {
@@ -91,9 +92,9 @@ export default class EditKaryaIlmiah extends Component {
                 filePDF: data.filePDF,
                 id:item,
             })
-            this.fileInput.current.value = data.filePDF
+            // this.fileInput.current.value = data.filePDF
             console.log("semester: " + data.semesterDisetujui);
-            console.log(data)
+            console.log("file: ", this.state.judul, ".pdf")
         }catch(error) {
             alert("Oops terjadi masalah pada server");
             console.log(" gakdapet")
@@ -256,6 +257,13 @@ export default class EditKaryaIlmiah extends Component {
         this.setState({ filePDF: event.target.files[0]})
     }
 
+    // Untuk mengganti file
+    handleDropFile= () => {
+        console.log("sebelum: ", this.state.filePDF)
+        this.setState({filePDF: null})
+        console.log("sesudah: ", this.state.filePDF)
+    }
+
     //Handle submit data form ke backend
     async submitData(event) {
         event.preventDefault();
@@ -352,7 +360,7 @@ export default class EditKaryaIlmiah extends Component {
                         <Row className="mt-1">
                             <Col sm={12}>
                                 <h5 className="modal-title text-bold-title mb-2" id="exampleModalLongTitle">
-                                    Apakah Anda yakin ingin mengunggah karya ilmiah?
+                                    Apakah Anda yakin ingin menyunting karya ilmiah?
                                 </h5>
                                 <div class="modalBody mb-2 text-disabled">
                                     <p> Pastikan semua data yang dimasukkan sudah benar.</p>
@@ -385,11 +393,7 @@ export default class EditKaryaIlmiah extends Component {
                                 </div>
                             </Col>
                             <Col sm={10}>
-                                <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">Karya ilmiah berhasil diunggah!</h5>
-                                <div class="modalBody mb-2 text-normal">
-                                    <p> Karya ilmiah yang Anda unggah akan harus diverifikasi oleh dosen
-                                        pembimbing Anda terlebih dahulu sebelum ditampilkan untuk umum.</p>
-                                </div>
+                                <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">Karya ilmiah disunting!</h5>
                             </Col>
                         </Row>
                         <Row className="mt-2">
@@ -515,16 +519,29 @@ export default class EditKaryaIlmiah extends Component {
                                 {this.state.errors["kataKunci"]}
                             </span>
                         </Form.Group>
-
-                        <Form.Group className="">
+                        
+                        <div>
                             <Form.Label className="text-large">Unggah karya ilmiah</Form.Label>
-                            
-                            <Form.Control title="fileInput" name="filePDF" type="file" ref={this.fileInput} onChange={this.handleFileField}/>
-                            {/* <label for="fileInput">filenya</label> */}
-                            <span className="text-error text-small">
-                                {this.state.errors["filePDF"]}
-                            </span>
-                        </Form.Group>
+                            {this.state.filePDF == null 
+                            ? <Form.Group className="">
+                                {/* <Form.Label className="text-large">Unggah karya ilmiah</Form.Label> */}
+                                <Form.Control name="filePDF" type="file" onChange={this.handleFileField}/>
+                                <span className="text-error text-small">
+                                    {this.state.errors["filePDF"]}
+                                </span>
+                            </Form.Group>
+                            : <InputGroup className="mb-3">
+                                {/* <Form.Label className="text-large">Unggah karya ilmiah</Form.Label> */}
+                                <Form.Control type="text" name="filePDF" 
+                                    placeholder={this.state.judul + ".pdf"} 
+                                    disabled/>
+                                <Button variant="outline-secondary" id="button-addon2" onClick={this.handleDropFile}>
+                                    <CloseIcon fontsize="small"></CloseIcon>
+                                </Button>
+                            </InputGroup>
+                            }
+                        </div>
+                        
 
                         <Form.Group className="">
                             <Form.Check type="checkbox" className="text-large" value={this.state.check} onChange={this.handleChangeField}
