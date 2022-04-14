@@ -142,3 +142,37 @@
     padding-left: 10px;
     width: 500px;
 }
+
+#actionbutton {
+    padding-right: 0%;
+    margin-right: 0%;
+}
+
+#editbutton {
+    color: black;
+    font-weight: 620;
+    padding: 2px;
+    border: 0;
+    background-color: #ffffff;
+    align-self: flex-start;
+    margin: 20px;
+    margin-right: 10px;
+}
+
+#editbutton:hover {
+    color: #d26903;
+}
+
+#deletebutton {
+    color: #A74C46;
+    font-weight: 620;
+    padding: 2px;
+    border: 0;
+    margin: 20px;
+    background-color: #ffffff;
+    align-self: flex-start;
+    margin-left: 10px;
+}
+#deletebutton:hover {
+    color: #d26903;
+}

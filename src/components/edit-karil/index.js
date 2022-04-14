@@ -37,6 +37,7 @@ export default class EditKaryaIlmiah extends Component {
             verificators: [],
             semesters: [],
 
+            id:"",
             //form data
             author: "",
             npm: "",
@@ -88,6 +89,7 @@ export default class EditKaryaIlmiah extends Component {
                 kataKunci: data.kataKunci, 
                 dosenPembimbing: data.dosenPembimbing, 
                 filePDF: data.filePDF,
+                id:item,
             })
             this.fileInput.current.value = data.filePDF
             console.log("semester: " + data.semesterDisetujui);
@@ -330,7 +332,7 @@ export default class EditKaryaIlmiah extends Component {
                 <p className="text-section-header px-0">
                     <span class="pull-right">
                         {/*ganti link*/}
-                        <Link to="/" className="pl-0 mx-4 text-orange">
+                        <Link to={`/KaryaIlmiah/${this.state.id}`} className="pl-0 mx-4 text-orange">
                             <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
                             </Link>
                     </span>

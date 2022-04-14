@@ -102,4 +102,4 @@ class KarilSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
         fields = ['id', 'judul', 'status', 'jenis',
-                  'kataKunci', 'tglDisetujui', 'dosenPembimbing', 'author']
+                  'kataKunci', 'tglDisetujui', 'dosenPembimbing', 'author', 'fileURI']
