@@ -8,6 +8,7 @@ import DaftarVerifikasi from './components/verifikasi';
 import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SeachList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
+import UserList from './components/userList';
 
 
 ReactDOM.render(
@@ -20,6 +21,7 @@ ReactDOM.render(
             <Route path="/Search" element={<SeachList/>}/>
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
+            <Route path="/userList" element={<UserList/>}/>
         </Routes>
     </HashRouter>,
 

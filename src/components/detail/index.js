@@ -14,11 +14,13 @@ import {BoxArrowDown} from "react-bootstrap-icons";
 import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
 import axios from "axios";
+import AuthenticationDataService from "../../services/authentication.service.js";
+
 var fileDownload = require('js-file-download');
 
 export default class Detail extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             karyaIlmiah: null,
             isOpen:false,
@@ -37,13 +39,18 @@ export default class Detail extends Component {
             IEEEstyleL:"",
             MLAstyleU:"",
             MLAstyleL:"",
-            filePDF:""
+            filePDF:"",
+    
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
     }
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
         this.handleDetailKaryaIlimah(pathname);
+        let token = localStorage.getItem("ssoui")
+        token = JSON.parse(token)
+        const user = AuthenticationDataService.user(token)
+        console.log(user)
     }
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
@@ -129,9 +136,12 @@ export default class Detail extends Component {
                     ))} */}
 
                 <div className="d-flex">
-                    <button id={classes["features"]} onClick={this.showModal}>
+                    {this.props.loggedIn === true && <button id={classes["features"]} onClick={this.showModal}>
                         <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button>
+                    </button>}
+                    {this.props.loggedIn === false && <button id={classes["features"]} onClick={this.loginHandler}>
+                        <BoxArrowDown/> &nbsp;Unduh PDF
+                    </button>}
                     <button id={classes["features"]} onClick={this.showCite}>
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
