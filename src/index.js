@@ -15,7 +15,7 @@ ReactDOM.render(
     <HashRouter>
         <App />
         <Routes>
-            <Route path="/KaryaIlmiah/:id" element={<Detail/>}/>
+            <Route path="/KaryaIlmiah/:id" element={<Detail popUpLogin={this.props.popUpLogin}/>}/>
             <Route path='/DaftarVerifikasi' element={<DaftarVerifikasi/>}/>
             <Route path="/karya-ilmiah-saya/upload" element={<UploadKaryaIlmiah/>} />
             <Route path="/Search" element={<SeachList/>}/>

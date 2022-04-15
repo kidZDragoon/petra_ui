@@ -15,6 +15,7 @@ import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
 import axios from "axios";
 import AuthenticationDataService from "../../services/authentication.service.js";
+import app from "../../App"
 
 var fileDownload = require('js-file-download');
 
@@ -43,6 +44,7 @@ export default class Detail extends Component {
     
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
+        this.popUpLogin = this.popUpLogin.bind(this);
     }
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
@@ -136,12 +138,14 @@ export default class Detail extends Component {
                     ))} */}
 
                 <div className="d-flex">
-                    {this.props.loggedIn === true && <button id={classes["features"]} onClick={this.showModal}>
+                    {this.props.loggedIn === true ? 
+                    <button id={classes["features"]} onClick={this.showModal}>
                         <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button>}
-                    {this.props.loggedIn === false && <button id={classes["features"]} onClick={this.loginHandler}>
-                        <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button>}
+                    </button> : 
+                    <button id={classes["features"]} onClick={this.popUpLogin}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                    </button>
+                    }
                     <button id={classes["features"]} onClick={this.showCite}>
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
