@@ -31,12 +31,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    # originURL = "http://localhost:8000/"
-    originURL = "https://propensi-a03-staging.herokuapp.com/"
+    originURL = "http://localhost:8000/"
+    # originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    # serverURL = "http://localhost:8000/login/"
-    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    serverURL = "http://localhost:8000/login/"
+    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -241,3 +241,80 @@ class DaftarVerifikasiView(ListAPIView):
     serializer_class = KarilSeriliazer
     filter_backends = (DjangoFilterBackend, )
     filterset_fields = ('status',)
+
+#Metrics View
+class MetriksUnggahanView(APIView):
+    """
+    * Berdasarkan status verifikasi
+    * Berdasarkan jenis
+    * Berdasarkan semester yudisium
+    """
+    def get(self, request, format = None):
+
+        # Data berdasarkan status verifikasi
+        status_labels = [
+            'Verifikasi diterima',
+            'Verifikasi ditolak', 
+            'Belum diverifikasi', 
+            ]
+        
+        status_chart_label = "Karya Ilmiah Berdasarkan Status Verifikasi"
+        
+        status_data = [ 
+            KaryaIlmiah.objects.filter(status="1").count(),
+            KaryaIlmiah.objects.filter(status="2").count(),
+            KaryaIlmiah.objects.filter(status="0").count()
+            ]
+
+        data_status = {
+                        "labels": status_labels,
+                        "chartLabel": status_chart_label,
+                        "chartData": status_data,
+                    }
+
+        print(data_status)
+        
+        # Data berdasarkan jenis
+        jenis_labels = [
+            'Skripsi',
+            'Disertasi', 
+            'Tesis', 
+            'Nonskripsi'
+            ]
+        
+        jenis_chart_label = "Karya Ilmiah Berdasarkan Jenis"
+
+        jenis_data = [ 
+            KaryaIlmiah.objects.filter(jenis="Skripsi").count(),
+            KaryaIlmiah.objects.filter(jenis="Disertasi").count(),
+            KaryaIlmiah.objects.filter(jenis="Tesis").count(),
+            KaryaIlmiah.objects.filter(jenis="Nonskripsi").count(),
+            ]
+
+        data_jenis = {
+                        "labels": jenis_labels,
+                        "chartLabel": jenis_chart_label,
+                        "chartData": jenis_data,
+                    }
+
+        # Data berdasarkan semester
+        semester_labels = []
+        semester_data = []
+
+        semesters = Semester.objects.all()
+
+        for i in semesters:
+            semester_labels.append(i.semester)
+            semester_data.append(KaryaIlmiah.objects.filter(semesterDisetujui=i).count())
+        
+        semester_chart_label = "Karya Ilmiah Berdasarkan Semester Yudisium"
+
+        data_semester = {
+                        "labels": semester_labels,
+                        "chartLabel": semester_chart_label,
+                        "chartData": semester_data,
+                    }
+
+        data = {'dataStatus': data_status, "dataJenis": data_jenis, "dataSemester": data_semester}
+
+        return Response(data, status=status.HTTP_200_OK)
