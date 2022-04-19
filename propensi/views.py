@@ -169,11 +169,6 @@ class KarilFilterYearAndType(FilterSet):
             'jenis')
 
 
-class daftarVerifikasiView(RetrieveAPIView):
-    queryset = KaryaIlmiah.objects.all()
-    serializer_class = KaryaIlmiahSeriliazer
-
-
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
@@ -237,3 +232,15 @@ class CariKaril(ListAPIView):
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
+
+class DaftarVerifikasiView(ListAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KarilSeriliazer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('status', 'status')
+    # queryset = KaryaIlmiah.objects.all()
+    # serializer_class = KarilSeriliazer
+    # filterset_class = KarilFilterYearAndType
+    # filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    # search_fields = ['judul', 'author']

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView,SemesterView, daftarVerifikasiView, CariKaril, DownloadPDF
+from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView,SemesterView, DaftarVerifikasiView, CariKaril, DownloadPDF
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
@@ -10,6 +10,6 @@ urlpatterns = [
     path('get-verificator-data/', VerificatorView.as_view(), name='VerifactorView'),
     path('get-semester-data/', SemesterView.as_view(), name='SemesterView'),
     path('download/<str:path>', DownloadPDF, name='download_pdf'),
-    path('daftarVerifikasi/', daftarVerifikasiView.as_view(), name='daftarVerifikasiView'),
     path('search/', CariKaril.as_view(), name='cariKaril'),
+    path('daftar-verifikasi/', DaftarVerifikasiView.as_view(), name='DaftarVerifikasiView'),
 ]
