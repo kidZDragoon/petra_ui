@@ -22,6 +22,8 @@ from rest_framework_jwt.settings import api_settings
 import urllib3
 import xmltodict
 import jwt
+import urllib
+import requests
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -167,14 +169,14 @@ class KarilFilterYearAndType(FilterSet):
         fields = (
             'tahun',
             'jenis')
-
+            
 
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
         karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(data=request.data)
-
+        print(request.data)
         if karya_ilmiah_serializer.is_valid():
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
@@ -198,8 +200,9 @@ class SemesterView(APIView):
 
 @api_view(['GET'])
 def DownloadPDF(self, path):
-    path_to_file = "https://storage.googleapis.com/petra-ui/files" + path
-    response = HttpResponse(path_to_file)
+    file_url = "https://storage.googleapis.com/petra-ui/files/" + path
+    file = requests.get(file_url, stream=True)
+    response = HttpResponse(file)
     response['Content-Disposition'] = 'attachment'
     return response
 
@@ -233,14 +236,8 @@ class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
 
-
 class DaftarVerifikasiView(ListAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KarilSeriliazer
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('status', 'status')
-    # queryset = KaryaIlmiah.objects.all()
-    # serializer_class = KarilSeriliazer
-    # filterset_class = KarilFilterYearAndType
-    # filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    # search_fields = ['judul', 'author']
+    filter_backends = (DjangoFilterBackend, )
+    filterset_fields = ('status',)

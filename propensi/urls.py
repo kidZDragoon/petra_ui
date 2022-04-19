@@ -11,5 +11,5 @@ urlpatterns = [
     path('get-semester-data/', SemesterView.as_view(), name='SemesterView'),
     path('download/<str:path>', DownloadPDF, name='download_pdf'),
     path('search/', CariKaril.as_view(), name='cariKaril'),
-    path('daftar-verifikasi/', DaftarVerifikasiView.as_view(), name='DaftarVerifikasiView'),
+    path('daftar-verifikasi/', DaftarVerifikasiView.as_view(), name='daftarVerifikasiView'),
 ]
