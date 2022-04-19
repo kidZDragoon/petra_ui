@@ -64,7 +64,7 @@ export default class EditKaryaIlmiah extends Component {
             //form validation
             formIsValid: false,
             errors: {}
-        };
+        };  
     }
 
     // Untuk nampilin data pilihan dropdown saat pertama kali halaman dibuka
@@ -301,14 +301,14 @@ export default class EditKaryaIlmiah extends Component {
             formData.append('userPengunggah', this.state.userPengunggah);
 
             const res = await axios.post(
-                    "/api/unggah-karya-ilmiah/",
+                    "/api/edit-karil/" + this.state.id ,
                     formData,
                     { headers: {
                         'content-type': 'multipart/form-data'
                       }
                     }
                 )
-
+                    
             this.setState({ result: res.result});
             
             //Reset state jadi kosong lagi

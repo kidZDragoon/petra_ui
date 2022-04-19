@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, daftarVerifikasiView, CariKaril, DownloadPDF, DeleteKarilView
+from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, daftarVerifikasiView, CariKaril, DownloadPDF, DeleteKarilView, KaryaIlmiahUpdateView
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
@@ -14,7 +14,7 @@ urlpatterns = [
     path('daftarVerifikasi/', daftarVerifikasiView.as_view(),
          name='daftarVerifikasiView'),
     path('search/', CariKaril.as_view(), name='cariKaril'),
-    path('edit-karil/<int:pk>', KaryaIlmiahUploadView.as_view(),
+    path('edit-karil/<int:pk>', KaryaIlmiahUpdateView.as_view(),
          name='KaryaIlmiahUploadView'),
     path('delete/<int:pk>/',  DeleteKarilView.as_view(), name='DeleteKarilView'),
 ]

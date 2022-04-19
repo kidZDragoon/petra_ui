@@ -191,6 +191,19 @@ class KaryaIlmiahUploadView(APIView):
             return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class KaryaIlmiahUpdateView(APIView):
+    parser = [MultiPartParser, FormParser]
+
+    def put(self, request, *args, **kwargs):
+        karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(
+            data=request.data)
+
+        if karya_ilmiah_serializer.is_valid():
+            karya_ilmiah_serializer.save()
+            return Response(karya_ilmiah_serializer.data)
+        return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class VerificatorView(APIView):
     def get(self, request):
         data = Profile.objects.filter(role="verifikator")
