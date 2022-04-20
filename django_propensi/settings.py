@@ -135,6 +135,9 @@ DATABASES = {
         'USER': 'aditdj',
         'PASSWORD': 'aditdj',
         'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 

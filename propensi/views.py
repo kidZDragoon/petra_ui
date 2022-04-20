@@ -31,6 +31,7 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
+    print('tesss')
     # originURL = "http://localhost:8000/"
     originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
@@ -50,22 +51,6 @@ def login(request):
     print('raw data')
     print(rawdata)
 
-
-    # xml = f'''
-    # <cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
-    # <cas:authenticationSuccess>
-    # <cas:user>dini.widinarsih</cas:user>
-    # <cas:attributes>
-    # <cas:user>dini.widinarsih</cas:user>
-    # <cas:ldap_cn>Dini Widinarsih</cas:ldap_cn>
-    # <cas:peran_user>staff</cas:peran_user>
-    # <cas:nip>196806221994032001</cas:nip>
-    # <cas:nama>Dini Widinarsih</cas:nama>
-    # </cas:attributes>
-    # </cas:authenticationSuccess>
-    # </cas:serviceResponse>
-    # '''
-    # data = xmltodict.parse(xml)
     data = xmltodict.parse(rawdata)
     print('data xmltodict')
     print(data)
@@ -92,6 +77,10 @@ def login(request):
                            'npm': data.get('cas:nip'), # nip
                            'peran_user': 'dosen',
                            }
+            user = User.objects.create(**userData)
+            profile = Profile.objects.get(user=user)
+            save_user_attributes(user, profileData)
+
         else: #mahasiswa
             profileData = {'email': f'{username}@ui.ac.id',
                            'kd_org': data.get('cas:kd_org'),
@@ -99,8 +88,6 @@ def login(request):
                            'npm': data.get('cas:npm'),
                            'peran_user': 'mahasiswa',
                            }
-        print('profileData')
-        print(profileData)
         user = User.objects.create(**userData)
         profile = Profile.objects.get(user=user)
         save_user_attributes(user, profileData)
@@ -110,8 +97,6 @@ def login(request):
 
     context = {'LoginResponse': f'{{"token":"{jwtToken}","nama":"{user.get_full_name()}","npm":"{profile.npm}" }}',
                'OriginUrl': originURL}
-    print('context')
-    print(context)
     response = render(request, "ssoui/popup.html", context)
     response['Cross-Origin-Opener-Policy'] = 'unsafe-none'
     return response
