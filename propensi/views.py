@@ -1,3 +1,5 @@
+from cgitb import lookup
+from functools import partial
 from importlib.resources import path
 from django.forms import DateField
 from django.shortcuts import render, get_object_or_404
@@ -8,16 +10,17 @@ import pkg_resources
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
+from propensi import serializer
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
-    KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer
+    KaryaIlmiahUploadSerializer, VerificatorSerializer, KaryaIlmiahEditUploadSerializer,\
+    SemesterSerializer, KarilSeriliazer, KaryaIlmiahEditSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.decorators import api_view
 from rest_framework_jwt.settings import api_settings
 import urllib3
@@ -172,35 +175,45 @@ class KarilFilterYearAndType(FilterSet):
             'jenis')
 
 
-class daftarVerifikasiView(RetrieveAPIView):
-    queryset = KaryaIlmiah.objects.all()
-    serializer_class = KaryaIlmiahSeriliazer
-
-
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
         karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(
             data=request.data)
-
+        print(request.data)
         if karya_ilmiah_serializer.is_valid():
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# Update with upload karil
 
-class KaryaIlmiahUpdateView(APIView):
-    parser = [MultiPartParser, FormParser]
 
-    def put(self, request, *args, **kwargs):
-        karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(
-            data=request.data)
-
+class KaryaIlmiahUpdateUploadView(APIView):
+    def put(self, request, pk, *args, **kwargs):
+        print("file beda")
+        karil = KaryaIlmiah.objects.get(pk=pk)
+        karya_ilmiah_serializer = KaryaIlmiahEditUploadSerializer(
+            karil, data=request.data, partial=True)
         if karya_ilmiah_serializer.is_valid():
             karya_ilmiah_serializer.save()
-            return Response(karya_ilmiah_serializer.data)
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Update without upload karil
+
+
+class KaryaIlmiahUpdateView(UpdateAPIView):
+    def put(self, request, pk, *args, **kwargs):
+        print("file sama")
+        karil = KaryaIlmiah.objects.get(pk=pk)
+        karya_ilmiah_serializer = KaryaIlmiahEditSerializer(
+            karil, data=request.data, partial=True)
+        if karya_ilmiah_serializer.is_valid():
+            karya_ilmiah_serializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -250,3 +263,10 @@ class DeleteKarilView(APIView):
         data = get_object_or_404(KaryaIlmiah, pk=pk)
         data.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class DaftarVerifikasiView(ListAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KarilSeriliazer
+    filter_backends = (DjangoFilterBackend, )
+    filterset_fields = ('status',)

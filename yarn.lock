@@ -7444,6 +7444,11 @@
   "resolved" "https://registry.npmjs.org/psl/-/psl-1.8.0.tgz"
   "version" "1.8.0"
 
+"pspdfkit@^2022.2.1":
+  "integrity" "sha512-KW1iiP+NLXuuUxIFycTABKId87Ulc1Y7jCIbm5xwYbhBHaBu1aK71/2Q3PSG/dXoeLaM9WgPKE230PvxQeWblw=="
+  "resolved" "https://registry.npmjs.org/pspdfkit/-/pspdfkit-2022.2.1.tgz"
+  "version" "2022.2.1"
+
 "punycode@^2.1.0", "punycode@^2.1.1":
   "integrity" "sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A=="
   "resolved" "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz"

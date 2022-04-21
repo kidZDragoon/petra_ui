@@ -10,11 +10,11 @@ import '../../index.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import http from "../../http-common";
 import axios from "axios";
-import Modal from 'react-bootstrap/Modal'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import InputGroup from 'react-bootstrap/InputGroup'
 import AuthenticationDataService from "../../services/authentication.service";
+import ConfirmationPopUp from '../modals/confirmation-pop-up';
+import SuccessModalWithButton from "../modals/success-modal-with-button";
 
 export default class EditKaryaIlmiah extends Component {
     constructor(props) {
@@ -27,11 +27,9 @@ export default class EditKaryaIlmiah extends Component {
         this.loadUser = this.loadUser.bind(this);
         this.handleFileField = this.handleFileField.bind(this);
         this.showSuccessModal = this.showSuccessModal.bind(this);
-        this.hideSuccessModal = this.hideSuccessModal.bind(this);
         this.showConfirmation = this.showConfirmation.bind(this);
         this.hideConfirmation = this.hideConfirmation.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
-        this.fileInput = React.createRef();
 
         this.state = {
             //dropdown data
@@ -84,12 +82,13 @@ export default class EditKaryaIlmiah extends Component {
                 npm: data.npm, 
                 judul: data.judul, 
                 tglDisetujui: data.tglDisetujui, 
-                semesterDisetujui: data.semesterDisetujui, 
+                semesterDisetujui: data.semesterDisetujui.id, 
                 jenis: data.jenis, 
                 abstrak: data.abstrak, 
                 kataKunci: data.kataKunci, 
-                dosenPembimbing: data.dosenPembimbing, 
+                dosenPembimbing: data.dosenPembimbing.id, 
                 filePDF: data.filePDF,
+                filePDFcompare: data.filePDF,
                 id:item,
             })
             // this.fileInput.current.value = data.filePDF
@@ -106,8 +105,7 @@ export default class EditKaryaIlmiah extends Component {
     async loadVerificatorData(){
         try {
             const { data } = await axios.get("/api/get-verificator-data/");
-            this.setState({ verificators: data.data }); //Set data verifikator sebagai state supaya bisa digunakan lagi
-            
+            this.setState({ verificators: data.data }); 
         } catch (error) {
             alert("Oops terjadi masalah pada server");
         }
@@ -117,7 +115,7 @@ export default class EditKaryaIlmiah extends Component {
     async loadSemesterData(){
         try {
             const { data } = await axios.get("/api/get-semester-data/");
-            this.setState({ semesters: data.data }); //Set data verifikator sebagai state supaya bisa digunakan lagi
+            this.setState({ semesters: data.data }); 
 
         } catch (error) {
             alert("Oops terjadi masalah pada server");
@@ -144,10 +142,6 @@ export default class EditKaryaIlmiah extends Component {
 
     showSuccessModal = () => {
         this.setState({successModal:true})
-    };
-
-    hideSuccessModal = () => {
-        this.setState({successModal:false})
     };
 
     showConfirmation(){
@@ -254,7 +248,21 @@ export default class EditKaryaIlmiah extends Component {
     handleFileField(event){
         // const { name, value } = event.target;
         // console.log({name, value})
-        this.setState({ filePDF: event.target.files[0]})
+        // this.setState({ filePDF: event.target.files[0]})
+        console.log("masuk handle file field")
+        let errors = {};
+        console.log(event.target.files[0].type)
+
+        if (event.target.files[0].type === 'application/pdf') {
+            console.log("file looks good")
+            this.setState({ filePDF: event.target.files[0]});
+            errors['filePDF'] = "";
+            this.setState({ errors: errors });
+        } else {
+            console.log("masuk error file");
+            errors['filePDF'] = "Pastikan file dalam format PDF ya!";
+            this.setState({ errors: errors });
+        }
     }
 
     // Untuk mengganti file
@@ -267,25 +275,9 @@ export default class EditKaryaIlmiah extends Component {
     //Handle submit data form ke backend
     async submitData(event) {
         event.preventDefault();
+
         try {
             this.setState({confirmationPopUp:false});
-
-            console.log("halo")
-
-            //Buat dictionary data untuk dikirim ke backend
-            const data = {
-                author: this.state.author,
-                npm: this.state.npm,
-                judul: this.state.judul,
-                tglDisetujui: this.state.tglDisetujui,
-                semesterDisetujui: this.state.semesterDisetujui,
-                jenis: this.state.jenis,
-                abstrak: this.state.abstrak,
-                dosenPembimbing: this.state.dosenPembimbing,
-                userPengunggah: this.state.userPengunggah,
-                filePDF: this.state.filePDF,
-                check: this.state.check,
-            };
 
             let formData = new FormData();
             formData.append('author', this.state.author);
@@ -300,17 +292,26 @@ export default class EditKaryaIlmiah extends Component {
             formData.append('filePDF', this.state.filePDF);
             formData.append('userPengunggah', this.state.userPengunggah);
 
-            const res = await axios.post(
+            if (this.state.filePDFcompare == this.state.filePDF){
+                const res = await axios.put(
                     "/api/edit-karil/" + this.state.id ,
                     formData,
                     { headers: {
                         'content-type': 'multipart/form-data'
-                      }
+                    }
                     }
                 )
-                    
-            this.setState({ result: res.result});
-            
+            } else{
+                const res = await axios.put(
+                    "/api/edit-karil-upload/" + this.state.id ,
+                    formData,
+                    { headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                    }
+                )
+            }
+                                            
             //Reset state jadi kosong lagi
             // this.setState({
             //     author: "",
@@ -320,17 +321,16 @@ export default class EditKaryaIlmiah extends Component {
             //     semesterDisetujui: "",
             //     jenis: "",
             //     abstrak: "",
-            //     kataKunci:"",
+            //     kataKunci: "",
             //     dosenPembimbing: "",
             //     userPengunggah: "",
-            //     filePDF: null,
-            //     check: null,
+            //     filePDF: null
             // })
 
             this.showSuccessModal();
 
         } catch (error) {
-            alert("Oops terjadi masalah pada server");
+            alert("Terjadi error di server. Mohon tunggu beberapa saat.");
         }
     }
 
@@ -339,7 +339,6 @@ export default class EditKaryaIlmiah extends Component {
             <Container className="main-container list row">
                 <p className="text-section-header px-0">
                     <span class="pull-right">
-                        {/*ganti link*/}
                         <Link to={`/KaryaIlmiah/${this.state.id}`} className="pl-0 mx-4 text-orange">
                             <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
                             </Link>
@@ -347,74 +346,25 @@ export default class EditKaryaIlmiah extends Component {
                     Ubah Data Karya Ilmiah
                 </p>
                
-                <Modal className="modal" show={this.state.confirmationPopUp} onHide={this.hideConfirmation}>
-                    <Container className="px-5 pt-2 pb-4">
-                        <Row>
-                            <Col className="justify-content-end text-end">
-                                <h4 type="button" className=""  onClick={this.hideConfirmation}>
-                                    {/* <span aria-hidden="true">&times;</span> */}
-                                    <span><CloseIcon fontsize="small"></CloseIcon></span>
-                                </h4>
-                            </Col>
-                        </Row>
-                        <Row className="mt-1">
-                            <Col sm={12}>
-                                <h5 className="modal-title text-bold-title mb-2" id="exampleModalLongTitle">
-                                    Apakah Anda yakin ingin menyunting karya ilmiah?
-                                </h5>
-                                <div class="modalBody mb-2 text-disabled">
-                                    <p> Pastikan semua data yang dimasukkan sudah benar.</p>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row className="mt-2">
-                            <Col className="d-flex justify-content-start">
-                                <button type="button" className="btn cancel mr-3 text-bold-large" onClick={this.hideConfirmation}>Batal</button>
-                                <button type="submit" className="btn accept mr-3 text-bold-large" id="" onClick={this.submitData}>Ya</button>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Modal>
+                <ConfirmationPopUp action={this.submitData}
+                    show={this.state.confirmationPopUp}
+                    hide={this.hideConfirmation}
+                    title="Apakah Anda yakin ingin mengubah karya ilmiah ini?"
+                    content="Pastikan semua data yang dimasukkan sudah benar.">
+                </ConfirmationPopUp>
 
-                <Modal className="modal" show={this.state.successModal} onHide={this.hideSuccessModal}>
-                    <Container className="px-4 pt-2 pb-4">
-                        <Row>
-                            <Col className="justify-content-end text-end">
-                                <h4 type="button" className=""  onClick={this.hideSuccessModal}>
-                                    {/* <span aria-hidden="true">&times;</span> */}
-                                    <span><CloseIcon fontsize="small"></CloseIcon></span>
-                                </h4>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm={2}>
-                                <div className="check-container text-white d-flex justify-content-center align-items-center">
-                                    <CheckCircleIcon fontSize="large" color="white"></CheckCircleIcon>
-                                </div>
-                            </Col>
-                            <Col sm={10}>
-                                <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">Karya ilmiah disunting!</h5>
-                            </Col>
-                        </Row>
-                        <Row className="mt-2">
-                            <Col className="">
-                                <Link to="/karya-ilmiah-saya" style={{textDecoration:"none"}}>
-                                    <Button className="btn btn-full-width btn-orange text-bold-large">
-                                        <span>Lihat daftar karya ilmiah</span>
-                                    </Button>
-                                </Link>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Modal>
+                <SuccessModalWithButton show={this.state.successModal}
+                    link={`/KaryaIlmiah/${this.state.id}`}
+                    title="Karya ilmiah berhasil diubah!"
+                    content=""
+                    buttonText="Lihat karya ilmiah">
+                </SuccessModalWithButton>
 
                 <Form>
                     <Stack gap={4}>
-                        {/* Note: di setiap form field ada atribut value dan onChange 
-                        supaya bisa ngerekam isi fieldnya sebagai state */}
                         <Form.Group className="">
-                            <Form.Label className="text-large">Nama lengkap</Form.Label>
-                            <Form.Control type="text" name="author" placeholder={"Nama lengkap"}
+                            <Form.Label className="text-large">Nama lengkap penulis</Form.Label>
+                            <Form.Control type="text" name="author" placeholder="Nama lengkap"
                             value={this.state.author} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["author"]}
@@ -422,7 +372,7 @@ export default class EditKaryaIlmiah extends Component {
                         </Form.Group>
 
                         <Form.Group className="">
-                            <Form.Label className="text-large">NPM</Form.Label>
+                            <Form.Label className="text-large">NPM penulis</Form.Label>
                             <Form.Control type="number" name="npm" placeholder="NPM"
                              value={this.state.npm} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
@@ -440,8 +390,8 @@ export default class EditKaryaIlmiah extends Component {
                         </Form.Group>
 
                         <Form.Group className="">
-                            <Form.Label className="text-large">Tanggal disetujui</Form.Label>
-                            <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal disetujui"
+                            <Form.Label className="text-large">Tanggal yudisium</Form.Label>
+                            <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium"
                              value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["tglDisetujui"]}
@@ -449,9 +399,9 @@ export default class EditKaryaIlmiah extends Component {
                         </Form.Group>
 
                         <Form.Group className="">
-                            <Form.Label className="text-large">Semester disetujuinya karya ilmiah</Form.Label>
-                            <Form.Select name="semesterDisetujui" aria-label="Semester disetujuinya karya ilmiah"
-                             value={this.state.semesterDisetujui.id} onChange={this.handleChangeField}>
+                            <Form.Label className="text-large">Semester yudisium</Form.Label>
+                            <Form.Select name="semesterDisetujui" aria-label="Semester yudisium"
+                             value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
                                 <option>Pilih semester</option>
                                  {this.state.semesters.map(smt => (
                                      <option key={smt.id} value={smt.id}>
@@ -472,7 +422,7 @@ export default class EditKaryaIlmiah extends Component {
                                 <option value="Skripsi">Skripsi</option>
                                 <option value="Tesis">Tesis</option>
                                 <option value="Disertasi">Disertasi</option>
-                                <option value="Non-Skripsi">Non-Skripsi</option>
+                                <option value="Nonskripsi">Nonskripsi</option>
 
                             </Form.Select>
                             <span className="text-error text-small">
@@ -486,7 +436,7 @@ export default class EditKaryaIlmiah extends Component {
                             {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
                             Caranya diloop pake function map */}
                             <Form.Select name="dosenPembimbing" aria-label="Nama dosen pembimbing"
-                             value={this.state.dosenPembimbing.id} onChange={this.handleChangeField} >
+                             value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
                                 <option>Pilih dosen pembimbing</option>
                                  {this.state.verificators.map(verificator => (
                                      <option key={verificator.id} value={verificator.id}>
@@ -524,17 +474,18 @@ export default class EditKaryaIlmiah extends Component {
                             <Form.Label className="text-large">Unggah karya ilmiah</Form.Label>
                             {this.state.filePDF == null 
                             ? <Form.Group className="">
-                                {/* <Form.Label className="text-large">Unggah karya ilmiah</Form.Label> */}
                                 <Form.Control name="filePDF" type="file" onChange={this.handleFileField}/>
                                 <span className="text-error text-small">
                                     {this.state.errors["filePDF"]}
                                 </span>
                             </Form.Group>
                             : <InputGroup className="mb-3">
-                                {/* <Form.Label className="text-large">Unggah karya ilmiah</Form.Label> */}
                                 <Form.Control type="text" name="filePDF" 
                                     placeholder={this.state.judul + ".pdf"} 
                                     disabled/>
+                                <Button variant="outline-secondary" id="button-addon2">
+                                    <p style={{textAlign:"center", marginTop:'0.5rem', marginBottom: '0.5rem'}}>Preview</p>
+                                </Button>
                                 <Button variant="outline-secondary" id="button-addon2" onClick={this.handleDropFile}>
                                     <CloseIcon fontsize="small"></CloseIcon>
                                 </Button>
