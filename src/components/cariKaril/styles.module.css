@@ -89,6 +89,7 @@
   align-self: flex-start;
   margin: 20px;
   margin-right: 10px;
+  margin-top: 0px;
 }
 
 #editbutton:hover {
@@ -104,6 +105,7 @@
   background-color: #ffffff;
   align-self: flex-start;
   margin-left: 10px;
+  margin-top: 0px;
 }
 
 #deletebutton:hover {

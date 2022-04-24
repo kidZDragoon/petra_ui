@@ -3,27 +3,18 @@ import '../../index.css';
 import Card from "react-bootstrap/Card";
 import {BoxArrowDown} from "react-bootstrap-icons";
 import classes from "./styles.module.css";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {browserHistory} from 'react-router'
 import axios from "axios";
-import Modal from 'react-bootstrap/Modal'
-import ModalHeader from "react-bootstrap/ModalHeader";
-import ModalBody from "react-bootstrap/ModalBody";
-import ModalFooter from "react-bootstrap/ModalFooter";
-import { Container } from "@mui/material";
+import { Container, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import Stack from 'react-bootstrap/Stack';
-import {Heart} from "react-bootstrap-icons";
-import {HeartFill} from "react-bootstrap-icons";
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {FaEdit} from "react-icons/fa";
 import {RiDeleteBin6Fill} from "react-icons/ri";
 import Grid from '@mui/material/Grid';
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import SuccessModalWithHide from "../modals/success-modal-with-hide";
-import SuccessModalWithButton from "../modals/success-modal-with-button";
-
+import TagVerifikasi from "../modals/tag-verifikasi";
+import { MoreHoriz } from "@mui/icons-material";
 
 var fileDownload = require('js-file-download');
 
@@ -33,7 +24,21 @@ const CardKaril = ({data}) => {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [successModalUnduh, setSuccessModalUnduh] = useState(false);
   const [successModalDelete, setSuccessModalDelete] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   
+  const handleEdit = () => {
+    navigate(`/edit-karil/${data.id}`)
+  }
+  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handlePDFDownload = () => {
     console.log("masuk pdf ")
     setIsOpen(false)
@@ -65,11 +70,10 @@ const CardKaril = ({data}) => {
   };
 
   const openDeleteButton = () => {
+    handleClose()
     setIsOpenDelete(true)
   }
-
   
-
   const hideDeleteButton = () => {
     setIsOpenDelete(false)
   }
@@ -80,14 +84,14 @@ const CardKaril = ({data}) => {
   }
 
   const handleDelete = () => {
-      try {
-          setIsOpenDelete(false)
-          axios.delete("/api/delete/" + data.id);
-          setSuccessModalDelete(true)
-      }
-      catch (error) {
-          alert("Oops terjadi masalah pada server");
-      }
+    try {
+        setIsOpenDelete(false)
+        axios.delete("/api/delete/" + data.id);
+        setSuccessModalDelete(true)
+    }
+    catch (error) {
+        alert("Oops terjadi masalah pada server");
+    }
   }
 
   return (
@@ -117,14 +121,52 @@ const CardKaril = ({data}) => {
           }   */}
 
           <div className="d-flex">
-              <Link to={`/edit-karil/${data.id}`} id={classes["editbutton"]}>
-                  <FaEdit size={24}/>
-              </Link>
-              <button id={classes["deletebutton"]} onClick={openDeleteButton}>
-                  <RiDeleteBin6Fill size={24}/>
-              </button>
+            <div className="mx-3">
+            <TagVerifikasi status={data.status}/>
+            </div>
+            <div>
+              <IconButton
+                aria-label="more"
+                id="more-button"
+                aria-controls={open ? 'more-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+              <MoreHoriz />
+              </IconButton>
+              <Menu
+                id="more-menu"
+                aria-labelledby="more-button"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+              >
+                <MenuItem onClick={() => handleEdit()}>
+                  <ListItemIcon>
+                    <FaEdit size={24}/>
+                  </ListItemIcon>
+                  Edit
+                </MenuItem>
+
+                <MenuItem onClick={openDeleteButton}>
+                  <ListItemIcon>
+                    <RiDeleteBin6Fill size={24}/>
+                  </ListItemIcon>
+                  Delete
+                </MenuItem>
+              </Menu>
+            </div>
           </div>
-          
+                    
         {/* </Stack> */}
         </Grid>
       </Card.Body>

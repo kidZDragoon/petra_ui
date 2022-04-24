@@ -70,7 +70,7 @@ const SearchList = () => {
 
   console.log("DATA: ", listKaril)
   return (
-    <Box py={8} px={12}>
+    <Box py={8} px={12} height={'100vh'}>
       <Grid container spacing={8}>
         <Grid item lg={3}>
           <Box bgcolor="#F8F8F8" p={3}>
@@ -136,10 +136,14 @@ const SearchList = () => {
             </Box>
             <Box>
               <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
+              {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
               {listKaril.map((karil, idx) => 
                 <Box my={3} key={idx}>
-                  <CardKaril 
+                  {karil.status == 1
+                  ? <CardKaril 
                   data={karil}/>
+                  : null
+                  }
                 </Box>
               )}
             </Box>
