@@ -135,66 +135,102 @@ export default class UploadKaryaIlmiah extends Component {
         if (this.state.author == "") {
             isValid = false;
             errors["author"] = "Mohon lengkapi nama lengkap penulis";
+            document.getElementById("input-author").scrollIntoView();
         }
 
         //NPM
         if (this.state.npm == "") {
             isValid = false;
             errors["npm"] = "Mohon lengkapi npm penulis";
+            document.getElementById("input-npm").scrollIntoView();
         }
 
         //Judul
         if (this.state.judul == "") {
             isValid = false;
             errors["judul"] = "Mohon lengkapi judul karya ilmiah";
+            document.getElementById("input-judul").scrollIntoView();
         }
 
         //Tanggal disetujui
         if (this.state.tglDisetujui == null) {
             isValid = false;
             errors["tglDisetujui"] = "Mohon lengkapi tanggal disetujuinya karya ilmiah";
+            document.getElementById("input-tglDisetujui").scrollIntoView();
         }
 
         //Semester disetujui
         if (this.state.semesterDisetujui == "") {
             isValid = false;
             errors["semesterDisetujui"] = "Mohon lengkapi semester disetujuinya karya ilmiah";
+            document.getElementById("input-semesterDisetujui").scrollIntoView();
         }
 
         //Jenis
         if (this.state.jenis == "") {
             isValid = false;
             errors["jenis"] = "Mohon lengkapi jenis karya ilmiah";
+            document.getElementById("input-jenis").scrollIntoView();
         }
 
         //Abstrak
          if (this.state.abstrak == "") {
             isValid = false;
             errors["abstrak"] = "Mohon lengkapi abstrak karya ilmiah";
+            document.getElementById("input-abstrak").scrollIntoView();
         }
 
         //Abstrak
         if (this.state.kataKunci == "") {
             isValid = false;
             errors["kataKunci"] = "Mohon lengkapi kata kunci karya ilmiah";
+            document.getElementById("input-kataKunci").scrollIntoView();
         }
 
         //Dosen Pembimbing
         if (this.state.dosenPembimbing == "") {
             isValid = false;
             errors["dosenPembimbing"] = "Mohon lengkapi dosen pembimbing karya ilmiah";
+            document.getElementById("input-dosenPembimbing").scrollIntoView();
         }
 
-        //Abstrak
+        //File PDF
         if (this.state.filePDF == null) {
             isValid = false;
             errors["filePDF"] = "Mohon cantumkan file PDF karya ilmiah";
+            document.getElementById("input-filePDF").scrollIntoView();
         }
 
-        //Check
-        if (this.state.check == false) {
-            isValid = false;
-            errors["check"] = "Mohon lengkapi kotak persetujuan";
+        //Scroll to error
+        if (this.state.author == "") {
+            document.getElementById("input-author").scrollIntoView();
+        }
+        else if (this.state.npm == "") {
+            document.getElementById("input-npm").scrollIntoView();
+        }
+        else if (this.state.judul == "") {
+            document.getElementById("input-judul").scrollIntoView();
+        }
+        else if (this.state.tglDisetujui == null) {
+            document.getElementById("input-tglDisetujui").scrollIntoView();
+        }
+        else if (this.state.semesterDisetujui == "") {
+            document.getElementById("input-semesterDisetujui").scrollIntoView();
+        }
+        else if (this.state.jenis == "") {
+            document.getElementById("input-jenis").scrollIntoView();
+        }
+        else if (this.state.abstrak == "") {
+            document.getElementById("input-abstrak").scrollIntoView();
+        }
+        else if (this.state.kataKunci == "") {
+            document.getElementById("input-kataKunci").scrollIntoView();
+        }
+        else if (this.state.dosenPembimbing == "") {
+            document.getElementById("input-dosenPembimbing").scrollIntoView();
+        }
+        else if (this.state.filePDF == null) {
+            document.getElementById("input-filePDF").scrollIntoView();
         }
 
         this.setState({ formIsValid: isValid });
@@ -217,9 +253,13 @@ export default class UploadKaryaIlmiah extends Component {
         // console.log({name, value})
         console.log("masuk handle file field")
         let errors = {};
-        console.log(event.target.files[0].type)
+        console.log(event.target.files[0])
 
-        if (event.target.files[0].type === 'application/pdf') {
+        if (event.target.files[0] == undefined) {
+            errors['filePDF'] = "Mohon cantumkan file PDF karya ilmiah";
+            this.setState({ errors: errors });
+        }
+        else if (event.target.files[0].type === 'application/pdf') {
             console.log("file looks good")
             this.setState({ filePDF: event.target.files[0]});
             errors['filePDF'] = "";
@@ -315,7 +355,7 @@ export default class UploadKaryaIlmiah extends Component {
 
                 <Form>
                     <Stack gap={4}>
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-author">
                             <Form.Label className="text-large">Nama lengkap penulis</Form.Label>
                             <Form.Control type="text" name="author" placeholder="Nama lengkap"
                             value={this.state.author} onChange={this.handleChangeField}/>
@@ -324,7 +364,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-npm">
                             <Form.Label className="text-large">NPM penulis</Form.Label>
                             <Form.Control type="number" name="npm" placeholder="NPM"
                              value={this.state.npm} onChange={this.handleChangeField}/>
@@ -333,7 +373,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-judul">
                             <Form.Label className="text-large">Judul karya ilmiah</Form.Label>
                             <Form.Control type="text" name="judul" placeholder="Judul karya ilmiah" 
                              value={this.state.judul} onChange={this.handleChangeField}/>
@@ -342,7 +382,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-tglDisetujui">
                             <Form.Label className="text-large">Tanggal yudisium</Form.Label>
                             <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium" 
                              value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
@@ -351,7 +391,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-semesterDisetujui">
                             <Form.Label className="text-large">Semester yudisium</Form.Label>
                             <Form.Select name="semesterDisetujui" aria-label="Semester yudisium" 
                              value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
@@ -367,7 +407,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-jenis">
                             <Form.Label className="text-large">Jenis karya ilmiah</Form.Label>
                             <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
                              value={this.state.jenis} onChange={this.handleChangeField} >
@@ -382,7 +422,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-dosenPembimbing">
                             <Form.Label className="text-large">Nama dosen pembimbing</Form.Label>
 
                             {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
@@ -401,7 +441,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-abstrak">
                             <Form.Label className="text-large">Abstrak</Form.Label>
                             <Form.Control name="abstrak" as="textarea" rows={8} 
                              value={this.state.abstrak} onChange={this.handleChangeField}/>
@@ -410,7 +450,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-kataKunci">
                             <Form.Label className="text-large">Kata kunci</Form.Label>
                             <p className="text-charcoal text-small">
                                 Contoh: Customer experience, sentiment analysis, e-commerce
@@ -422,7 +462,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="">
+                        <Form.Group className="" id="input-filePDF">
                             <Form.Label className="text-large">Unggah karya ilmiah</Form.Label>
                             <p className="text-charcoal text-small">
                                 Pastikan file dalam format PDF

@@ -9,6 +9,7 @@ import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SearchList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
 import MetriksUnggahan from './components/metriks/unggahan';
+import MetriksPengunjung from './components/metriks/pengunjung';
 
 
 ReactDOM.render(
@@ -22,6 +23,7 @@ ReactDOM.render(
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
             <Route path="/metriks/unggahan" element={<MetriksUnggahan/>} />
+            <Route path="/metriks/pengunjung" element={<MetriksPengunjung/>} />
         </Routes>
     </HashRouter>,
 

@@ -7,10 +7,10 @@ from django_filters import BaseInFilter, CharFilter, NumberFilter
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
-from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
+from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, Visitors
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer
+    SemesterSerializer, KarilSeriliazer, VisitorsSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,6 +24,7 @@ import xmltodict
 import jwt
 import urllib
 import requests
+import datetime
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -116,6 +117,27 @@ def login(request):
     response['Cross-Origin-Opener-Policy'] = 'unsafe-none'
     return response
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    
+    return ip
+
+def save_visit(request):
+    ip = get_client_ip(request)
+    today = datetime.date.today()
+
+    if Visitors.objects.filter(ip=ip, tanggalKunjungan=today).exists():
+        print("visit already saved")
+    else: 
+        print("visit not yet saved")
+        Visitors.objects.create(ip=ip, tanggalKunjungan=today)
+
+    return Visitor.objects.get(ip=ip, tanggalKunjungan=today)
 
 class UserView(APIView):
     def post(self, request):
@@ -150,7 +172,6 @@ class ProfileView(APIView):
         profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
-
 
 class KaryaIlmiahView(RetrieveAPIView): #auto pk
     queryset = KaryaIlmiah.objects.all()
@@ -318,3 +339,77 @@ class MetriksUnggahanView(APIView):
         data = {'dataStatus': data_status, "dataJenis": data_jenis, "dataSemester": data_semester}
 
         return Response(data, status=status.HTTP_200_OK)
+
+class MetriksPengunjung(APIView):
+    def post(self, request, *args, **kwargs):
+        visitors_serializer = VisitorsSerializer(data=request.data)
+        print("request.data ", request.data)
+
+        if visitors_serializer.is_valid():
+            print("visitors_serializer ", visitors_serializer)
+            tanggal = datetime.date.today()
+            ip = visitors_serializer.data['ip']
+            print(tanggal)
+            print("visitors_serializer.data ", visitors_serializer.data)
+
+            print(Visitors.objects.filter(ip=ip, tanggalKunjungan=tanggal))
+            if Visitors.objects.filter(ip=ip, tanggalKunjungan=tanggal).exists():
+                print("visit already saved")
+
+            else: 
+                print("visit not yet saved")
+                print(visitors_serializer.data)
+                visitor = Visitors(ip=ip, tanggalKunjungan=tanggal)
+                visitor.save()
+
+            return Response(visitors_serializer.data, status=status.HTTP_201_CREATED)
+
+        else:
+            return Response(visitors_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, tahun, format = None):
+        labels = [
+            'Januari',
+            'Febuari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        ]
+
+        pengunjung_chart_label = "Jumlah Pengunjung"
+        pengunjung_data = []
+        months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+        for i in months:
+            pengunjung_data.append(Visitors.objects.filter(tanggalKunjungan__year=tahun, tanggalKunjungan__month=i).count())
+
+        print(tahun, pengunjung_data)
+
+        data = {
+                        "labels": labels,
+                        "chartLabel": pengunjung_chart_label,
+                        "chartData": pengunjung_data,
+                    }
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class TahunMetriksPengunjung(APIView):
+    def get(self, request):
+        tahun = []
+
+        for i in Visitors.objects.all():
+            print(i.ip, i.tanggalKunjungan)
+
+            if i.tanggalKunjungan.year not in tahun:
+                tahun.append(i.tanggalKunjungan.year)
+       
+        print(tahun)
+
+        return Response({"status": "success", "data": tahun}, status=status.HTTP_200_OK)

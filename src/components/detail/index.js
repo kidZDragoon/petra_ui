@@ -14,6 +14,7 @@ import {BoxArrowDown} from "react-bootstrap-icons";
 import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
 import axios from "axios";
+import VisitorTrackingService from "../../services/visitorTracking.service"
 var fileDownload = require('js-file-download');
 
 export default class Detail extends Component {
@@ -44,7 +45,9 @@ export default class Detail extends Component {
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
         this.handleDetailKaryaIlimah(pathname);
+        VisitorTrackingService.countVisit()
     }
+
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
         try{

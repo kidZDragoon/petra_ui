@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import classes from './styles.module.css';
+import classes from '../styles.module.css';
 import '../../../index.css';
 import axios from "axios";
 import "@fontsource/mulish";     
@@ -16,7 +16,7 @@ import {
     Stack,
     Box,
   } from "@mui/material";
-import BarChart from "./chart.component";
+import BarChart from "../chart.component";
 
 
 

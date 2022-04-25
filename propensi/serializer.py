@@ -4,8 +4,9 @@ from rest_framework import serializers
 from rest_framework.serializers import ReadOnlyField, SerializerMethodField
 from django.db.models import Value as V
 from django.db.models.functions import Concat
+from django.utils.timezone import datetime
 
-from .models import User, Profile, KaryaIlmiah, Semester
+from .models import User, Profile, KaryaIlmiah, Semester, Visitors
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -55,38 +56,22 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):
-        print("masuk serializer")
-        print(validated_data)
         author = validated_data['author']
-        print("author")
         npm = validated_data['npm']
-        print("npm")
         judul = validated_data['judul']
-        print("judul")
         tglDisetujui = validated_data['tglDisetujui']
-        print("tglDisetujui")
         semesterDisetujui = validated_data['semesterDisetujui']
-        print("smtDisetujui")
         abstrak = validated_data['abstrak']
-        print("abstrak")
         jenis = validated_data['jenis']
-        print("jenis")
         filePDF = validated_data['filePDF']
-        print("filePDF")
         dosenPembimbing = validated_data['dosenPembimbing']
-        print("dosenPmb")
         userPengunggah = validated_data['userPengunggah']
-        print("userpengunggah")
-        print(validated_data['kataKunci'])
         kataKunci = validated_data['kataKunci']
-        print("kataKunci")
         statusVerifikasi = 0
-        print("di sini")
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
                         abstrak=abstrak, kataKunci=kataKunci, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing, 
                         status=statusVerifikasi, userPengunggah = userPengunggah)
         
-        print("created karya ilmiah object")
         karyaIlmiah.save()
         return karyaIlmiah
 
@@ -119,3 +104,20 @@ class KarilSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
         fields = "__all__"
+
+class VisitorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Visitors
+        fields = ['ip']
+
+    # def create(self, validated_data):
+    #     ip = validated_data['ip']
+    #     tanggal = datetime.date.today()
+
+    #     if Visitors.objects.filter(ip=ip, tanggalKunjungan=today).exists():
+    #         print("visit already saved")
+    #         return Visitors.objects.get(ip=ip, tanggalKunjungan=today)
+
+    #     else: 
+    #         print("visit not yet saved")
+    #         return Visitors(ip=ip, tanggalKunjungan=today)
