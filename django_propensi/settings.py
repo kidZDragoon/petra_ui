@@ -202,6 +202,13 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
 
+CORS_ORIGIN_WHITELIST = [
+    'https://propensi-a03.herokuapp.com',
+    'https://propensi-a03-staging.herokuapp.com',
+    'http://localhost:8000',
+    'http://localhost:3000'
+]
+
 # Add this line
 # PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')

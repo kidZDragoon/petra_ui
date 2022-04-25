@@ -87,7 +87,6 @@ class KaryaIlmiah(models.Model):
     userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
     dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
     verifikator = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
-    daftarPengunduh = models.ManyToManyField(Profile)
     fileURI = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
 
     def get_upload_path(instance, filename):
@@ -97,6 +96,12 @@ class KaryaIlmiah(models.Model):
         pass
 
     filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500, validators=[FileExtensionValidator(['pdf'])])
+
+class DaftarUnduhan(models.Model):
+    karyaIlmiah = models.ForeignKey(KaryaIlmiah, on_delete=models.CASCADE)
+    idProfile = models.CharField(max_length=500)
+    fullName = models.CharField(max_length=500)
+    tglUnduh = models.CharField(max_length=500)
 
 
 class Pengumuman(models.Model):
