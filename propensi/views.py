@@ -7,10 +7,10 @@ from django_filters import BaseInFilter, CharFilter, NumberFilter
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
-from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
+from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer
+    SemesterSerializer, KarilSeriliazer, DaftarUnduhanSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -137,6 +137,42 @@ class ProfileView(APIView):
         return Response(serializer.data)
 
 
+class CreateDaftarUnduhanView(APIView):
+    """
+    Yang diminta pada tabel karyaIlmiah adalah IDnya. Jadi, yang di pass dari frontend hanyalah id dari karyaIlmiahnya saja
+    """
+    def post(self, request, *args, **kwargs):
+        daftarUnduhanSerializer = DaftarUnduhanSerializer(data=request.data)
+        print(request.data)
+        print(request.data['karyaIlmiah'])
+        checkDU = DaftarUnduhan.objects.filter(karyaIlmiah_id=request.data['karyaIlmiah'])
+        print(checkDU)
+        if checkDU:
+            print('DU sudah ada dalam database')
+            return Response('DU sudah ada dalam database', status=status.HTTP_200_OK)
+        elif daftarUnduhanSerializer.is_valid():
+            print('DU valid')
+            daftarUnduhanSerializer.save()
+            print(daftarUnduhanSerializer.data)
+            return Response(daftarUnduhanSerializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('DU not valid')
+            return Response(daftarUnduhanSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetDaftarUnduhan(APIView):
+    """
+    GET Daftar Unduhan. Meminta karyaIlmiah_id, Return daftarunduhan yang berkaitan dengan karyaIlmiah tersebut
+    """
+    def get(self, request, pk):
+        print(pk)
+        data = DaftarUnduhan.objects.filter(karyaIlmiah_id=pk)
+        print(data)
+        serializer = DaftarUnduhanSerializer(data, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class KaryaIlmiahView(RetrieveAPIView): #auto pk
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
@@ -220,6 +256,7 @@ class CariKaril(ListAPIView):
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
 
 class DaftarVerifikasiView(ListAPIView):
     queryset = KaryaIlmiah.objects.all()
