@@ -40,7 +40,7 @@ export default class Detail extends (Component, App) {
             IEEEstyleL:"",
             MLAstyleU:"",
             MLAstyleL:"",
-            filePDF:"",
+            fileURI:"",
             user:"",
             daftarPengunduh:[],
             idProfile:"",
@@ -68,13 +68,9 @@ export default class Detail extends (Component, App) {
             console.log(listkataKunci)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
-<<<<<<< HEAD
             tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci}) //tglDisetuji jgn lupa diganti tglVerfikasi
             
            
-=======
-            tglVerifikasi:data.tglDisetujui}) //tglDisetuji jgn lupa diganti tglVerfikasi
->>>>>>> 78358614072680fe590f696f569dd03f8cd46163
         }catch(error){
             alert("Oops terjadi masalah pada server")
 
