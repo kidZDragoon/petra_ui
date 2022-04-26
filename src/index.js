@@ -10,6 +10,7 @@ import SearchList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
 import MetriksUnggahan from './components/metriks/unggahan';
 import MetriksPengunjung from './components/metriks/pengunjung';
+import MetriksUnduhan from './components/metriks/unduhan';
 
 
 ReactDOM.render(
@@ -24,6 +25,7 @@ ReactDOM.render(
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
             <Route path="/metriks/unggahan" element={<MetriksUnggahan/>} />
             <Route path="/metriks/pengunjung" element={<MetriksPengunjung/>} />
+            <Route path="/metriks/unduhan" element={<MetriksUnduhan/>} />
         </Routes>
     </HashRouter>,
 

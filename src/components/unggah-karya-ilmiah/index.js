@@ -47,6 +47,7 @@ export default class UploadKaryaIlmiah extends Component {
             filePDF: null,
             check: null,
             userPengunggah: "",
+            role: "",
 
             //result
             result: [],
@@ -68,7 +69,7 @@ export default class UploadKaryaIlmiah extends Component {
         this.loadUser();
     }
 
-     async loadVerificatorData(){
+    async loadVerificatorData(){
         try {
             console.log("load verificator data")
             const { data } = await axios.get("/api/get-verificator-data/");

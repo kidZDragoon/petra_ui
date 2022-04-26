@@ -15,6 +15,7 @@ import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
 import axios from "axios";
 import VisitorTrackingService from "../../services/visitorTracking.service"
+import AuthenticationDataService from "../../services/authentication.service";
 var fileDownload = require('js-file-download');
 
 export default class Detail extends Component {
@@ -38,42 +39,95 @@ export default class Detail extends Component {
             IEEEstyleL:"",
             MLAstyleU:"",
             MLAstyleL:"",
-            filePDF:""
+            filePDF:"",
+
+            daftarPengunduh:[],
+            idProfile:"",
+            fullName:"",
+            tglUnduh:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
     }
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
         this.handleDetailKaryaIlimah(pathname);
-        VisitorTrackingService.countVisit()
     }
 
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
         try{
-            console.log(item)
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
+            console.log("getting karyaIlmiah data from API")
             console.log(data)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
             tglVerifikasi:data.tglDisetujui}) //tglDisetuji jgn lupa diganti tglVerfikasi
-            
-           
         }catch(error){
             alert("Oops terjadi masalah pada server")
 
         }
+
+        try {
+            await axios.get('/api/daftarUnduhan/'+this.state.karyaIlmiah.id)
+                .then(response => {
+                    console.log('getting daftarUnduhan karyaIlmiah from API')
+                    console.log(response)
+                    for (var i = 0; i < response.data.length; i++) {
+                        const temp = [
+                            response.data[i].fullName,
+                        ]
+                        // console.log(temp)
+
+                        this.setState(prevState => ({
+                          daftarPengunduh: [...prevState.daftarPengunduh, temp]
+                        }))
+                    }
+                })
+        } catch {
+            alert("GET DaftarUnduhan from API error")
+        }
+
+        console.log(this.state.daftarPengunduh)
     }
     
     handlePDFDownload = () => {
-        axios.get('api/download/'+ this.state.fileURI, { 
+        try {
+            let token = localStorage.getItem("ssoui");
+            token = JSON.parse(token);
+            AuthenticationDataService.profile(token)
+                .then(response => {
+                    console.log('get profile & fill state')
+                    console.log(response)
+                    try {
+                        axios.post('api/daftarUnduhan', {
+                            'karyaIlmiah': this.state.karyaIlmiah.id,
+                            'idProfile': response.data.id,
+                            'fullName': response.data.full_name,
+                            'tglUnduh': new Date().toLocaleString() + "",
+                        }).then(response => {
+                            console.log('fire DaftarUnduhan state to API')
+                            console.log(response)
+                        })
+                    } catch {
+                        alert('POST DaftarUnduhan to API error')
+                    }
+                })
+            // console.log(response)
+        } catch {
+            alert("Load profile error");
+        }
+
+        axios.get('api/download/'+ this.state.fileURI, {
             responseType: 'blob',
         }).then(res => {
+            console.log('get the pdf file from cloud')
             fileDownload(res.data, this.state.judul+'.pdf');
             console.log(res);
+            window.location.reload();
         }).catch(err => {
             console.log(err);
         })
+
     };
 
     showModal = () => {
@@ -159,6 +213,33 @@ export default class Detail extends Component {
                              aria-labelledby="panelsStayOpen-headingOne">
                             <AccordionBody className="accordion-body">
                                 {this.state.abstrak}
+                            </AccordionBody>
+                        </div>
+                    </AccordionItem>
+
+                </Accordion>
+
+                <br/>
+
+                <Accordion className="accordion" id="accordionPanelsStayOpenExample">
+                    <AccordionItem className="accordion-item">
+                        <AccordionHeader className="accordion-header" >
+                            Daftar Pengunduh
+                            <div className="line"></div>
+                        </AccordionHeader>
+                        <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show"
+                             aria-labelledby="panelsStayOpen-headingOne">
+                            <AccordionBody className="accordion-body">
+                                <ol>
+                                {this.state.daftarPengunduh.map((pengunduh) =>
+                                    (
+                                        <li>{
+                                            pengunduh
+                                        }</li>
+                                    )
+                                )
+                                }
+                                </ol>
                             </AccordionBody>
                         </div>
                     </AccordionItem>

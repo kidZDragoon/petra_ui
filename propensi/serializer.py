@@ -5,8 +5,7 @@ from rest_framework.serializers import ReadOnlyField, SerializerMethodField
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 from django.utils.timezone import datetime
-
-from .models import User, Profile, KaryaIlmiah, Semester, Visitors
+from .models import User, Profile, KaryaIlmiah, Semester, DaftarUnduhan, Visitors
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,7 +17,12 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+        fields = ('id', 'full_name', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+
+class DaftarUnduhanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DaftarUnduhan
+        fields = ('karyaIlmiah', 'idProfile', 'fullName', 'tglUnduh')
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
     class Meta:

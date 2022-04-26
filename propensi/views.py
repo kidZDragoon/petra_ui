@@ -1,5 +1,6 @@
 from importlib.resources import path
 from django.forms import DateField
+from django.db.models import Count
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 # from django_filters import DateFilter
@@ -7,10 +8,10 @@ from django_filters import BaseInFilter, CharFilter, NumberFilter
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
-from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, Visitors
+from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan, Visitors
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, VisitorsSerializer
+    SemesterSerializer, KarilSeriliazer, DaftarUnduhanSerializer, VisitorsSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -51,22 +52,6 @@ def login(request):
     print('raw data')
     print(rawdata)
 
-
-    # xml = f'''
-    # <cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
-    # <cas:authenticationSuccess>
-    # <cas:user>dini.widinarsih</cas:user>
-    # <cas:attributes>
-    # <cas:user>dini.widinarsih</cas:user>
-    # <cas:ldap_cn>Dini Widinarsih</cas:ldap_cn>
-    # <cas:peran_user>staff</cas:peran_user>
-    # <cas:nip>196806221994032001</cas:nip>
-    # <cas:nama>Dini Widinarsih</cas:nama>
-    # </cas:attributes>
-    # </cas:authenticationSuccess>
-    # </cas:serviceResponse>
-    # '''
-    # data = xmltodict.parse(xml)
     data = xmltodict.parse(rawdata)
     print('data xmltodict')
     print(data)
@@ -93,6 +78,10 @@ def login(request):
                            'npm': data.get('cas:nip'), # nip
                            'peran_user': 'dosen',
                            }
+            user = User.objects.create(**userData)
+            profile = Profile.objects.get(user=user)
+            save_user_attributes(user, profileData)
+
         else: #mahasiswa
             profileData = {'email': f'{username}@ui.ac.id',
                            'kd_org': data.get('cas:kd_org'),
@@ -100,8 +89,6 @@ def login(request):
                            'npm': data.get('cas:npm'),
                            'peran_user': 'mahasiswa',
                            }
-        print('profileData')
-        print(profileData)
         user = User.objects.create(**userData)
         profile = Profile.objects.get(user=user)
         save_user_attributes(user, profileData)
@@ -111,33 +98,9 @@ def login(request):
 
     context = {'LoginResponse': f'{{"token":"{jwtToken}","nama":"{user.get_full_name()}","npm":"{profile.npm}" }}',
                'OriginUrl': originURL}
-    print('context')
-    print(context)
     response = render(request, "ssoui/popup.html", context)
     response['Cross-Origin-Opener-Policy'] = 'unsafe-none'
     return response
-
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    
-    return ip
-
-def save_visit(request):
-    ip = get_client_ip(request)
-    today = datetime.date.today()
-
-    if Visitors.objects.filter(ip=ip, tanggalKunjungan=today).exists():
-        print("visit already saved")
-    else: 
-        print("visit not yet saved")
-        Visitors.objects.create(ip=ip, tanggalKunjungan=today)
-
-    return Visitor.objects.get(ip=ip, tanggalKunjungan=today)
 
 class UserView(APIView):
     def post(self, request):
@@ -172,6 +135,43 @@ class ProfileView(APIView):
         profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
+
+
+class CreateDaftarUnduhanView(APIView):
+    """
+    Yang diminta pada tabel karyaIlmiah adalah IDnya. Jadi, yang di pass dari frontend hanyalah id dari karyaIlmiahnya saja
+    """
+    def post(self, request, *args, **kwargs):
+        daftarUnduhanSerializer = DaftarUnduhanSerializer(data=request.data)
+        print(request.data)
+        print(request.data['karyaIlmiah'])
+        checkDU = DaftarUnduhan.objects.filter(karyaIlmiah_id=request.data['karyaIlmiah'])
+        print(checkDU)
+        if checkDU:
+            print('DU sudah ada dalam database')
+            return Response('DU sudah ada dalam database', status=status.HTTP_200_OK)
+        elif daftarUnduhanSerializer.is_valid():
+            print('DU valid')
+            daftarUnduhanSerializer.save()
+            print(daftarUnduhanSerializer.data)
+            return Response(daftarUnduhanSerializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('DU not valid')
+            return Response(daftarUnduhanSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetDaftarUnduhan(APIView):
+    """
+    GET Daftar Unduhan. Meminta karyaIlmiah_id, Return daftarunduhan yang berkaitan dengan karyaIlmiah tersebut
+    """
+    def get(self, request, pk):
+        print(pk)
+        data = DaftarUnduhan.objects.filter(karyaIlmiah_id=pk)
+        print(data)
+        serializer = DaftarUnduhanSerializer(data, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class KaryaIlmiahView(RetrieveAPIView): #auto pk
     queryset = KaryaIlmiah.objects.all()
@@ -256,6 +256,7 @@ class CariKaril(ListAPIView):
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
 
 class DaftarVerifikasiView(ListAPIView):
     queryset = KaryaIlmiah.objects.all()
@@ -342,23 +343,14 @@ class MetriksUnggahanView(APIView):
 
 class MetriksPengunjung(APIView):
     def post(self, request, *args, **kwargs):
+        print("save visitor")
         visitors_serializer = VisitorsSerializer(data=request.data)
-        print("request.data ", request.data)
 
         if visitors_serializer.is_valid():
-            print("visitors_serializer ", visitors_serializer)
             tanggal = datetime.date.today()
             ip = visitors_serializer.data['ip']
-            print(tanggal)
-            print("visitors_serializer.data ", visitors_serializer.data)
 
-            print(Visitors.objects.filter(ip=ip, tanggalKunjungan=tanggal))
-            if Visitors.objects.filter(ip=ip, tanggalKunjungan=tanggal).exists():
-                print("visit already saved")
-
-            else: 
-                print("visit not yet saved")
-                print(visitors_serializer.data)
+            if not Visitors.objects.filter(ip=ip, tanggalKunjungan=tanggal).exists():
                 visitor = Visitors(ip=ip, tanggalKunjungan=tanggal)
                 visitor.save()
 
@@ -390,7 +382,6 @@ class MetriksPengunjung(APIView):
         for i in months:
             pengunjung_data.append(Visitors.objects.filter(tanggalKunjungan__year=tahun, tanggalKunjungan__month=i).count())
 
-        print(tahun, pengunjung_data)
 
         data = {
                         "labels": labels,
@@ -405,11 +396,108 @@ class TahunMetriksPengunjung(APIView):
         tahun = []
 
         for i in Visitors.objects.all():
-            print(i.ip, i.tanggalKunjungan)
 
             if i.tanggalKunjungan.year not in tahun:
                 tahun.append(i.tanggalKunjungan.year)
-       
-        print(tahun)
 
         return Response({"status": "success", "data": tahun}, status=status.HTTP_200_OK)
+
+class MetriksUnduhanView(APIView):
+    def get(self, request, tahun, format = None):
+
+        period_labels = [
+            'Januari',
+            'Febuari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        ]
+        
+        unduhan_chart_label = "Unduhan Karya Ilmiah"
+
+        unduhan_data = []
+        months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+        for i in months:
+            period = "{}/".format(i)
+            unduhan_data.append(DaftarUnduhan.objects.filter(tglUnduh__startswith=period, tglUnduh__contains=tahun).count())
+
+
+        data = {
+                        "labels": period_labels,
+                        "chartLabel": unduhan_chart_label,
+                        "chartData": unduhan_data,
+                    }
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class MetriksTop3Unduhan(APIView):
+    def get(self, request, format = None):
+        top3_labels = []
+        top3_data = []
+
+        top3 = KaryaIlmiah.objects.annotate(count=Count('daftarunduhan')).order_by("-count").values("judul", "count")
+
+        for i in range(3):
+            top3_labels.append(top3[i]['judul'])
+            top3_data.append(top3[i]['count'])
+
+        labels_adjusted = []
+        tmp = ""
+        lst = []
+        count = 0
+
+        for i in top3_labels:
+            word = i.split(' ')
+            tmp = ""
+            lst = []
+            count = 0
+
+            panjang = len(word)
+            div3 = panjang // 3
+            mod = panjang % 3
+
+            for j in range(0, div3*3, 3): 
+                res = ''.join([(word[j] + " "), (word[j+1] + " "), (word[j+2] + " ")])
+                lst.append(res)
+
+            if mod != 0:
+                res = ""
+                for j in range(div3*3, panjang, 1): 
+                    res += word[j] + " "
+
+                lst.append(res)
+
+            labels_adjusted.append(lst)
+
+        top3_chart_label = "Karya Ilmiah Unduhan Top 3"
+
+        data_top3 = {
+                        "labels": labels_adjusted,
+                        "chartLabel": top3_chart_label,
+                        "chartData": top3_data,
+                    }
+
+        data = {'dataTop3': data_top3}
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class TahunMetriksUnduhan(APIView):
+    def get(self, request):
+        tahun = []
+
+        for i in DaftarUnduhan.objects.all():
+
+            if i.tglUnduh[5:9] not in tahun:
+                tahun.append(i.tglUnduh[5:9])
+
+        return Response({"status": "success", "data": tahun}, status=status.HTTP_200_OK)
+
+

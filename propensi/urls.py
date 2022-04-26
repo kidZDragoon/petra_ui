@@ -1,12 +1,14 @@
 from django.urls import path
 
-from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, \
-        SemesterView, DaftarVerifikasiView, CariKaril, DownloadPDF, MetriksUnggahanView, MetriksPengunjung, \
-        TahunMetriksPengunjung
+from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, \
+    DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan, MetriksUnggahanView, \
+    MetriksPengunjung, TahunMetriksPengunjung, MetriksUnduhanView, TahunMetriksUnduhan, MetriksTop3Unduhan
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
     path('profile', ProfileView.as_view(), name='ProfileView'),
+    path('daftarUnduhan', CreateDaftarUnduhanView.as_view(), name='createDaftarUnduhanView'),
+    path('daftarUnduhan/<int:pk>', GetDaftarUnduhan.as_view(), name='getDaftarUnduhan'),
     path('karyaIlmiah/<int:pk>/', KaryaIlmiahView.as_view(), name='KaryaIlmiahView'),
     path('unggah-karya-ilmiah/', KaryaIlmiahUploadView.as_view(), name='KaryaIlmiahUploadView'),
     path('get-verificator-data/', VerificatorView.as_view(), name='VerifactorView'),
@@ -18,4 +20,7 @@ urlpatterns = [
     path('metriks/pengunjung/', MetriksPengunjung.as_view(), name='countVisit'),
     path('metriks/pengunjung/<int:tahun>/', MetriksPengunjung.as_view(), name='metriksPengunjungView'),
     path('metriks/pengunjung/get-year/', TahunMetriksPengunjung.as_view(), name='tahunMetriksPengunjungView'),
+    path('metriks/unduhan/<int:tahun>/', MetriksUnduhanView.as_view(), name='metriksUnduhanView'),
+    path('metriks/unduhan/get-year/', TahunMetriksUnduhan.as_view(), name='tahunMetriksUnduhanView'),
+    path('metriks/unduhan/top3/', MetriksTop3Unduhan.as_view(), name='metriksTop3Unduhan'),
 ]

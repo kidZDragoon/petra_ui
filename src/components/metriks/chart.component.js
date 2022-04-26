@@ -43,6 +43,11 @@ const BarChart = ({title, sourceData}) => {
       },
       maintainAspectRatio: false
       },
+      scales: {
+        y: {
+            grace: '5%',
+        }
+      },
     };
 
     const data = {
@@ -70,6 +75,7 @@ const BarChart = ({title, sourceData}) => {
       </Box> 
     );
 };
+export default BarChart;
 
 export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
 
@@ -119,6 +125,11 @@ export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
         display: false,
     },
     maintainAspectRatio: false
+    },
+    scales: {
+      y: {
+          grace: '5%',
+      }
     },
   };
 
@@ -174,6 +185,3 @@ export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
       
   );
 };
-
-
-export default BarChart;
