@@ -77,7 +77,7 @@ export default class Detail extends (Component, App) {
         }
 
         try {
-            await axios.get('/api/daftarUnduhan/'+this.state.karyaIlmiah.id)
+            await axios.get('api/daftarUnduhan/'+this.state.karyaIlmiah.id)
                 .then(response => {
                     console.log('getting daftarUnduhan karyaIlmiah from API')
                     console.log(response)
@@ -132,7 +132,6 @@ export default class Detail extends (Component, App) {
             console.log('get the pdf file from cloud')
             fileDownload(res.data, this.state.judul+'.pdf');
             console.log(res);
-            window.location.reload();
         }).catch(err => {
             console.log(err);
         })
