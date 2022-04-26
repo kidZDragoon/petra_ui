@@ -240,4 +240,4 @@ class DaftarVerifikasiView(ListAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KarilSeriliazer
     filter_backends = (DjangoFilterBackend, )
-    filterset_fields = ('status',)
+    filterset_fields = ('status', 'status')

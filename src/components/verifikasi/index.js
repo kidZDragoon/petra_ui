@@ -2,19 +2,13 @@ import React, {Component, useEffect, useState } from "react";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
-import Modal from 'react-bootstrap/Modal';
-import ModalHeader from "react-bootstrap/ModalHeader";
-import ModalBody from "react-bootstrap/ModalBody";
-import ModalFooter from "react-bootstrap/ModalFooter";
+import Box from "@mui/material/Box";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import Container from 'react-bootstrap/Container'
 import CardNotVerified from "./card-notverified.component";
-import classes from "./styles.module.css";
+import CardKarilStatus from "./card-karilstatus.component";
 import axios from "axios";
-import qs from "qs";
 
 // export default class DaftarVerifikasi extends Component{
 //     constructor(props) {
@@ -38,56 +32,167 @@ import qs from "qs";
 const DaftarVerifikasi = () => {
     const [listToVerify, setListToVerify] = useState([]);
     const [listVerified, setListVerified] = useState([]);
-    const [status, setStatus] = useState("");
+    const [listDeclined, setListDeclined] = useState([]);
+    const [status, setStatus] = useState();
     const [checker, setChecker] = useState({
         isSemua: true,
         isDiterima: false,
         isDitolak: false,
-        isVerifikasi: false,
-        isTolakVerifikasi: false,
-        isVerified: false,
-        isDeclined: false,
+        showVerifikasi: false,
+        showTolakVerifikasi: false,
+        confVerified: false,
+        confDeclined: false,
     })
-    const { isSemua, isDiterima, isDitolak, isVerifikasi, isTolakVerifikasi, isVerified, isDeclined } = checker;
+    const { isSemua, isDiterima, isDitolak } = checker;
+
+    useEffect(() => {
+        fetchKarilToVerify();
+        fetchKarilVerified();
+        fetchKarilDeclined();
+    }, [checker])
 
     const fetchKarilToVerify = async () => {
-        // let KarilType = getKarilToVerifyQuery();
-        const url = `api/daftar-verifikasi/?status=0`
+        let status = "0";
+        const url = `api/daftar-verifikasi/?status=${status}`
         axios.get(url).then(response => {
-            setListToVerify(response);
+            setListToVerify(response.data);
             console.log(listToVerify)
         }).catch((error) => {
             console.log(error);
         });
     }
 
-    // const fetchKarilVerified = async () => {
-    //     let params = { status: [1, 2] }
-    //     let myAxios = axios.create({
-    //         paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'})
-    //     })
-        
-    //     myAxios.get(`api/daftar-verifikasi/`, {params})
-    //     .then(response => {
-    //         setListVerified(response.data);
-    //         console.log(listVerified);
-    //     }).catch((error) => {
-    //         console.log(error);
-    //     });
-    // }
+    const fetchKarilVerified = async () => {
+        let status = "1";
+        const url = `api/daftar-verifikasi/?status=${status}`
+        axios.get(url).then(response => {
+            setListVerified(response.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+        console.log(url)
+    }
+    
+    const fetchKarilDeclined = async () => {
+        let status = "2";
+        const url = `api/daftar-verifikasi/?status=${status}`
+        axios.get(url).then(response => {
+            setListDeclined(response.data);
+            console.log(listToVerify)
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
 
-    useEffect(() => {
-        // fetchKarilVerified();
-        fetchKarilToVerify();
-    }, [checker])
+    const statusConfirmed = listVerified.concat(listDeclined);
+
+    const semuaTagControl = () => {
+        setChecker({
+            isSemua: true,
+            isDiterima: false,
+            isDitolak: false,
+        })
+        setStatus("")
+    };
+
+    const diterimaTagControl = () => {
+        setChecker({
+            isSemua: false,
+            isDiterima: true,
+            isDitolak: false,
+        })
+        setStatus("1")
+    };
+
+    const ditolakTagControl = () => {
+        setChecker({
+            isSemua: false,
+            isDiterima: false,
+            isDitolak: true,
+        })
+        setStatus("2")
+    };
+    
 
     return(
         <Container>
-            {listToVerify.map((toVerify) =>
-                <Stack>
+            <h3 className="text-section-header px-0 mt-3"><span class="pull-right"><LibraryBooksIcon className="mr-2" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
+
+            <Box>
+            {listToVerify.map((toVerify, i) =>
+                <Box my={3} key={i}>
                     <CardNotVerified data={toVerify}/>
-                </Stack>
+                </Box>
             )}
+            </Box>
+
+            <h3 className="text-section-header px-0 mt-5"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
+            
+            <div>
+                <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
+                    {isSemua === false ? (
+                        <Button className="rounded-pill" variant="outline-primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                    ):
+                        <Button className="rounded-pill" variant="primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                    }
+                    {isDiterima === false ? (
+                        <Button className="rounded-pill" variant="outline-primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                    ):
+                        <Button className="rounded-pill" variant="primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                    }
+                    {isDitolak === false ? (
+                        <Button className="rounded-pill" variant="outline-primary" onClick={ditolakTagControl}>Verifikasi ditolak</Button>
+                    ):
+                        <Button className="rounded-pill" variant="primary">Verifikasi ditolak</Button>
+                    }
+                    <a href="" className="ms-auto">Lihat Semua</a>
+                </Stack>
+            </div>
+
+            <div>
+                {isSemua === false ? (
+                    null
+                ):
+                    <Box>
+                    {statusConfirmed.map((c, i) =>
+                        <Box my={3} key={i}>
+                            <CardKarilStatus data={c}/>
+                        </Box>
+                    )}
+                    </Box>
+                }
+                {isDiterima === false ? (
+                    null 
+                ):
+                    <Box>
+                    {listVerified.map((c, i) =>
+                        <Box my={3} key={i}>
+                            <CardKarilStatus data={c}/>
+                        </Box>
+                    )}
+                    </Box>  
+                }
+                {isDitolak === false ? (
+                    null
+                ):
+                    <Box>
+                        {listDeclined.map((c, i) =>
+                            <Box my={3} key={i}>
+                                <CardKarilStatus data={c}/>
+                            </Box>
+                        )}
+                    </Box>
+                }
+            </div>
+
+            {/* <Box>
+            {statusConfirmed.map((c, i) =>
+                <Box my={3} key={i}>
+                    <CardKarilStatus data={c}/>
+                </Box>
+            )}
+            </Box> */}
+
         </Container>
     )
 }
@@ -138,14 +243,14 @@ export default DaftarVerifikasi;
     //     this.setState({isDeclined: false});
     // }
 
-    // // render() {
-    // //     const status = this.state.status;
-    // //     let verifiedTag;
-    // //     if (status === "1") {
-    // //         verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="success">Sudah Diverifikasi</Button>;
-    // //     } else if (status === "2") {
-    // //         verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="danger">Verifikasi Ditolak</Button>;
-    // //     }
+    // render() {
+    //     const status = this.state.status;
+    //     let verifiedTag;
+    //     if (status === "1") {
+    //         verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="success">Sudah Diverifikasi</Button>;
+    //     } else if (status === "2") {
+    //         verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="danger">Verifikasi Ditolak</Button>;
+    //     }
 
     //     return (
     //         <Container>
@@ -180,7 +285,7 @@ export default DaftarVerifikasi;
     //             <Modal show={this.state.isVerifikasi} onHide={this.closeModal}>
     //                 <ModalHeader>
     //                     <h5 className="modal-title">Apakah Anda yakin
-    //                         ingin memverifikasi karya ilmiah ini?</h5>
+    // //                         ingin memverifikasi karya ilmiah ini?</h5>
     //                 </ModalHeader>
     //                 <ModalFooter>
     //                     <button type="button" className="btn btn-primary" onClick={this.closeModal}>Batal</button>
