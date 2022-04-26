@@ -1,0 +1,34 @@
+.judulPengumuman{
+  font-weight: bold;
+  color: #d26903;
+
+}
+.section {
+  height: 700px;  
+}
+.pengumuman{
+  width: 50%;
+}
+.home{
+  margin-top: 80px;
+  margin-left: 300px;
+}
+.jargon{
+  font-size: 50px;
+  font-weight: 800;
+  color: #d26903;
+}
+.logo_text{
+  width: 1000px;
+  height: 50px;
+}
+.space{
+  height: 200px;
+}
+.link{
+  text-decoration: none;
+  color: #58929C;
+}
+.link:hover{
+  color: #d26903;
+}

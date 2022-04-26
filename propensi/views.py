@@ -1,4 +1,5 @@
 from importlib.resources import path
+from multiprocessing import Event
 from django.forms import DateField
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
@@ -6,11 +7,11 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from django_filters import BaseInFilter, CharFilter, NumberFilter
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
-from django.http import HttpResponse
-from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
+from django.http import Http404, HttpResponse
+from propensi.models import Pengumuman, Profile, User, save_user_attributes, KaryaIlmiah, Semester
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer
+    SemesterSerializer, KarilSeriliazer, PengumumanSeriliazer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,6 +25,7 @@ import xmltodict
 import jwt
 import urllib
 import requests
+from django.shortcuts import get_object_or_404
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -132,6 +134,11 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['user_id']).first()
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    
+    def get(self, request):
+        data = User.objects.all()
+        serializer = UserSerializer(data, many=True)
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
 
 class ProfileView(APIView):
@@ -150,6 +157,19 @@ class ProfileView(APIView):
         profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
+    
+    def get(self, request):
+        data = Profile.objects.all()
+        serializer = ProfileSerializer(data, many=True)
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+    def put(self, request, pk, *args, **kwarg):
+        profile = Profile.objects.get(pk=pk)
+        profileSerializer = ProfileSerializer(profile, data=request.data)
+        if profileSerializer.is_valid():
+            profileSerializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class KaryaIlmiahView(RetrieveAPIView): #auto pk
@@ -169,19 +189,14 @@ class KarilFilterYearAndType(FilterSet):
         fields = (
             'tahun',
             'jenis')
-
-
-class daftarVerifikasiView(RetrieveAPIView):
-    queryset = KaryaIlmiah.objects.all()
-    serializer_class = KaryaIlmiahSeriliazer
-
+            
 
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
         karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(data=request.data)
-
+        print(request.data)
         if karya_ilmiah_serializer.is_valid():
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
@@ -240,3 +255,62 @@ class CariKaril(ListAPIView):
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
+class DaftarVerifikasiView(ListAPIView):
+    queryset = KaryaIlmiah.objects.all()
+    serializer_class = KarilSeriliazer
+    filter_backends = (DjangoFilterBackend, )
+    filterset_fields = ('status',)
+
+class PengumumanView(APIView):
+    parser = [MultiPartParser, FormParser]
+    print("masuk")
+    def post(self, request, *args, **kwargs):
+        print("masuk1")
+        pengumuman_serializer = PengumumanSeriliazer(data=request.data)
+        print("masuk2")
+        print(request.data)
+        print(pengumuman_serializer.is_valid())
+        if pengumuman_serializer.is_valid():
+            pengumuman_serializer.save()
+            return Response(pengumuman_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(pengumuman_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        print("masuk ko")
+        data = Pengumuman.objects.all()
+        # pengumuman = Pengumuman.objects.get(pk=2)
+        # print(pengumuman)
+        serializer = PengumumanSeriliazer(data, many=True)
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+    
+
+
+class PengumumanUpdateDeleteView(APIView):
+    print("masukfsdfasdf")
+
+    def get_object(self, pk):
+        try:
+            print("masuk")
+            return Pengumuman.objects.get(pk=pk)
+        except Pengumuman.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        queryset = Pengumuman.objects.get(pk=pk)
+        serializer = PengumumanSeriliazer(queryset)
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk):
+        pengumuman = Pengumuman.objects.get(pk=pk)
+        pengumuman.delete()
+        return Response({"status": "success"}, status=status.HTTP_204_NO_CONTENT)
+    
+    def put(self, request, pk, *args, **kwarg):
+        pengumuman = Pengumuman.objects.get(pk=pk)
+        pengumumanSerializer = PengumumanSeriliazer(pengumuman, data=request.data)
+        if pengumumanSerializer.is_valid():
+            pengumumanSerializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)

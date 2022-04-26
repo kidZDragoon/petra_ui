@@ -73,7 +73,6 @@ class Semester(models.Model):
     semester = models.CharField(max_length=500)
 
 
-
 class KaryaIlmiah(models.Model):
     author = models.CharField(max_length=500)
     npm = models.CharField(max_length=15)
@@ -81,10 +80,11 @@ class KaryaIlmiah(models.Model):
     status = models.CharField(max_length=500)
     jenis = models.CharField(max_length=500)
     abstrak = models.CharField(max_length=5000)
-    tglDisetujui = models.DateField(null=True)
+    kataKunci = models.CharField(max_length=5000)
+    tglDisetujui = models.DateField()
     semesterDisetujui = models.ForeignKey(Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
     tglVerifikasi = models.DateField(null=True)
-    userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
+    userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah")
     dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing")
     verifikator = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
     daftarPengunduh = models.ManyToManyField(Profile)
