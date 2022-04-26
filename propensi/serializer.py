@@ -5,7 +5,11 @@ from rest_framework.serializers import ReadOnlyField, SerializerMethodField
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 
+<<<<<<< HEAD
 from .models import User, Profile, KaryaIlmiah, Semester, Pengumuman
+=======
+from .models import User, Profile, KaryaIlmiah, Semester, DaftarUnduhan
+>>>>>>> 78358614072680fe590f696f569dd03f8cd46163
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,7 +21,16 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
+<<<<<<< HEAD
         fields = ('id', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program', 'full_name') #ditambahin fullname
+=======
+        fields = ('id', 'full_name', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+
+class DaftarUnduhanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DaftarUnduhan
+        fields = ('karyaIlmiah', 'idProfile', 'fullName', 'tglUnduh')
+>>>>>>> 78358614072680fe590f696f569dd03f8cd46163
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
     class Meta:

@@ -8,10 +8,10 @@ from django_filters import BaseInFilter, CharFilter, NumberFilter
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import Http404, HttpResponse
-from propensi.models import Pengumuman, Profile, User, save_user_attributes, KaryaIlmiah, Semester
+from propensi.models import Pengumuman, Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, PengumumanSeriliazer
+    SemesterSerializer, KarilSeriliazer, DaftarUnduhanSerializer, PengumumanSeriliazer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -33,12 +33,13 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    originURL = "http://localhost:8000/"
-    # originURL = "https://propensi-a03-staging.herokuapp.com/"
+    print('tesss')
+    # originURL = "http://localhost:8000/"
+    originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    serverURL = "http://localhost:8000/login/"
-    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    # serverURL = "http://localhost:8000/login/"
+    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -52,22 +53,6 @@ def login(request):
     print('raw data')
     print(rawdata)
 
-
-    # xml = f'''
-    # <cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
-    # <cas:authenticationSuccess>
-    # <cas:user>dini.widinarsih</cas:user>
-    # <cas:attributes>
-    # <cas:user>dini.widinarsih</cas:user>
-    # <cas:ldap_cn>Dini Widinarsih</cas:ldap_cn>
-    # <cas:peran_user>staff</cas:peran_user>
-    # <cas:nip>196806221994032001</cas:nip>
-    # <cas:nama>Dini Widinarsih</cas:nama>
-    # </cas:attributes>
-    # </cas:authenticationSuccess>
-    # </cas:serviceResponse>
-    # '''
-    # data = xmltodict.parse(xml)
     data = xmltodict.parse(rawdata)
     print('data xmltodict')
     print(data)
@@ -94,6 +79,10 @@ def login(request):
                            'npm': data.get('cas:nip'), # nip
                            'peran_user': 'dosen',
                            }
+            user = User.objects.create(**userData)
+            profile = Profile.objects.get(user=user)
+            save_user_attributes(user, profileData)
+
         else: #mahasiswa
             profileData = {'email': f'{username}@ui.ac.id',
                            'kd_org': data.get('cas:kd_org'),
@@ -101,8 +90,6 @@ def login(request):
                            'npm': data.get('cas:npm'),
                            'peran_user': 'mahasiswa',
                            }
-        print('profileData')
-        print(profileData)
         user = User.objects.create(**userData)
         profile = Profile.objects.get(user=user)
         save_user_attributes(user, profileData)
@@ -112,8 +99,6 @@ def login(request):
 
     context = {'LoginResponse': f'{{"token":"{jwtToken}","nama":"{user.get_full_name()}","npm":"{profile.npm}" }}',
                'OriginUrl': originURL}
-    print('context')
-    print(context)
     response = render(request, "ssoui/popup.html", context)
     response['Cross-Origin-Opener-Policy'] = 'unsafe-none'
     return response
@@ -170,6 +155,42 @@ class ProfileView(APIView):
             profileSerializer.save()
             return Response({"status": "success"}, status=status.HTTP_200_OK)
         return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CreateDaftarUnduhanView(APIView):
+    """
+    Yang diminta pada tabel karyaIlmiah adalah IDnya. Jadi, yang di pass dari frontend hanyalah id dari karyaIlmiahnya saja
+    """
+    def post(self, request, *args, **kwargs):
+        daftarUnduhanSerializer = DaftarUnduhanSerializer(data=request.data)
+        print(request.data)
+        print(request.data['karyaIlmiah'])
+        checkDU = DaftarUnduhan.objects.filter(karyaIlmiah_id=request.data['karyaIlmiah'])
+        print(checkDU)
+        if checkDU:
+            print('DU sudah ada dalam database')
+            return Response('DU sudah ada dalam database', status=status.HTTP_200_OK)
+        elif daftarUnduhanSerializer.is_valid():
+            print('DU valid')
+            daftarUnduhanSerializer.save()
+            print(daftarUnduhanSerializer.data)
+            return Response(daftarUnduhanSerializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('DU not valid')
+            return Response(daftarUnduhanSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetDaftarUnduhan(APIView):
+    """
+    GET Daftar Unduhan. Meminta karyaIlmiah_id, Return daftarunduhan yang berkaitan dengan karyaIlmiah tersebut
+    """
+    def get(self, request, pk):
+        print(pk)
+        data = DaftarUnduhan.objects.filter(karyaIlmiah_id=pk)
+        print(data)
+        serializer = DaftarUnduhanSerializer(data, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class KaryaIlmiahView(RetrieveAPIView): #auto pk
@@ -255,6 +276,7 @@ class CariKaril(ListAPIView):
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
 
 class DaftarVerifikasiView(ListAPIView):
     queryset = KaryaIlmiah.objects.all()
