@@ -1,13 +1,23 @@
 from django.urls import path
 
+<<<<<<< HEAD
+from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, \
+    SemesterView, DaftarVerifikasiView, CariKaril, DownloadPDF, PengumumanView, PengumumanUpdateDeleteView
+
+=======
 from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, \
     DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan
+>>>>>>> 78358614072680fe590f696f569dd03f8cd46163
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
     path('profile', ProfileView.as_view(), name='ProfileView'),
+<<<<<<< HEAD
+    path('profile/<int:pk>/', ProfileView.as_view(), name='ProfileView'),
+=======
     path('daftarUnduhan', CreateDaftarUnduhanView.as_view(), name='createDaftarUnduhanView'),
     path('daftarUnduhan/<int:pk>', GetDaftarUnduhan.as_view(), name='getDaftarUnduhan'),
+>>>>>>> 78358614072680fe590f696f569dd03f8cd46163
     path('karyaIlmiah/<int:pk>/', KaryaIlmiahView.as_view(), name='KaryaIlmiahView'),
     path('unggah-karya-ilmiah/', KaryaIlmiahUploadView.as_view(), name='KaryaIlmiahUploadView'),
     path('get-verificator-data/', VerificatorView.as_view(), name='VerifactorView'),
@@ -15,5 +25,11 @@ urlpatterns = [
     path('download/<str:path>', DownloadPDF, name='download_pdf'),
     path('search/', CariKaril.as_view(), name='cariKaril'),
     path('daftar-verifikasi/', DaftarVerifikasiView.as_view(), name='daftarVerifikasiView'),
+<<<<<<< HEAD
+    path('pengumuman/', PengumumanView.as_view(), name='pengumumanView'),
+    path('pengumuman/<int:pk>/', PengumumanUpdateDeleteView.as_view(), name='PengumumanUpdateDeleteView'),
+   
+=======
 
+>>>>>>> 78358614072680fe590f696f569dd03f8cd46163
 ]

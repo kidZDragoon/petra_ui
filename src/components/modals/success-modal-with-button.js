@@ -13,7 +13,7 @@ import {Link} from "react-router-dom";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const SuccessModalWithButton = (props) => {
-    const { show, title, content, buttonText } = props;
+    const { show, title, content, buttonText, link, notLink, action} = props;
 
     return (
         <Modal className="modal" show={show}>
@@ -33,11 +33,17 @@ const SuccessModalWithButton = (props) => {
                 </Row>
                 <Row className="mt-2">
                     <Col className="">
-                        <Link to="/karya-ilmiah-saya" style={{textDecoration:"none"}}>
-                            <Button className="btn btn-full-width btn-orange text-bold-large">
-                                <span>{buttonText}</span>
-                            </Button>
-                        </Link>
+                        {notLink === true ?
+                            <Button className="btn btn-full-width btn-orange text-bold-large" onClick={action}>
+                            <span>{buttonText}</span>
+                            </Button>:
+                            <Link to={link} style={{textDecoration:"none"}}>
+                                <Button className="btn btn-full-width btn-orange text-bold-large">
+                                    <span>{buttonText}</span>
+                                </Button>
+                            </Link>
+                        }
+                        
                     </Col>
                 </Row>
             </Container>

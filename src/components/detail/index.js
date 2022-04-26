@@ -14,12 +14,14 @@ import {BoxArrowDown} from "react-bootstrap-icons";
 import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
 import axios from "axios";
-import AuthenticationDataService from "../../services/authentication.service";
+import AuthenticationDataService from "../../services/authentication.service.js";
+import App from "../../App"; //buat sso
+
 var fileDownload = require('js-file-download');
 
-export default class Detail extends Component {
-    constructor(props) {
-        super(props);
+export default class Detail extends (Component, App) {
+    constructor() {
+        super();
         this.state = {
             karyaIlmiah: null,
             isOpen:false,
@@ -30,7 +32,7 @@ export default class Detail extends Component {
             abstrak:"",
             authors:"",
             jenis:"",
-            kategori:[],
+            kataKunci:[],
             tglVerifikasi:Date,
             url:"",
             APAstyle:"",
@@ -39,17 +41,22 @@ export default class Detail extends Component {
             MLAstyleU:"",
             MLAstyleL:"",
             filePDF:"",
-
+            user:"",
             daftarPengunduh:[],
             idProfile:"",
             fullName:"",
             tglUnduh:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
+        this.handleToken = this.handleToken.bind(this);
+        
     }
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
         this.handleDetailKaryaIlimah(pathname);
+        let token = localStorage.getItem("ssoui")
+        token = JSON.parse(token)
+        this.setState({user: token})
     }
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
@@ -57,9 +64,17 @@ export default class Detail extends Component {
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
             console.log("getting karyaIlmiah data from API")
             console.log(data)
+            const listkataKunci = data.kataKunci.split(", ")
+            console.log(listkataKunci)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
+<<<<<<< HEAD
+            tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            
+           
+=======
             tglVerifikasi:data.tglDisetujui}) //tglDisetuji jgn lupa diganti tglVerfikasi
+>>>>>>> 78358614072680fe590f696f569dd03f8cd46163
         }catch(error){
             alert("Oops terjadi masalah pada server")
 
@@ -171,22 +186,36 @@ export default class Detail extends Component {
     hideCite = () => {
         this.setState({isCite:false})
     };
+    
+    async handleToken(){
+        await this.loginHandler()
+        let token = localStorage.getItem("ssoui")
+        token = JSON.parse(token)
+        console.log(token)
+        this.setState({user: token})
+        console.log(this.state.user)
+    }
 
     render (){
         return (
             <Container id={classes["containerID"]}>
                     <h6>{this.state.jenis}</h6>
                     <h3 id={classes["title"]}>{this.state.judul}</h3>
-                    <p className={classes.date}>{this.state.tglVerifikasi}</p>
-                    <p>{this.state.authors}</p>
-                {/* {this.state.kategori.map((item) => (
-                    <button className={classes.roundedPill}>{item.nama}</button>
-                    ))} */}
+                    <p className={classes.date}>Tanggal Publikasi: {this.state.tglVerifikasi}</p>
+                    <p>Oleh :{this.state.authors}</p>
+                {this.state.kataKunci.map((item) => (
+                    <button className={classes.roundedPill}>{item}</button>
+                    ))}
 
                 <div className="d-flex">
-                    <button id={classes["features"]} onClick={this.showModal}>
-                        <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button>
+                    {this.state.user == null ? 
+                    <button id={classes["features"]} onClick={this.handleToken}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                    </button>: 
+                     <button id={classes["features"]} onClick={this.showModal}>
+                     <BoxArrowDown/> &nbsp;Unduh PDF
+                    </button> 
+                    }
                     <button id={classes["features"]} onClick={this.showCite}>
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
