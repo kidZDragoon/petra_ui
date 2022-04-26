@@ -13,9 +13,18 @@ import {Files} from "react-bootstrap-icons";
 import {BoxArrowDown} from "react-bootstrap-icons";
 import {Heart} from "react-bootstrap-icons";
 import {HeartFill} from "react-bootstrap-icons";
+import {FaEdit} from "react-icons/fa";
+import {RiDeleteBin6Fill} from "react-icons/ri";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import VisitorTrackingService from "../../services/visitorTracking.service"
 import AuthenticationDataService from "../../services/authentication.service";
+import Button from 'react-bootstrap/Button'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Grid from '@mui/material/Grid';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
 var fileDownload = require('js-file-download');
 
 export default class Detail extends Component {
@@ -27,6 +36,9 @@ export default class Detail extends Component {
             isCite:false,
             setIsOpen:false,
             isFavorite:false,
+            isOpenDelete:false,
+            successModal: false,
+            id:"",
             judul:"",
             abstrak:"",
             authors:"",
@@ -47,6 +59,9 @@ export default class Detail extends Component {
             tglUnduh:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
+        // this.handleDelete = this.handleDelete(this);
+        // this.showSuccessModal = this.showSuccessModal.bind(this);
+        // this.hideSuccessModal = this.hideSuccessModal.bind(this);
     }
     componentDidMount() {
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
@@ -56,12 +71,15 @@ export default class Detail extends Component {
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
         try{
+            console.log("item: " ,item)
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
             console.log("getting karyaIlmiah data from API")
             console.log(data)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
             tglVerifikasi:data.tglDisetujui}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            this.setState({id:item})
+           
         }catch(error){
             alert("Oops terjadi masalah pada server")
 
@@ -174,16 +192,50 @@ export default class Detail extends Component {
         this.setState({isCite:false})
     };
 
+    openDeleteButton = () => {
+        this.setState({isOpenDelete:true})
+    }
+
+    hideDeleteButton = () => {
+        this.setState({isOpenDelete:false})
+    }
+
+    handleDelete = () => {
+        try {
+            this.setState({isOpenDelete:false}); 
+            const pathname = window.location.href.split("/KaryaIlmiah/")[1];
+            axios.delete("/api/delete/" + pathname);
+            this.setState({successModal:true})
+        }
+        catch (error) {
+            alert("Oops terjadi masalah pada server");
+        }
+    }
+
     render (){
         return (
             <Container id={classes["containerID"]}>
-                    <h6>{this.state.jenis}</h6>
-                    <h3 id={classes["title"]}>{this.state.judul}</h3>
-                    <p className={classes.date}>{this.state.tglVerifikasi}</p>
-                    <p>{this.state.authors}</p>
-                {/* {this.state.kategori.map((item) => (
-                    <button className={classes.roundedPill}>{item.nama}</button>
-                    ))} */}
+                <Grid container spacing={2}>
+                    <Grid item xs={10}>
+                        <h6>{this.state.jenis}</h6>
+                        <h3 id={classes["title"]}>{this.state.judul}</h3>
+                        <p className={classes.date}>{this.state.tglVerifikasi}</p>
+                        <p>{this.state.authors}</p>
+                    {/* {this.state.kategori.map((item) => (
+                        <button className={classes.roundedPill}>{item.nama}</button>
+                        ))} */}
+                    </Grid>
+                    <Grid item xs={2} id={classes["actionbutton"]}>
+                        <div className="d-flex">
+                            <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
+                                <FaEdit size={24}/>
+                            </Link>
+                            <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
+                                <RiDeleteBin6Fill size={24}/>
+                            </button>
+                        </div>
+                    </Grid>
+                </Grid>
 
                 <div className="d-flex">
                     <button id={classes["features"]} onClick={this.showModal}>
@@ -203,6 +255,9 @@ export default class Detail extends Component {
                     }
 
                 </div>
+
+                
+
                 <Accordion className="accordion" id="accordionPanelsStayOpenExample">
                     <AccordionItem className="accordion-item">
                         <AccordionHeader className="accordion-header" >
@@ -298,6 +353,47 @@ export default class Detail extends Component {
 
                     </ModalBody>
 
+                </Modal>
+
+                <Modal className={classes.modal} show={this.state.isOpenDelete} onHide={this.hideDeleteButton}>
+                    <ModalHeader className={classes.modalHeader} >
+                        <h5 className="modal-title" id="exampleModalLongTitle">Apakah Anda yakin ingin menghapus karya ilmiah ini?</h5>
+                        <h4 type="button" className={classes.close}  onClick={this.hideDeleteButton}>
+                            <span aria-hidden="true">&times;</span>
+                        </h4>
+                    </ModalHeader>
+                    <ModalFooter className={classes.modalFooter}>
+                        <button type="button" className="btn btn-primary" onClick={this.hideDeleteButton}
+                                id={classes["cancle"]}>Batal</button>
+                        <button type="button" className="btn btn-primary" id={classes["accept"]}
+                        // tambahin onclick buat window pathname
+                        onClick={this.handleDelete}>Ya</button>
+                    </ModalFooter>
+
+                </Modal>
+
+                <Modal className="modal" show={this.state.successModal}>
+                    <Container className="px-4 pt-4 pb-4">
+                        <Row>
+                            <Col sm={2}>
+                                <div className="check-container text-white d-flex justify-content-center align-items-center">
+                                    <CheckCircleIcon fontSize="large" color="white"></CheckCircleIcon>
+                                </div>
+                            </Col>
+                            <Col sm={10}>
+                                <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">Karya ilmiah berhasil dihapus!</h5>
+                            </Col>
+                        </Row>
+                        <Row className="mt-2">
+                            <Col className="">
+                                <Link to="/Search" style={{textDecoration:"none"}}>
+                                    <Button className="btn btn-full-width btn-orange text-bold-large">
+                                        <span>Lihat daftar karya ilmiah</span>
+                                    </Button>
+                                </Link>
+                            </Col>
+                        </Row>
+                    </Container>
                 </Modal>
 
             </Container>

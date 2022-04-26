@@ -24,8 +24,10 @@ class Profile(models.Model):
     role = models.CharField('peran pengguna', max_length=128, blank=True)
     npm = models.CharField('Nomor Pokok Mahasiswa', max_length=10, blank=True)
     faculty = models.CharField('fakultas', max_length=128, blank=True)
-    study_program = models.CharField('program studi', max_length=128, blank=True)
-    educational_program = models.CharField('program pendidikan', max_length=128, blank=True)
+    study_program = models.CharField(
+        'program studi', max_length=128, blank=True)
+    educational_program = models.CharField(
+        'program pendidikan', max_length=128, blank=True)
 
     class Meta:
         verbose_name = 'profil'
@@ -91,11 +93,12 @@ class KaryaIlmiah(models.Model):
 
     def get_upload_path(instance, filename):
         return os.path.join("files/%s" % instance.fileURI)
-    
+
     def validate_file_extension(value):
         pass
 
-    filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500, validators=[FileExtensionValidator(['pdf'])])
+    filePDF = models.FileField(upload_to=get_upload_path, null=True,
+                               max_length=500, validators=[FileExtensionValidator(['pdf'])])
 
 class DaftarUnduhan(models.Model):
     karyaIlmiah = models.ForeignKey(KaryaIlmiah, on_delete=models.CASCADE)

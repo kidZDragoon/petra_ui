@@ -12,11 +12,11 @@ import {
 import {Link} from "react-router-dom";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const SuccessModalWithButton = (props) => {
-    const { link, show, title, content, buttonText } = props;
+const SuccessModalWithHide = (props) => {
+    const { hide, show, title, content, buttonText } = props;
 
     return (
-        <Modal className="modal" show={show}>
+        <Modal className="modal" show={show} onHide={hide}>
             <Container className="px-4 pt-2 pb-4">
                 <Row className="pt-4">
                     <Col sm={2}>
@@ -33,11 +33,9 @@ const SuccessModalWithButton = (props) => {
                 </Row>
                 <Row className="mt-2">
                     <Col className="">
-                        <Link to={link} style={{textDecoration:"none"}}>
-                            <Button className="btn btn-full-width btn-orange text-bold-large">
-                                <span>{buttonText}</span>
-                            </Button>
-                        </Link>
+                        <Button className="btn btn-full-width btn-orange text-bold-large" onClick={hide}>
+                            <span>{buttonText}</span>
+                        </Button>
                     </Col>
                 </Row>
             </Container>
@@ -45,4 +43,4 @@ const SuccessModalWithButton = (props) => {
     );
 };
 
-export default SuccessModalWithButton;
+export default SuccessModalWithHide;

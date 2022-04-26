@@ -13,7 +13,7 @@ code {
     monospace;
 }
 
-.main-container{
+.main-container {
   padding-top: 64px;
   padding-bottom: 120px;
 }
@@ -24,25 +24,24 @@ code {
   margin: auto;
 }
 
-.modal{
+.modal {
   height: 600px;
   margin-top: 150px;
   box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.08);
-
 }
-.modalHeader{
+.modalHeader {
   height: 100px;
 }
-.modalBody{
+.modalBody {
   height: fit-content;
 }
-.modalFooter{
+.modalFooter {
   margin-right: 27px;
 }
-.modalCiteHeader{
+.modalCiteHeader {
   height: 50px;
 }
-.close{
+.close {
   border: 0;
   padding-left: 0px;
   padding-top: 0px;
@@ -54,52 +53,58 @@ code {
   text-align: center;
   display: inline-block;
 }
-.cancel{
-  background-color: #F8F8F8;
+.cancel {
+  background-color: #f8f8f8;
   border-color: #d26903;
   color: #d26903;
   width: 180px;
   margin-right: 16px;
 }
-.close:hover{
+.close:hover {
   background-color: rgba(210, 105, 48, 0.63);
-  ;
 }
-.accept{
+.accept {
   background-color: #d26903;
   border-color: #d26903;
-  color: #FFFFFF;
+  color: #ffffff;
   width: 180px;
 }
 
-.check-container{
-  background: #41835D;
+.check-container {
+  background: #41835d;
   border-radius: 8px;
   width: 56px;
   height: 56px;
   left: 0px;
   top: 0px;
-  }
+}
+
+.searchbaru {
+  display: flex;
+  justify-content: space-between;
+  background-color: aqua;
+}
 
 /* Button */
 .primary-btn {
   padding: 16px 56px 16px 56px;
-  background: #D26930;
+  background: #d26930;
   box-shadow: 0px 2px 5px 0px rgba(210, 105, 48, 1);
   border: 0;
   border-radius: 8px;
 }
 
 .btn-full-width {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
 }
 
 .btn-orange {
-  background-color: #D26930;
+  background-color: #d26930;
   border: 0;
+  border-radius: 8px;
 }
 
 .btn-success-outline {
@@ -111,31 +116,31 @@ code {
 }
 
 /* Text */
-.text-charcoal{
+.text-charcoal {
   color: #333333;
 }
 
-.text-disabled{
+.text-disabled {
   color: #808080;
 }
 
-.text-institutional-white{
-  color: #F8F8F8;
+.text-institutional-white {
+  color: #f8f8f8;
 }
 
-.text-orange{
-  color: #D26930;
+.text-orange {
+  color: #d26930;
 }
 
-.text-white{
-  color: #FFFFFF;
+.text-white {
+  color: #ffffff;
 }
 
-.text-error{
-  color: #B9281F;
+.text-error {
+  color: #b9281f;
 }
 
-.text-main-header{
+.text-main-header {
   font-family: Mulish;
   font-size: 48px;
   font-style: normal;
@@ -144,7 +149,7 @@ code {
   letter-spacing: 0em;
 }
 
-.text-section-header{
+.text-section-header {
   font-size: 28px;
   font-style: normal;
   font-weight: 900;
@@ -152,7 +157,7 @@ code {
   letter-spacing: 0em;
 }
 
-.text-subheader{
+.text-subheader {
   font-family: Mulish;
   font-size: 24px;
   font-style: normal;
@@ -161,7 +166,7 @@ code {
   letter-spacing: 0em;
 }
 
-.text-bold-title{
+.text-bold-title {
   font-family: Mulish;
   font-size: 20px;
   font-style: normal;
@@ -170,7 +175,7 @@ code {
   letter-spacing: 0em;
 }
 
-.text-regular-title{
+.text-regular-title {
   font-family: Mulish;
   font-size: 20px;
   font-style: normal;
@@ -179,94 +184,91 @@ code {
   letter-spacing: 0em;
 }
 
-.text-black-large{
+.text-black-large {
   font-family: Mulish;
   font-size: 16px;
   font-style: normal;
   font-weight: 900;
   line-height: 22px;
   letter-spacing: 0em;
-
 }
 
-.text-bold-large{
+.text-bold-large {
   font-family: Mulish;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 22px;
   letter-spacing: 0em;
-
 }
 
-.text-large{
+.text-large {
   font-family: Mulish;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
   letter-spacing: 0em;
-
 }
 
-.text-black{
+.text-black {
   font-family: Mulish;
   font-size: 14px;
   font-style: normal;
   font-weight: 900;
   line-height: 20px;
   letter-spacing: 0em;
-
 }
 
-.text-bold{
+.text-bold {
   font-family: Mulish;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 20px;
   letter-spacing: 0em;
-
 }
 
-
-.text-normal{
+.text-normal {
   font-family: Mulish;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
   letter-spacing: 0em;
-
 }
 
-.text-black-small{
+.text-black-small {
   font-family: Mulish;
   font-size: 12px;
   font-style: normal;
   font-weight: 900;
   line-height: 17px;
   letter-spacing: 0em;
-
 }
 
-.text-bold-small{
+.text-bold-small {
   font-family: Mulish;
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
   line-height: 17px;
   letter-spacing: 0em;
-
 }
 
-
-.text-small{
+.text-small {
   font-family: Mulish;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 19px;
   letter-spacing: 0em;
+}
 
+.link {
+  color: black;
+}
+
+.link:hover {
+  color: #d26903;
 }

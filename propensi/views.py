@@ -1,23 +1,28 @@
+from cgitb import lookup
+from functools import partial
 from importlib.resources import path
 from django.forms import DateField
 from django.db.models import Count
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 # from django_filters import DateFilter
 from django_filters import BaseInFilter, CharFilter, NumberFilter
+import pkg_resources
 from django_propensi.settings import BASE_DIR, MEDIA_ROOT
 from django.core.files import File
 from django.http import HttpResponse
+from propensi import serializer
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan, Visitors
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, DaftarUnduhanSerializer, VisitorsSerializer
+    SemesterSerializer, KarilSeriliazer, DaftarUnduhanSerializer, VisitorsSerializer, \
+    KaryaIlmiahEditUploadSerializer, KaryaIlmiahEditSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.decorators import api_view
 from rest_framework_jwt.settings import api_settings
 import urllib3
@@ -52,6 +57,21 @@ def login(request):
     print('raw data')
     print(rawdata)
 
+    # xml = f'''
+    # <cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+    # <cas:authenticationSuccess>
+    # <cas:user>dini.widinarsih</cas:user>
+    # <cas:attributes>
+    # <cas:user>dini.widinarsih</cas:user>
+    # <cas:ldap_cn>Dini Widinarsih</cas:ldap_cn>
+    # <cas:peran_user>staff</cas:peran_user>
+    # <cas:nip>196806221994032001</cas:nip>
+    # <cas:nama>Dini Widinarsih</cas:nama>
+    # </cas:attributes>
+    # </cas:authenticationSuccess>
+    # </cas:serviceResponse>
+    # '''
+    # data = xmltodict.parse(xml)
     data = xmltodict.parse(rawdata)
     print('data xmltodict')
     print(data)
@@ -71,11 +91,11 @@ def login(request):
 
         data = data.get("cas:attributes")
         userData = {'username': username, 'email': f'{username}@ui.ac.id'}
-        if data.get('cas:nip'): #dosen
+        if data.get('cas:nip'):  # dosen
             profileData = {'email': f'{username}@ui.ac.id',
-                           'kd_org': '03.06.09.01', # S3 ilmu kesos, template.
+                           'kd_org': '03.06.09.01',  # S3 ilmu kesos, template.
                            'nama': data.get('cas:nama'),
-                           'npm': data.get('cas:nip'), # nip
+                           'npm': data.get('cas:nip'),  # nip
                            'peran_user': 'dosen',
                            }
             user = User.objects.create(**userData)
@@ -185,24 +205,54 @@ class CharInFilter(BaseInFilter, CharFilter):
 class KarilFilterYearAndType(FilterSet):
     tahun = NumberFilter(field_name='tglDisetujui__year', lookup_expr='exact')
     jenis = CharInFilter(field_name='jenis', lookup_expr='in')
+
     class Meta:
         model = KaryaIlmiah
         fields = (
             'tahun',
             'jenis')
-            
+
 
 class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
-        karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(data=request.data)
+        karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(
+            data=request.data)
         print(request.data)
         if karya_ilmiah_serializer.is_valid():
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Update with upload karil
+
+
+class KaryaIlmiahUpdateUploadView(APIView):
+    def put(self, request, pk, *args, **kwargs):
+        print("file beda")
+        karil = KaryaIlmiah.objects.get(pk=pk)
+        karya_ilmiah_serializer = KaryaIlmiahEditUploadSerializer(
+            karil, data=request.data, partial=True)
+        if karya_ilmiah_serializer.is_valid():
+            karya_ilmiah_serializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Update without upload karil
+
+
+class KaryaIlmiahUpdateView(UpdateAPIView):
+    def put(self, request, pk, *args, **kwargs):
+        print("file sama")
+        karil = KaryaIlmiah.objects.get(pk=pk)
+        karya_ilmiah_serializer = KaryaIlmiahEditSerializer(
+            karil, data=request.data, partial=True)
+        if karya_ilmiah_serializer.is_valid():
+            karya_ilmiah_serializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerificatorView(APIView):
@@ -233,29 +283,24 @@ class CariKaril(ListAPIView):
     serializer_class = KarilSeriliazer
     filterset_class = KarilFilterYearAndType
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['judul', 'author']
-    # filter_fields = [KarilFilterYear, {'jenis:'}]
-
-    # def get_queryset(self):
-    #     judul = self.request.GET.get('judul')
-    #     queryset = KaryaIlmiah.objects.filter(judul__icontains=judul)
-    #     return queryset
-
-# class CariKaril(viewsets.ModelViewSet):
-#     class Filter(FilterSet):
-#         class Meta:
-#             model = KaryaIlmiah
-
-#     filter_class = Filter
-#     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-#     search_fields = ['judul', 'authors']
-#     queryset = KaryaIlmiah.objects.all()
-#     serializer_class = KarilSeriliazer
+    search_fields = ['judul', 'author', 'kataKunci']
 
 
 class HasilKaril(RetrieveAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
+
+
+class DeleteKarilView(APIView):
+    def get(self, request, pk):
+        data = get_object_or_404(KaryaIlmiah, pk=pk)
+        serializer = KaryaIlmiahSeriliazer(data)
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        data = get_object_or_404(KaryaIlmiah, pk=pk)
+        data.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class DaftarVerifikasiView(ListAPIView):

@@ -12,6 +12,9 @@ import MetriksUnggahan from './components/metriks/unggahan';
 import MetriksPengunjung from './components/metriks/pengunjung';
 import MetriksUnduhan from './components/metriks/unduhan';
 
+import EditKaryaIlmiah from './components/edit-karil';
+import Metriks from './components/metriks';
+import KelolaKaril from './components/kelola-karil';
 
 ReactDOM.render(
     <HashRouter>
@@ -26,6 +29,11 @@ ReactDOM.render(
             <Route path="/metriks/unggahan" element={<MetriksUnggahan/>} />
             <Route path="/metriks/pengunjung" element={<MetriksPengunjung/>} />
             <Route path="/metriks/unduhan" element={<MetriksUnduhan/>} />
+            <Route path="/edit-karil/:id" element={<EditKaryaIlmiah/>} />
+            <Route path="/metriks" element={<Metriks/>}/>
+            <Route path="/kelola-karil" element={<KelolaKaril/>}/>
+
+            {/* <Route path="/sidebar" element={<DashboardSidebar/>}/> */}
         </Routes>
     </HashRouter>,
 

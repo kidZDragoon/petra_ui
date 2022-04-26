@@ -17,7 +17,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='KaryaIlmiah',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('author', models.CharField(max_length=500)),
                 ('npm', models.CharField(max_length=15)),
                 ('judul', models.CharField(max_length=500)),
@@ -50,18 +51,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pengumuman',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('judul', models.CharField(max_length=500)),
                 ('tglDibuat', models.DateField()),
                 ('tglDisunting', models.DateField()),
                 ('isiPengumuman', models.CharField(max_length=5000)),
-                ('stafPembuat', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='propensi.profile')),
+                ('stafPembuat', models.ForeignKey(
+                    on_delete=django.db.models.deletion.DO_NOTHING, to='propensi.profile')),
             ],
         ),
         migrations.CreateModel(
             name='Kategori',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('nama', models.CharField(max_length=50)),
                 ('listKaryaIlmiah', models.ManyToManyField(to='propensi.KaryaIlmiah')),
             ],
@@ -74,7 +78,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='karyailmiah',
             name='dosenPembimbing',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='dosen_pembimbing', to='propensi.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='dosen_pembimbing', to='propensi.profile'),
         ),
         migrations.AddField(
             model_name='karyailmiah',

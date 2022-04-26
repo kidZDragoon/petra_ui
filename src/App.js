@@ -7,6 +7,7 @@ import VisitorTrackingService from "./services/visitorTracking.service"
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
+import Sidebar from './components/sidebar';
 
 class App extends React.Component {
     constructor(props) {
@@ -126,6 +127,8 @@ class App extends React.Component {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
+                {/* kondisi untuk admin saja */}
+                <Sidebar/>
             </div>
         );
     }

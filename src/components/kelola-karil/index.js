@@ -5,9 +5,13 @@ import Box from "@mui/material/Box";
 import "@fontsource/mulish";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Button from 'react-bootstrap/Button'
+import AddIcon from '@mui/icons-material/Add';
+
 
 import {
   Checkbox,
+  Container,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -21,8 +25,9 @@ import {
 } from "@mui/material";
 import CardKaril from "../card/card-karil.component";
 import { Search } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
-const SearchList = () => {
+const KelolaKaril = () => {
   const [listKaril, setListKaril] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [year, setYear] = useState(null);
@@ -115,24 +120,35 @@ const SearchList = () => {
         <Grid item lg={9}>
           <Box>
             <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
-              Hasil Pencarian Karya Ilmiah
+              Kelola Karya Ilmiah
             </Typography>
-            <Box my={5}>
-              <TextField
-                label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
-                fullWidth
-                value={keyword}
-                onChange={(event) => setKeyword(event.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  ),
-                  style: { borderRadius: 8 }
-                }}
-              />
-            </Box>
+            <Grid container spacing={2}>
+              <Grid item xs={9}>
+                <Box my={5}>
+                  <TextField
+                    label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
+                    fullWidth
+                    value={keyword}
+                    onChange={(event) => setKeyword(event.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="start">
+                          <Search />
+                        </InputAdornment>
+                      ),
+                      style: { borderRadius: 8 }
+                    }}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
+                  <Button className="btn-orange mt-5">
+                    <AddIcon/>&nbsp;Tambah Karya Ilmiah
+                  </Button>
+                </Link>
+              </Grid>   
+            </Grid>
             <Box>
               <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
               {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
@@ -153,4 +169,4 @@ const SearchList = () => {
   );               
 }
 // }
-export default SearchList;
+export default KelolaKaril;

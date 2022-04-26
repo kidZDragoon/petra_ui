@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import Stack from 'react-bootstrap/Stack'
@@ -10,11 +10,13 @@ import '../../index.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import http from "../../http-common";
 import axios from "axios";
+import CloseIcon from '@mui/icons-material/Close';
+import InputGroup from 'react-bootstrap/InputGroup'
 import AuthenticationDataService from "../../services/authentication.service";
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 
-export default class UploadKaryaIlmiah extends Component {
+export default class EditKaryaIlmiah extends Component {
     constructor(props) {
         super(props);
         this.handleChangeField = this.handleChangeField.bind(this);
@@ -34,6 +36,7 @@ export default class UploadKaryaIlmiah extends Component {
             verificators: [],
             semesters: [],
 
+            id:"",
             //form data
             author: "",
             npm: "",
@@ -47,7 +50,6 @@ export default class UploadKaryaIlmiah extends Component {
             filePDF: null,
             check: null,
             userPengunggah: "",
-            role: "",
 
             //result
             result: [],
@@ -60,30 +62,60 @@ export default class UploadKaryaIlmiah extends Component {
             //form validation
             formIsValid: false,
             errors: {}
-        };
+        };  
     }
 
+    // Untuk nampilin data pilihan dropdown saat pertama kali halaman dibuka
     componentDidMount() {
+        const pathname = window.location.href.split("/edit-karil/")[1];
+        this.loadDataKaril(pathname);
         this.loadVerificatorData();
         this.loadSemesterData();
         this.loadUser();
     }
 
+    async loadDataKaril(item, event){
+        try{
+            const { data }= await axios.get("/api/karyaIlmiah/" + item + "/");
+            this.setState({
+                author: data.author, 
+                npm: data.npm, 
+                judul: data.judul, 
+                tglDisetujui: data.tglDisetujui, 
+                semesterDisetujui: data.semesterDisetujui.id, 
+                jenis: data.jenis, 
+                abstrak: data.abstrak, 
+                kataKunci: data.kataKunci, 
+                dosenPembimbing: data.dosenPembimbing.id, 
+                filePDF: data.filePDF,
+                filePDFcompare: data.filePDF,
+                id:item,
+            })
+            // this.fileInput.current.value = data.filePDF
+            console.log("semester: " + data.semesterDisetujui);
+            console.log("file: ", this.state.judul, ".pdf")
+        }catch(error) {
+            alert("Oops terjadi masalah pada server");
+            console.log(" gakdapet")
+            console.log("/api/karyaIlmiah/" + item + "/")
+        }
+    }
+
+     //Untuk me-retrieve data verifikator dari backend buat ditampilin di dropdown
     async loadVerificatorData(){
         try {
-            console.log("load verificator data")
             const { data } = await axios.get("/api/get-verificator-data/");
             this.setState({ verificators: data.data }); 
-            console.log(this.state.verificators);
         } catch (error) {
             alert("Oops terjadi masalah pada server");
         }
     }
 
+    //Untuk me-retrieve data semester dari backend buat ditampilin di dropdown
     async loadSemesterData(){
         try {
             const { data } = await axios.get("/api/get-semester-data/");
-            this.setState({ semesters: data.data });
+            this.setState({ semesters: data.data }); 
 
         } catch (error) {
             alert("Oops terjadi masalah pada server");
@@ -136,102 +168,66 @@ export default class UploadKaryaIlmiah extends Component {
         if (this.state.author == "") {
             isValid = false;
             errors["author"] = "Mohon lengkapi nama lengkap penulis";
-            document.getElementById("input-author").scrollIntoView();
         }
 
         //NPM
         if (this.state.npm == "") {
             isValid = false;
             errors["npm"] = "Mohon lengkapi npm penulis";
-            document.getElementById("input-npm").scrollIntoView();
         }
 
         //Judul
         if (this.state.judul == "") {
             isValid = false;
             errors["judul"] = "Mohon lengkapi judul karya ilmiah";
-            document.getElementById("input-judul").scrollIntoView();
         }
 
         //Tanggal disetujui
         if (this.state.tglDisetujui == null) {
             isValid = false;
             errors["tglDisetujui"] = "Mohon lengkapi tanggal disetujuinya karya ilmiah";
-            document.getElementById("input-tglDisetujui").scrollIntoView();
         }
 
         //Semester disetujui
         if (this.state.semesterDisetujui == "") {
             isValid = false;
             errors["semesterDisetujui"] = "Mohon lengkapi semester disetujuinya karya ilmiah";
-            document.getElementById("input-semesterDisetujui").scrollIntoView();
         }
 
         //Jenis
         if (this.state.jenis == "") {
             isValid = false;
             errors["jenis"] = "Mohon lengkapi jenis karya ilmiah";
-            document.getElementById("input-jenis").scrollIntoView();
         }
 
         //Abstrak
          if (this.state.abstrak == "") {
             isValid = false;
             errors["abstrak"] = "Mohon lengkapi abstrak karya ilmiah";
-            document.getElementById("input-abstrak").scrollIntoView();
         }
 
         //Abstrak
         if (this.state.kataKunci == "") {
             isValid = false;
             errors["kataKunci"] = "Mohon lengkapi kata kunci karya ilmiah";
-            document.getElementById("input-kataKunci").scrollIntoView();
         }
 
         //Dosen Pembimbing
         if (this.state.dosenPembimbing == "") {
             isValid = false;
             errors["dosenPembimbing"] = "Mohon lengkapi dosen pembimbing karya ilmiah";
-            document.getElementById("input-dosenPembimbing").scrollIntoView();
         }
 
-        //File PDF
+        //Abstrak
         if (this.state.filePDF == null) {
             isValid = false;
             errors["filePDF"] = "Mohon cantumkan file PDF karya ilmiah";
-            document.getElementById("input-filePDF").scrollIntoView();
         }
 
-        //Scroll to error
-        if (this.state.author == "") {
-            document.getElementById("input-author").scrollIntoView();
-        }
-        else if (this.state.npm == "") {
-            document.getElementById("input-npm").scrollIntoView();
-        }
-        else if (this.state.judul == "") {
-            document.getElementById("input-judul").scrollIntoView();
-        }
-        else if (this.state.tglDisetujui == null) {
-            document.getElementById("input-tglDisetujui").scrollIntoView();
-        }
-        else if (this.state.semesterDisetujui == "") {
-            document.getElementById("input-semesterDisetujui").scrollIntoView();
-        }
-        else if (this.state.jenis == "") {
-            document.getElementById("input-jenis").scrollIntoView();
-        }
-        else if (this.state.abstrak == "") {
-            document.getElementById("input-abstrak").scrollIntoView();
-        }
-        else if (this.state.kataKunci == "") {
-            document.getElementById("input-kataKunci").scrollIntoView();
-        }
-        else if (this.state.dosenPembimbing == "") {
-            document.getElementById("input-dosenPembimbing").scrollIntoView();
-        }
-        else if (this.state.filePDF == null) {
-            document.getElementById("input-filePDF").scrollIntoView();
+        //Check
+        if (this.state.check == false) {
+            isValid = false;
+            errors["check"] = "Mohon lengkapi kotak persetujuan";
         }
 
         this.setState({ formIsValid: isValid });
@@ -252,15 +248,12 @@ export default class UploadKaryaIlmiah extends Component {
     handleFileField(event){
         // const { name, value } = event.target;
         // console.log({name, value})
+        // this.setState({ filePDF: event.target.files[0]})
         console.log("masuk handle file field")
         let errors = {};
-        console.log(event.target.files[0])
+        console.log(event.target.files[0].type)
 
-        if (event.target.files[0] == undefined) {
-            errors['filePDF'] = "Mohon cantumkan file PDF karya ilmiah";
-            this.setState({ errors: errors });
-        }
-        else if (event.target.files[0].type === 'application/pdf') {
+        if (event.target.files[0].type === 'application/pdf') {
             console.log("file looks good")
             this.setState({ filePDF: event.target.files[0]});
             errors['filePDF'] = "";
@@ -270,6 +263,13 @@ export default class UploadKaryaIlmiah extends Component {
             errors['filePDF'] = "Pastikan file dalam format PDF ya!";
             this.setState({ errors: errors });
         }
+    }
+
+    // Untuk mengganti file
+    handleDropFile= () => {
+        console.log("sebelum: ", this.state.filePDF)
+        this.setState({filePDF: null})
+        console.log("sesudah: ", this.state.filePDF)
     }
 
     //Handle submit data form ke backend
@@ -291,37 +291,43 @@ export default class UploadKaryaIlmiah extends Component {
             formData.append('dosenPembimbing', this.state.dosenPembimbing);
             formData.append('filePDF', this.state.filePDF);
             formData.append('userPengunggah', this.state.userPengunggah);
-            console.log(formData)
 
-            const res = await axios.post(
-                    "/api/unggah-karya-ilmiah/",
+            if (this.state.filePDFcompare == this.state.filePDF){
+                const res = await axios.put(
+                    "/api/edit-karil/" + this.state.id ,
                     formData,
                     { headers: {
                         'content-type': 'multipart/form-data'
-                      }
+                    }
                     }
                 )
-
-            console.log("post success")
-
+            } else{
+                const res = await axios.put(
+                    "/api/edit-karil-upload/" + this.state.id ,
+                    formData,
+                    { headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                    }
+                )
+            }
+                                            
             //Reset state jadi kosong lagi
-            this.setState({
-                author: "",
-                npm: "",
-                judul: "",
-                tglDisetujui: null,
-                semesterDisetujui: "",
-                jenis: "",
-                abstrak: "",
-                kataKunci: "",
-                dosenPembimbing: "",
-                userPengunggah: "",
-                filePDF: null
-            })
+            // this.setState({
+            //     author: "",
+            //     npm: "",
+            //     judul: "",
+            //     tglDisetujui: null,
+            //     semesterDisetujui: "",
+            //     jenis: "",
+            //     abstrak: "",
+            //     kataKunci: "",
+            //     dosenPembimbing: "",
+            //     userPengunggah: "",
+            //     filePDF: null
+            // })
 
             this.showSuccessModal();
-            console.log("upload success")
-           
 
         } catch (error) {
             alert("Terjadi error di server. Mohon tunggu beberapa saat.");
@@ -333,31 +339,30 @@ export default class UploadKaryaIlmiah extends Component {
             <Container className="main-container list row">
                 <p className="text-section-header px-0">
                     <span class="pull-right">
-                        <Link to="/" className="pl-0 mx-4 text-orange">
+                        <Link to={`/KaryaIlmiah/${this.state.id}`} className="pl-0 mx-4 text-orange">
                             <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
                             </Link>
                     </span>
-                    Unggah Karya Ilmiah
+                    Ubah Data Karya Ilmiah
                 </p>
-
+               
                 <ConfirmationPopUp action={this.submitData}
-                        show={this.state.confirmationPopUp}
-                        hide={this.hideConfirmation}
-                        title="Apakah Anda yakin ingin mengunggah karya ilmiah new baru nih?"
-                        content="Pastikan semua data yang dimasukkan sudah benar.">
+                    show={this.state.confirmationPopUp}
+                    hide={this.hideConfirmation}
+                    title="Apakah Anda yakin ingin mengubah karya ilmiah ini?"
+                    content="Pastikan semua data yang dimasukkan sudah benar.">
                 </ConfirmationPopUp>
 
                 <SuccessModalWithButton show={this.state.successModal}
-                                        link='/karya-ilmiah-saya'
-                                        title="Karya ilmiah berhasil diunggah!"
-                                        content="Mohon tunggu agar karya ilmiah diverifikasi oleh dosen pembimbing Anda terlebih dahulu 
-                                        agar bisa ditampilkan untuk umum."
-                                        buttonText="Lihat daftar karya ilmiah">
+                    link={`/KaryaIlmiah/${this.state.id}`}
+                    title="Karya ilmiah berhasil diubah!"
+                    content=""
+                    buttonText="Lihat karya ilmiah">
                 </SuccessModalWithButton>
 
                 <Form>
                     <Stack gap={4}>
-                        <Form.Group className="" id="input-author">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Nama lengkap penulis</Form.Label>
                             <Form.Control type="text" name="author" placeholder="Nama lengkap"
                             value={this.state.author} onChange={this.handleChangeField}/>
@@ -366,7 +371,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-npm">
+                        <Form.Group className="">
                             <Form.Label className="text-large">NPM penulis</Form.Label>
                             <Form.Control type="number" name="npm" placeholder="NPM"
                              value={this.state.npm} onChange={this.handleChangeField}/>
@@ -375,7 +380,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-judul">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Judul karya ilmiah</Form.Label>
                             <Form.Control type="text" name="judul" placeholder="Judul karya ilmiah" 
                              value={this.state.judul} onChange={this.handleChangeField}/>
@@ -384,18 +389,18 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-tglDisetujui">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Tanggal yudisium</Form.Label>
-                            <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium" 
+                            <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium"
                              value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["tglDisetujui"]}
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-semesterDisetujui">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Semester yudisium</Form.Label>
-                            <Form.Select name="semesterDisetujui" aria-label="Semester yudisium" 
+                            <Form.Select name="semesterDisetujui" aria-label="Semester yudisium"
                              value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
                                 <option>Pilih semester</option>
                                  {this.state.semesters.map(smt => (
@@ -409,7 +414,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-jenis">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Jenis karya ilmiah</Form.Label>
                             <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
                              value={this.state.jenis} onChange={this.handleChangeField} >
@@ -418,13 +423,14 @@ export default class UploadKaryaIlmiah extends Component {
                                 <option value="Tesis">Tesis</option>
                                 <option value="Disertasi">Disertasi</option>
                                 <option value="Nonskripsi">Nonskripsi</option>
+
                             </Form.Select>
                             <span className="text-error text-small">
                                 {this.state.errors["jenis"]}
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-dosenPembimbing">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Nama dosen pembimbing</Form.Label>
 
                             {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
@@ -443,7 +449,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-abstrak">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Abstrak</Form.Label>
                             <Form.Control name="abstrak" as="textarea" rows={8} 
                              value={this.state.abstrak} onChange={this.handleChangeField}/>
@@ -452,7 +458,7 @@ export default class UploadKaryaIlmiah extends Component {
                             </span>
                         </Form.Group>
 
-                        <Form.Group className="" id="input-kataKunci">
+                        <Form.Group className="">
                             <Form.Label className="text-large">Kata kunci</Form.Label>
                             <p className="text-charcoal text-small">
                                 Contoh: Customer experience, sentiment analysis, e-commerce
@@ -463,15 +469,38 @@ export default class UploadKaryaIlmiah extends Component {
                                 {this.state.errors["kataKunci"]}
                             </span>
                         </Form.Group>
-
-                        <Form.Group className="" id="input-filePDF">
+                        
+                        <div>
                             <Form.Label className="text-large">Unggah karya ilmiah</Form.Label>
-                            <p className="text-charcoal text-small">
-                                Pastikan file dalam format PDF
-                            </p>
-                            <Form.Control name="filePDF" type="file" onChange={this.handleFileField}/>
+                            {this.state.filePDF == null 
+                            ? <Form.Group className="">
+                                <Form.Control name="filePDF" type="file" onChange={this.handleFileField}/>
+                                <span className="text-error text-small">
+                                    {this.state.errors["filePDF"]}
+                                </span>
+                            </Form.Group>
+                            : <InputGroup className="mb-3">
+                                <Form.Control type="text" name="filePDF" 
+                                    placeholder={this.state.judul + ".pdf"} 
+                                    disabled/>
+                                <Button variant="outline-secondary" id="button-addon2">
+                                    <p style={{textAlign:"center", marginTop:'0.5rem', marginBottom: '0.5rem'}}>Preview</p>
+                                </Button>
+                                <Button variant="outline-secondary" id="button-addon2" onClick={this.handleDropFile}>
+                                    <CloseIcon fontsize="small"></CloseIcon>
+                                </Button>
+                            </InputGroup>
+                            }
+                        </div>
+                        
+
+                        <Form.Group className="">
+                            <Form.Check type="checkbox" className="text-large" value={this.state.check} onChange={this.handleChangeField}
+                            label="Pastikan semua data yang Anda isi sudah benar. 
+                            Karya ilmiah yang Anda unggah akan harus diverifikasi oleh dosen pembimbing Anda 
+                            terlebih dahulu sebelum ditampilkan untuk umum."/>
                             <span className="text-error text-small">
-                                {this.state.errors["filePDF"]}
+                                {this.state.errors["check"]}
                             </span>
                         </Form.Group>
                         
