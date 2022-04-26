@@ -34,7 +34,7 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 def login(request):
     print('tesss')
-     # originURL = "http://localhost:8000/"
+    # originURL = "http://localhost:8000/"
     originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
@@ -165,7 +165,7 @@ class CreateDaftarUnduhanView(APIView):
         daftarUnduhanSerializer = DaftarUnduhanSerializer(data=request.data)
         print(request.data)
         print(request.data['karyaIlmiah'])
-        checkDU = DaftarUnduhan.objects.filter(karyaIlmiah_id=request.data['karyaIlmiah'])
+        checkDU = DaftarUnduhan.objects.filter(idProfile=request.data['idProfile'], karyaIlmiah_id=request.data['karyaIlmiah'])
         print(checkDU)
         if checkDU:
             print('DU sudah ada dalam database')
