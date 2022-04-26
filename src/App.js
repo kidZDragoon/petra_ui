@@ -127,7 +127,7 @@ class App extends React.Component {
                     </Container>
                 </Navbar>
                 {/* kondisi untuk admin saja */}
-                {/* <Sidebar/> */}
+                <Sidebar/>
             </div>
         );
     }

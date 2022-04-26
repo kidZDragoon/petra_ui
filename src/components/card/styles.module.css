@@ -75,6 +75,12 @@
   border-radius: 60px;
 }
 
+/* .seachbaru {
+  display: flex;
+  justify-content: space-between;
+  background-color: aqua;
+} */
+
 #actionbutton {
   padding-right: 0%;
   margin-right: 0%;

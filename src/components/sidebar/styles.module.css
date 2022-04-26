@@ -35,6 +35,7 @@
 }
 
 .SidebarList #box {
+    color: black;
     width: 250px;
     height: 72px;
     margin-left: 20px;

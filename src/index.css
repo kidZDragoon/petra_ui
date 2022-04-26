@@ -79,6 +79,12 @@ code {
   top: 0px;
 }
 
+.searchbaru {
+  display: flex;
+  justify-content: space-between;
+  background-color: aqua;
+}
+
 /* Button */
 .primary-btn {
   padding: 16px 56px 16px 56px;
@@ -98,6 +104,7 @@ code {
 .btn-orange {
   background-color: #d26930;
   border: 0;
+  border-radius: 8px;
 }
 
 .btn-success-outline {
