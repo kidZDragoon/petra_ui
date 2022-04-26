@@ -38,6 +38,7 @@ export default class CardPengumuman extends Component{
 
     async deletePengumuman(id){
         await axios.delete("/api/pengumuman/" + id);
+        this.hideConfirmation()
         this.props.deleteHandler()
             
     }
@@ -63,7 +64,7 @@ export default class CardPengumuman extends Component{
             <div>
                 {isStaf === true ?
                 <div>
-                    <ConfirmationPopUp action={() => this.deletePengumuman(id)}
+                <ConfirmationPopUp action={() => this.deletePengumuman(id)}
                         show={this.state.isDelete}
                         hide={this.hideConfirmation}
                         title={this.state.title}
