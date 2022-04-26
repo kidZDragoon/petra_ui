@@ -41,13 +41,9 @@ export default class DetailPengumuman extends Component{
                 const response = await AuthenticationDataService.profile(token);
                 console.log(response);
                 console.log(response.data.role);
-                if (response.data.role === "staf"){
-                    this.setState({role: response.data.role, link:"/list-pengumuman"});
-                }else{
-                    this.setState({role: response.data.role, link:"/"});
-                }
+                this.setState({role: response.data.role, link:"/list-pengumuman"});
             }else{
-                this.setState({link:"/"});
+                this.setState({link:"/list-pengumuman"});
             }
             
            
