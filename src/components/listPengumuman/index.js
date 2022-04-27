@@ -6,6 +6,7 @@ import axios from "axios";
 import AuthenticationDataService from "../../services/authentication.service";
 import { Link } from "react-router-dom";
 import {PlusLg} from "react-bootstrap-icons";
+import Pagination from '@material-ui/lab/Pagination';
 
 export default class ListPengumuman extends Component {
     constructor(props) {
@@ -14,9 +15,11 @@ export default class ListPengumuman extends Component {
             listPengumuman:[],
             isDelete:false,
             isStaf:false,
+            page:0,
+            totalPage:0,
         }
         this.loadPengumumanListData = this.loadPengumumanListData.bind(this);
-
+        this.handleChangePage = this.handleChangePage.bind(this)
     }
    
     componentDidMount() {
@@ -32,8 +35,15 @@ export default class ListPengumuman extends Component {
     async loadPengumumanListData(){
         try {
             const { data } = await axios.get("/api/pengumuman/");
-            this.setState({ listPengumuman: data.data.reverse(), isDelete: false});
+            var total_page = 0;
+            if(data.data.length/5 - Math.round(data.data.length/5) > 0){
+                total_page = Math.round(data.data.length/5) + 1
+            }else{
+                total_page = Math.round(data.data.length/5)
+            }
+            this.setState({ listPengumuman: data.data.reverse(), isDelete: false, totalPage:total_page});
             console.log(this.state.listPengumuman)
+            console.log(this.state.totalPage)
 
         } catch (error) {
             alert("Oops terjadi masalah pada server");
@@ -65,6 +75,12 @@ export default class ListPengumuman extends Component {
         }
     }
 
+    handleChangePage(event, value){
+        console.log("val: " + value)
+        this.setState({page:value})
+        console.log(this.state.page)
+    }
+
     render(){
         return(
             <Container >
@@ -79,16 +95,19 @@ export default class ListPengumuman extends Component {
                  </Link>
              </div>
       
-         </div>:
+            </div>:
             <h3 className={classes.judulListPengumuman}>List Pengumuman</h3>
             }
-            
+            <div>
             {this.state.listPengumuman.map((pengumuman) => (
+            
                 <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
                 pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                 isStaf={this.state.isStaf}/>
+               
             ))}
-        
+             <Pagination count={10} onChange={this.handleChangePage}/>
+            </div>
             </Container>
         )
     }

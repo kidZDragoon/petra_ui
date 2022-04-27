@@ -1,6 +1,6 @@
 {
-  "proxy-development": "http://localhost:8000",
-  "proxy": "https://propensi-a03-staging.herokuapp.com",
+  "proxy": "http://localhost:8000",
+  "proxy-staging": "https://propensi-a03-staging.herokuapp.com",
   "proxy-production": "https://propensi-a03.herokuapp.com",
   "name": "frontend",
   "version": "0.1.0",
@@ -9,6 +9,7 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fontsource/mulish": "^4.5.5",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.2",
     "@mui/system": "^5.5.1",
