@@ -1,0 +1,22 @@
+.pesan{
+    white-space: pre-line
+}
+.title{
+    margin-top: 30px;
+    font-weight: bolder
+}
+.date{
+    font-weight: 300;
+    margin: -1px;
+}
+.line{
+    height: 1.5px;
+    width: 100%;
+    background-color: black;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.area{
+    padding-left: 105px;
+    margin: -10px;
+}

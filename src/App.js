@@ -47,6 +47,7 @@ class App extends React.Component {
         // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
+
         const SSOWindow = window.open(
             new URL(
                 `https://sso.ui.ac.id/cas2/login?service=${encodeURIComponent(serviceURL)}`

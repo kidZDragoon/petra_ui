@@ -2,12 +2,13 @@ from django.urls import path, re_path
 from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, \
     DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan, MetriksUnggahanView, \
     MetriksPengunjung, TahunMetriksPengunjung, MetriksUnduhanView, TahunMetriksUnduhan, MetriksTop3Unduhan, \
-    DeleteKarilView, KaryaIlmiahUpdateUploadView, KaryaIlmiahUpdateView
+    DeleteKarilView, KaryaIlmiahUpdateUploadView, KaryaIlmiahUpdateView, PengumumanView, PengumumanUpdateDeleteView
 
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
     path('profile', ProfileView.as_view(), name='ProfileView'),
+    path('profile/<int:pk>/', ProfileView.as_view(), name='ProfileView'),
     path('daftarUnduhan', CreateDaftarUnduhanView.as_view(), name='createDaftarUnduhanView'),
     path('daftarUnduhan/<int:pk>', GetDaftarUnduhan.as_view(), name='getDaftarUnduhan'),
     path('karyaIlmiah/<int:pk>/', KaryaIlmiahView.as_view(), name='KaryaIlmiahView'),
@@ -30,4 +31,7 @@ urlpatterns = [
     path('edit-karil/<int:pk>', KaryaIlmiahUpdateView.as_view(),
          name='KaryaIlmiahUpdateView'),
     path('delete/<int:pk>/',  DeleteKarilView.as_view(), name='DeleteKarilView'),
+    path('pengumuman/', PengumumanView.as_view(), name='pengumumanView'),
+    path('pengumuman/<int:pk>/', PengumumanUpdateDeleteView.as_view(), name='PengumumanUpdateDeleteView'),
+   
 ]

@@ -5,13 +5,13 @@ from rest_framework.serializers import ReadOnlyField, SerializerMethodField
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 from django.utils.timezone import datetime
-from .models import User, Profile, KaryaIlmiah, Semester, DaftarUnduhan, Visitors
+from .models import User, Profile, KaryaIlmiah, Semester, DaftarUnduhan, Visitors, Pengumuman
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'id') #ditambahin id
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -224,14 +224,26 @@ class VisitorsSerializer(serializers.ModelSerializer):
         model = Visitors
         fields = ['ip']
 
-    # def create(self, validated_data):
-    #     ip = validated_data['ip']
-    #     tanggal = datetime.date.today()
+class PengumumanSeriliazer(serializers.ModelSerializer):
+    class Meta:
+        model = Pengumuman
+        fields = "__all__"
 
-    #     if Visitors.objects.filter(ip=ip, tanggalKunjungan=today).exists():
-    #         print("visit already saved")
-    #         return Visitors.objects.get(ip=ip, tanggalKunjungan=today)
-
-    #     else: 
-    #         print("visit not yet saved")
-    #         return Visitors(ip=ip, tanggalKunjungan=today)
+    def create(self, validated_data):
+        print("masuk serializer")
+        print(validated_data)
+        judul = validated_data['judul']
+        print("author")
+        isiPengumuman = validated_data['isiPengumuman']
+        print("npm")
+        tglDibuat = validated_data['tglDibuat']
+        print("judul")
+        tglDisunting = validated_data['tglDisunting']
+        print("tglDisetujui")
+        stafPembuat = validated_data['stafPembuat']
+        print("smtDisetujui")
+        pengumuman = Pengumuman (judul=judul, isiPengumuman=isiPengumuman, tglDibuat=tglDibuat, tglDisunting=tglDisunting, 
+                        stafPembuat=stafPembuat)
+        print("created pengumuman object")
+        pengumuman.save()
+        return pengumuman
