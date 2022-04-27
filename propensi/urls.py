@@ -1,19 +1,21 @@
 from django.urls import path, re_path
 from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, \
-    DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan, MetriksUnggahanView, \
+    DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhanView, MetriksUnggahanView, \
     MetriksPengunjung, TahunMetriksPengunjung, MetriksUnduhanView, TahunMetriksUnduhan, MetriksTop3Unduhan, \
     DeleteKarilView, KaryaIlmiahUpdateUploadView, KaryaIlmiahUpdateView, PengumumanView, KaryaIlmiahSaya, PengumumanUpdateDeleteView, \
-    PengumumanUpdateDeleteView, KaryaIlmiahStatusView
+    KaryaIlmiahStatusView, AddBookmarkView, BookmarkListView, DeleteBookmarkView, CheckBookmarkStatusView
 
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
     path('profile', ProfileView.as_view(), name='ProfileView'),
     path('profile/<int:pk>/', ProfileView.as_view(), name='ProfileView'),
-    path('daftarUnduhan', CreateDaftarUnduhanView.as_view(),
-         name='createDaftarUnduhanView'),
-    path('daftarUnduhan/<int:pk>',
-         GetDaftarUnduhan.as_view(), name='getDaftarUnduhan'),
+    path('daftarUnduhan', CreateDaftarUnduhanView.as_view(), name='CreateDaftarUnduhanView'),
+    path('daftarUnduhan/<int:pk>', GetDaftarUnduhanView.as_view(), name='GetDaftarUnduhanView'),
+    path('daftarBookmark', BookmarkListView.as_view(), name='BookmarkListView'),
+    path('daftarBookmark/add/<int:pk>', AddBookmarkView.as_view(), name='AddBookmarkView'),
+    path('daftarBookmark/delete/<int:pk>', DeleteBookmarkView.as_view(), name='DeleteBookmarkView'),
+    path('daftarBookmark/check/<int:pk>', CheckBookmarkStatusView.as_view(), name='CheckBookmarkStatusView'),
     path('karyaIlmiah/<int:pk>/', KaryaIlmiahView.as_view(), name='KaryaIlmiahView'),
     path('unggah-karya-ilmiah/', KaryaIlmiahUploadView.as_view(),
          name='KaryaIlmiahUploadView'),

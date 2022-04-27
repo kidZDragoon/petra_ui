@@ -1,0 +1,144 @@
+.roundedPill{
+    background-color: #58929C;
+    color: white;
+    width: fit-content;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    height: 40px;
+    font-size: 15px;
+    border-radius: 30px;
+    border: 0;
+    padding: 0px 17px 0px 17px;
+    transition: 0.3s;
+}
+.roundedPill:hover{
+    background-color: #FFFFFF;
+    color: #58929C;
+}
+#containerID{
+    padding-top: 20px;
+    width: 60%;
+}
+.date{
+    color: rgba(0,0,0,0.7);
+    margin-top: 10px;
+}
+#features{
+    margin-right: 18px;
+    color: #d26903;
+    font-weight: 620;
+    margin-bottom: 20px;
+    border: 0;
+    background-color: #FFFFFF;
+    /*background-color: #F8F8F8;*/
+}
+#features:hover{
+    background-color: #d26903;
+    color: #F8F8F8;
+}
+.line{
+    height: 1.5px;
+    width: 100%;
+    background-color: black;
+}
+.card{
+    width: 80%;
+
+}
+#title{
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    position: static;
+    width: 784px;
+    height:fit-content;
+    left: 328px;
+    top: 64px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 10px;
+}
+.content p{
+    line-height: 1.8;
+    font-size: large;
+}
+.accordion-button{
+    color: #000 !important;
+    background-color: #F8F8F8 !important;
+
+}
+.accordion-button:hover{
+    background-color: #F8F8F8!important;
+}
+
+.accordion-body{
+    background-color: #F8F8F8;
+}
+.close{
+    border: 0;
+    margin-top: -40px;
+    padding-left: 7px;
+    padding-bottom: 5px;
+    border-radius: 50px;
+    width: 35px;
+    background-color: #d3d3d3;
+}
+#cancle{
+    background-color: #F8F8F8;
+    border-color: #d26903;
+    color: #d26903;
+    width: 200px;
+}
+#accept{
+    background-color: #d26903;
+    border-color: #d26903;
+    color: #FFFFFF;
+    width: 200px;
+}
+.modal{
+    height: 600px;
+    margin-top: 150px;
+}
+.modalHeader{
+    height: 100px;
+}
+.modalBody{
+    height: fit-content;
+}
+.modalFooter{
+    margin-right: 27px;
+}
+.modalCiteHeader{
+    height: 50px;
+}
+.citeStyle{
+    background-color: #839F58;
+    color: #FFFFFF;
+    width: 80px !important;
+    border-radius: 8px;
+    height: fit-content;
+    text-align: center;
+    margin-top: 23px;
+    padding-bottom: 5px;
+    top: 20px;
+
+}
+.closeCite{
+    border: 0;
+    margin-top: 0px;
+    padding-left: 8.5px;
+    padding-bottom: 5px;
+    border-radius: 50px;
+    width: 35px;
+    background-color: #d3d3d3;
+}
+.cite{
+    padding-left: 10px;
+    width: 500px;
+}
