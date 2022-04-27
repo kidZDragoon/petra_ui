@@ -86,6 +86,7 @@ const SearchList = () => {
                 onChange={(date) => setYear(date)}
                 showYearPicker
                 dateFormat="yyyy"
+                className="react-datepicker"
               />
             </Box>
             <Box mt={4}>
