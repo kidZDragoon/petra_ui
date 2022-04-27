@@ -20,6 +20,7 @@ import ListPengumuman from './components/listPengumuman';
 import UpdatePengumuman from './components/updatePengumuman'
 import DetailPengumuman from './components/detailPengumuman'
 import Home from './components/home'
+import MissingPage from './components/missing-page';
 
 ReactDOM.render(
     <HashRouter>
@@ -44,6 +45,7 @@ ReactDOM.render(
             <Route path="/kelola-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/update-pengumuman/:id" element={<UpdatePengumuman/>}/>
             <Route path="/detail-pengumuman/:id" element={<DetailPengumuman/>}/>
+            <Route path="/404" element={<MissingPage/>}/>
             <Route path="/" element={<Home/>}/>
         </Routes>
     </HashRouter>,
