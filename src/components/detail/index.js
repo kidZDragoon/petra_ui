@@ -59,6 +59,7 @@ export default class Detail extends (Component, App) {
             tglUnduh:"",
             filePDF:"",
             role:"",
+            userPenandaBuku:[],
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
         this.handleToken = this.handleToken.bind(this);
@@ -84,12 +85,45 @@ export default class Detail extends (Component, App) {
             console.log(listkataKunci)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
-            tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci,
+            userPenandaBuku:data.userPenandaBuku}) //tglDisetuji jgn lupa diganti tglVerfikasi
             this.setState({id:item})
            
         }catch(error){
             alert("Oops terjadi masalah pada server")
 
+        }
+
+        try {
+            let token = localStorage.getItem("ssoui");
+            token = JSON.parse(token);
+            AuthenticationDataService.profile(token)
+                .then(response => {
+                    console.log('get profile')
+                    console.log(response)
+                    try {
+                        axios.put('api/daftarBookmark/check/'+this.state.karyaIlmiah.id, {
+                            'idProfile': response.data.id,
+                        }).then(response => {
+                            console.log('fire DaftarUnduhan state to API')
+                            console.log(response)
+                            if (response.data['bookmarked'] == "true") {
+                                this.setState({isFavorite: true})
+                                console.log('bookmarked')
+                                console.log(this.state.isFavorite)
+                            } else {
+                                this.setState({isFavorite: false})
+                                console.log('not bookmarked')
+                                console.log(this.state.isFavorite)
+                            }
+                        })
+                    } catch {
+                        alert('CheckStatusBookmark from API error')
+                    }
+                })
+            // console.log(response)
+        } catch {
+            alert("Load profile error");
         }
 
         try {
@@ -112,7 +146,7 @@ export default class Detail extends (Component, App) {
             alert("GET DaftarUnduhan from API error")
         }
 
-        console.log(this.state.daftarPengunduh)
+
     }
     
     handlePDFDownload = () => {
@@ -121,7 +155,7 @@ export default class Detail extends (Component, App) {
             token = JSON.parse(token);
             AuthenticationDataService.profile(token)
                 .then(response => {
-                    console.log('get profile & fill state')
+                    console.log('get profile')
                     console.log(response)
                     try {
                         axios.post('api/daftarUnduhan', {
@@ -148,9 +182,11 @@ export default class Detail extends (Component, App) {
             console.log('get the pdf file from cloud')
             fileDownload(res.data, this.state.judul+'.pdf');
             console.log(res);
+            window.location.reload()
         }).catch(err => {
             console.log(err);
         })
+
 
     };
 
@@ -159,7 +195,54 @@ export default class Detail extends (Component, App) {
     };
 
     favoriteControl = () => {
-        this.setState({isFavorite:!this.state.isFavorite})
+        if (this.state.isFavorite) {
+            try {
+                let token = localStorage.getItem("ssoui");
+                token = JSON.parse(token);
+                AuthenticationDataService.profile(token)
+                    .then(response => {
+                        console.log('get profile')
+                        console.log(response)
+                        try {
+                            axios.put('api/daftarBookmark/delete/'+this.state.karyaIlmiah.id, {
+                                "idProfile": response.data.id
+                            }).then(response => {
+                                console.log('delete bookmark')
+                                console.log(response)
+                                this.setState({isFavorite:!this.state.isFavorite})
+                            })
+                        } catch {
+                            alert('DeleteBookmark API error')
+                        }
+                    })
+            } catch {
+                alert("Load profile error");
+            }
+        } else {
+            try {
+                let token = localStorage.getItem("ssoui");
+                token = JSON.parse(token);
+                AuthenticationDataService.profile(token)
+                    .then(response => {
+                        console.log('get profile')
+                        console.log(response)
+                        try {
+                            axios.put('api/daftarBookmark/add/'+this.state.karyaIlmiah.id, {
+                                "idProfile": response.data.id
+                            }).then(response => {
+                                console.log('PUT daftarBookmark')
+                                console.log(response)
+                                this.setState({isFavorite:!this.state.isFavorite})
+                            })
+                        } catch {
+                            alert('POST daftarBookmark to API error')
+                        }
+                    })
+            } catch {
+                alert("Load profile error");
+            }
+        }
+        // this.setState({isFavorite:!this.state.isFavorite})
     };
 
     hideModal = () => {
@@ -292,7 +375,7 @@ export default class Detail extends (Component, App) {
                         </button>
                     ):
                         <button id={classes["features"]} onClick={this.favoriteControl}>
-                            <HeartFill/> &nbsp;Tambahkan ke favorit
+                            <HeartFill/> &nbsp;Karya Ilmiah sudah ada dalam daftar favorit!
                         </button>
                     }
 
