@@ -20,6 +20,7 @@ import ListPengumuman from './components/listPengumuman';
 import UpdatePengumuman from './components/updatePengumuman'
 import DetailPengumuman from './components/detailPengumuman'
 import Home from './components/home'
+import Bookmark from './components/bookmark'
 import MissingPage from './components/missing-page';
 
 ReactDOM.render(
@@ -46,6 +47,7 @@ ReactDOM.render(
             <Route path="/detail-pengumuman/:id" element={<DetailPengumuman/>}/>
             <Route path="/404" element={<MissingPage/>}/>
             <Route path="/" element={<Home/>}/>
+            <Route path="/karya-ilmiah-favorit" element={<Bookmark/>} />
         </Routes>
     </HashRouter>,
 
