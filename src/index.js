@@ -39,9 +39,9 @@ ReactDOM.render(
             <Route path="/kelola-karil" element={<KelolaKaril/>}/>
 
             {/* <Route path="/sidebar" element={<DashboardSidebar/>}/> */}
-            <Route path="/list-user" element={<UserList/>}/>
+            <Route path="/kelola-user" element={<UserList/>}/>
             <Route path="/form-pengumuman" element={<FormPengumuman/>}/>
-            <Route path="/list-pengumuman" element={<ListPengumuman/>}/>
+            <Route path="/kelola-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/update-pengumuman/:id" element={<UpdatePengumuman/>}/>
             <Route path="/detail-pengumuman/:id" element={<DetailPengumuman/>}/>
             <Route path="/" element={<Home/>}/>

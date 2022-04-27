@@ -17,18 +17,13 @@ import {FaEdit} from "react-icons/fa";
 import {RiDeleteBin6Fill} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import axios from "axios";
-<<<<<<< HEAD
-import VisitorTrackingService from "../../services/visitorTracking.service"
 import AuthenticationDataService from "../../services/authentication.service";
 import Button from 'react-bootstrap/Button'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Grid from '@mui/material/Grid';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-=======
-import AuthenticationDataService from "../../services/authentication.service.js";
 import App from "../../App"; //buat sso
->>>>>>> 7ca32dcb53962f80f6a8b1c0e3334e99d43751a4
 
 var fileDownload = require('js-file-download');
 

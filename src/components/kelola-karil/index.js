@@ -78,6 +78,59 @@ const KelolaKaril = () => {
     <Dasbor>
       <Box py={8} px={8} height={'100vh'}>
         <Grid container spacing={8}>
+          <Grid item lg={9}>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
+                    Kelola Karya Ilmiah
+                  </Typography>
+
+                <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
+                  <Button className="btn-orange">
+                    <AddIcon/>&nbsp;Tambah Karya Ilmiah
+                  </Button>
+                </Link>
+
+              </Box>
+              
+              <Box my={5}>
+                <TextField
+                  label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
+                  fullWidth
+                  value={keyword}
+                  onChange={(event) => setKeyword(event.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                    ),
+                    style: { borderRadius: 8 }
+                  }}
+                />
+              </Box>
+                
+   
+              <Box>
+                <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
+                {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
+                {listKaril.map((karil, idx) => 
+                  <Box my={3} key={idx}>
+                    {karil.status == 1
+                    ? <CardKaril 
+                    data={karil}/>
+                    : null
+                    }
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Grid>
           <Grid item lg={3}>
             <Box bgcolor="#F8F8F8" p={3}>
               <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
@@ -116,53 +169,6 @@ const KelolaKaril = () => {
                     label="Non-skripsi"
                   />
                 </FormGroup>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item lg={9}>
-            <Box>
-              <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
-                Kelola Karya Ilmiah
-              </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={9}>
-                  <Box my={5}>
-                    <TextField
-                      label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
-                      fullWidth
-                      value={keyword}
-                      onChange={(event) => setKeyword(event.target.value)}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="start">
-                            <Search />
-                          </InputAdornment>
-                        ),
-                        style: { borderRadius: 8 }
-                      }}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={3}>
-                  <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
-                    <Button className="btn-orange mt-5">
-                      <AddIcon/>&nbsp;Tambah Karya Ilmiah
-                    </Button>
-                  </Link>
-                </Grid>   
-              </Grid>
-              <Box>
-                <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
-                {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
-                {listKaril.map((karil, idx) => 
-                  <Box my={3} key={idx}>
-                    {karil.status == 1
-                    ? <CardKaril 
-                    data={karil}/>
-                    : null
-                    }
-                  </Box>
-                )}
               </Box>
             </Box>
           </Grid>

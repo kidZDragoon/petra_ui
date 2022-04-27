@@ -38,7 +38,7 @@ const MetriksPengunjung = () => {
 
     return (
         <Dasbor className={classes.mainContent}>
-            <Box py={8} px={12}>
+            <Box py={8} px={8}>
                 <Box
                     sx={{
                     width: '60%',
