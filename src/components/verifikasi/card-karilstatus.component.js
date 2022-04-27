@@ -2,8 +2,6 @@ import React, {Component, useState} from "react";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Container from 'react-bootstrap/Container'
 import AuthenticationDataService from "../../services/authentication.service";
 import axios from "axios";
@@ -17,7 +15,6 @@ import SuccessModalWithHide from "../modals/success-modal-with-hide";
 const CardKarilStatus = ({data}) => {
         const [isOpen, setIsOpen] = useState(false);
         const [successModalUnduh, setSuccessModalUnduh] = useState(false);
-        const [successModalDelete, setSuccessModalDelete] = useState(false);
         const status = data.status;
         let verifiedTag;
         if (status === "1") {
