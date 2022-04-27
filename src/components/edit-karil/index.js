@@ -68,6 +68,7 @@ export default class EditKaryaIlmiah extends Component {
 
     // Untuk nampilin data pilihan dropdown saat pertama kali halaman dibuka
     componentDidMount() {
+        this.loadUser();
         const pathname = window.location.href.split("/edit-karil/")[1];
         this.loadDataKaril(pathname);
         this.loadVerificatorData();
@@ -335,184 +336,206 @@ export default class EditKaryaIlmiah extends Component {
         }
     }
 
+    async loadUser(){
+        try {
+            let token = localStorage.getItem("ssoui");
+            console.log(token);
+            token = JSON.parse(token);
+            console.log(token);
+            if (token !== null){
+                const response = await AuthenticationDataService.profile(token);
+                console.log(response);
+                console.log(response.data.role);
+                this.setState({role:response.data.role});
+            }
+
+        } catch {
+            console.log("Load user error!");
+        }
+    }
+
     render() {
         return(
-            <Container className="main-container list row">
-                <p className="text-section-header px-0">
-                    <span class="pull-right">
-                        <Link to={`/KaryaIlmiah/${this.state.id}`} className="pl-0 mx-4 text-orange">
-                            <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
-                            </Link>
-                    </span>
-                    Ubah Data Karya Ilmiah
-                </p>
-            
-                <ConfirmationPopUp action={this.submitData}
-                    show={this.state.confirmationPopUp}
-                    hide={this.hideConfirmation}
-                    title="Apakah Anda yakin ingin mengubah karya ilmiah ini?"
-                    content="Pastikan semua data yang dimasukkan sudah benar.">
-                </ConfirmationPopUp>
-
-                <SuccessModalWithButton show={this.state.successModal}
-                    link={`/KaryaIlmiah/${this.state.id}`}
-                    title="Karya ilmiah berhasil diubah!"
-                    content=""
-                    buttonText="Lihat karya ilmiah">
-                </SuccessModalWithButton>
-
-                <Form>
-                    <Stack gap={4}>
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Nama lengkap penulis</Form.Label>
-                            <Form.Control type="text" name="author" placeholder="Nama lengkap"
-                            value={this.state.author} onChange={this.handleChangeField}/>
-                            <span className="text-error text-small">
-                                {this.state.errors["author"]}
+            <div>
+                {this.state.role === "staf"?
+                    <Container className="main-container list row">
+                        <p className="text-section-header px-0">
+                            <span class="pull-right">
+                                <Link to={`/KaryaIlmiah/${this.state.id}`} className="pl-0 mx-4 text-orange">
+                                    <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
+                                    </Link>
                             </span>
-                        </Form.Group>
+                            Ubah Data Karya Ilmiah
+                        </p>
+                    
+                        <ConfirmationPopUp action={this.submitData}
+                            show={this.state.confirmationPopUp}
+                            hide={this.hideConfirmation}
+                            title="Apakah Anda yakin ingin mengubah karya ilmiah ini?"
+                            content="Pastikan semua data yang dimasukkan sudah benar.">
+                        </ConfirmationPopUp>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">NPM penulis</Form.Label>
-                            <Form.Control type="number" name="npm" placeholder="NPM"
-                            value={this.state.npm} onChange={this.handleChangeField}/>
-                            <span className="text-error text-small">
-                            {this.state.errors["npm"]}
-                            </span>
-                        </Form.Group>
+                        <SuccessModalWithButton show={this.state.successModal}
+                            link={`/KaryaIlmiah/${this.state.id}`}
+                            title="Karya ilmiah berhasil diubah!"
+                            content=""
+                            buttonText="Lihat karya ilmiah">
+                        </SuccessModalWithButton>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Judul karya ilmiah</Form.Label>
-                            <Form.Control type="text" name="judul" placeholder="Judul karya ilmiah" 
-                            value={this.state.judul} onChange={this.handleChangeField}/>
-                            <span className="text-error text-small">
-                                {this.state.errors["judul"]}
-                            </span>
-                        </Form.Group>
+                        <Form>
+                            <Stack gap={4}>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Nama lengkap penulis</Form.Label>
+                                    <Form.Control type="text" name="author" placeholder="Nama lengkap"
+                                    value={this.state.author} onChange={this.handleChangeField}/>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["author"]}
+                                    </span>
+                                </Form.Group>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Tanggal yudisium</Form.Label>
-                            <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium"
-                            value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
-                            <span className="text-error text-small">
-                                {this.state.errors["tglDisetujui"]}
-                            </span>
-                        </Form.Group>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">NPM penulis</Form.Label>
+                                    <Form.Control type="number" name="npm" placeholder="NPM"
+                                    value={this.state.npm} onChange={this.handleChangeField}/>
+                                    <span className="text-error text-small">
+                                    {this.state.errors["npm"]}
+                                    </span>
+                                </Form.Group>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Semester yudisium</Form.Label>
-                            <Form.Select name="semesterDisetujui" aria-label="Semester yudisium"
-                            value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
-                                <option>Pilih semester</option>
-                                {this.state.semesters.map(smt => (
-                                    <option key={smt.id} value={smt.id}>
-                                        {smt.semester}
-                                        </option>
-                                ))}
-                            </Form.Select>
-                            <span className="text-error text-small">
-                                {this.state.errors["semesterDisetujui"]}
-                            </span>
-                        </Form.Group>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Judul karya ilmiah</Form.Label>
+                                    <Form.Control type="text" name="judul" placeholder="Judul karya ilmiah" 
+                                    value={this.state.judul} onChange={this.handleChangeField}/>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["judul"]}
+                                    </span>
+                                </Form.Group>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Jenis karya ilmiah</Form.Label>
-                            <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
-                            value={this.state.jenis} onChange={this.handleChangeField} >
-                                <option>Pilih jenis karya ilmiah</option>
-                                <option value="Skripsi">Skripsi</option>
-                                <option value="Tesis">Tesis</option>
-                                <option value="Disertasi">Disertasi</option>
-                                <option value="Nonskripsi">Nonskripsi</option>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Tanggal yudisium</Form.Label>
+                                    <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium"
+                                    value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["tglDisetujui"]}
+                                    </span>
+                                </Form.Group>
 
-                            </Form.Select>
-                            <span className="text-error text-small">
-                                {this.state.errors["jenis"]}
-                            </span>
-                        </Form.Group>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Semester yudisium</Form.Label>
+                                    <Form.Select name="semesterDisetujui" aria-label="Semester yudisium"
+                                    value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
+                                        <option>Pilih semester</option>
+                                        {this.state.semesters.map(smt => (
+                                            <option key={smt.id} value={smt.id}>
+                                                {smt.semester}
+                                                </option>
+                                        ))}
+                                    </Form.Select>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["semesterDisetujui"]}
+                                    </span>
+                                </Form.Group>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Nama dosen pembimbing</Form.Label>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Jenis karya ilmiah</Form.Label>
+                                    <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
+                                    value={this.state.jenis} onChange={this.handleChangeField} >
+                                        <option>Pilih jenis karya ilmiah</option>
+                                        <option value="Skripsi">Skripsi</option>
+                                        <option value="Tesis">Tesis</option>
+                                        <option value="Disertasi">Disertasi</option>
+                                        <option value="Nonskripsi">Nonskripsi</option>
 
-                            {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
-                            Caranya diloop pake function map */}
-                            <Form.Select name="dosenPembimbing" aria-label="Nama dosen pembimbing"
-                            value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
-                                <option>Pilih dosen pembimbing</option>
-                                {this.state.verificators.map(verificator => (
-                                    <option key={verificator.id} value={verificator.id}>
-                                        {verificator.full_name}
-                                        </option>
-                                ))}
-                            </Form.Select>
-                            <span className="text-error text-small">
-                                {this.state.errors["dosenPembimbing"]}
-                            </span>
-                        </Form.Group>
+                                    </Form.Select>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["jenis"]}
+                                    </span>
+                                </Form.Group>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Abstrak</Form.Label>
-                            <Form.Control name="abstrak" as="textarea" rows={8} 
-                            value={this.state.abstrak} onChange={this.handleChangeField}/>
-                            <span className="text-error text-small">
-                                {this.state.errors["abstrak"]}
-                            </span>
-                        </Form.Group>
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Nama dosen pembimbing</Form.Label>
 
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Kata kunci</Form.Label>
-                            <p className="text-charcoal text-small">
-                                Contoh: Customer experience, sentiment analysis, e-commerce
-                            </p>
-                            <Form.Control name="kataKunci" as="textarea" rows={3} 
-                            value={this.state.kataKunci} onChange={this.handleChangeField}/>
-                            <span className="text-error text-small">
-                                {this.state.errors["kataKunci"]}
-                            </span>
-                        </Form.Group>
-                        
-                        <div>
-                            <Form.Label className="text-large">Unggah karya ilmiah</Form.Label>
-                            {this.state.filePDF == null 
-                            ? <Form.Group className="">
-                                <Form.Control name="filePDF" type="file" onChange={this.handleFileField}/>
-                                <span className="text-error text-small">
-                                    {this.state.errors["filePDF"]}
-                                </span>
-                            </Form.Group>
-                            : <InputGroup className="mb-3">
-                                <Form.Control type="text" name="filePDF" 
-                                    placeholder={this.state.judul + ".pdf"} 
-                                    disabled/>
-                                <Button variant="outline-secondary" id="button-addon2">
-                                    <p style={{textAlign:"center", marginTop:'0.5rem', marginBottom: '0.5rem'}}>Preview</p>
+                                    {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
+                                    Caranya diloop pake function map */}
+                                    <Form.Select name="dosenPembimbing" aria-label="Nama dosen pembimbing"
+                                    value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
+                                        <option>Pilih dosen pembimbing</option>
+                                        {this.state.verificators.map(verificator => (
+                                            <option key={verificator.id} value={verificator.id}>
+                                                {verificator.full_name}
+                                                </option>
+                                        ))}
+                                    </Form.Select>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["dosenPembimbing"]}
+                                    </span>
+                                </Form.Group>
+
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Abstrak</Form.Label>
+                                    <Form.Control name="abstrak" as="textarea" rows={8} 
+                                    value={this.state.abstrak} onChange={this.handleChangeField}/>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["abstrak"]}
+                                    </span>
+                                </Form.Group>
+
+                                <Form.Group className="">
+                                    <Form.Label className="text-large">Kata kunci</Form.Label>
+                                    <p className="text-charcoal text-small">
+                                        Contoh: Customer experience, sentiment analysis, e-commerce
+                                    </p>
+                                    <Form.Control name="kataKunci" as="textarea" rows={3} 
+                                    value={this.state.kataKunci} onChange={this.handleChangeField}/>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["kataKunci"]}
+                                    </span>
+                                </Form.Group>
+                                
+                                <div>
+                                    <Form.Label className="text-large">Unggah karya ilmiah</Form.Label>
+                                    {this.state.filePDF == null 
+                                    ? <Form.Group className="">
+                                        <Form.Control name="filePDF" type="file" onChange={this.handleFileField}/>
+                                        <span className="text-error text-small">
+                                            {this.state.errors["filePDF"]}
+                                        </span>
+                                    </Form.Group>
+                                    : <InputGroup className="mb-3">
+                                        <Form.Control type="text" name="filePDF" 
+                                            placeholder={this.state.judul + ".pdf"} 
+                                            disabled/>
+                                        <Button variant="outline-secondary" id="button-addon2">
+                                            <p style={{textAlign:"center", marginTop:'0.5rem', marginBottom: '0.5rem'}}>Preview</p>
+                                        </Button>
+                                        <Button variant="outline-secondary" id="button-addon2" onClick={this.handleDropFile}>
+                                            <CloseIcon fontsize="small"></CloseIcon>
+                                        </Button>
+                                    </InputGroup>
+                                    }
+                                </div>
+                                
+
+                                <Form.Group className="">
+                                    <Form.Check type="checkbox" className="text-large" value={this.state.check} onChange={this.handleChangeField}
+                                    label="Pastikan semua data yang Anda isi sudah benar. 
+                                    Karya ilmiah yang Anda unggah akan harus diverifikasi oleh dosen pembimbing Anda 
+                                    terlebih dahulu sebelum ditampilkan untuk umum."/>
+                                    <span className="text-error text-small">
+                                        {this.state.errors["check"]}
+                                    </span>
+                                </Form.Group>
+                                
+                                <Button className="primary-btn mt-5" onClick={this.handleValidation}>
+                                    <p className="text-bold-large text-institutional-white m-0 p-0">Unggah</p>
                                 </Button>
-                                <Button variant="outline-secondary" id="button-addon2" onClick={this.handleDropFile}>
-                                    <CloseIcon fontsize="small"></CloseIcon>
-                                </Button>
-                            </InputGroup>
-                            }
-                        </div>
+                            </Stack>
+                        </Form>
                         
-
-                        <Form.Group className="">
-                            <Form.Check type="checkbox" className="text-large" value={this.state.check} onChange={this.handleChangeField}
-                            label="Pastikan semua data yang Anda isi sudah benar. 
-                            Karya ilmiah yang Anda unggah akan harus diverifikasi oleh dosen pembimbing Anda 
-                            terlebih dahulu sebelum ditampilkan untuk umum."/>
-                            <span className="text-error text-small">
-                                {this.state.errors["check"]}
-                            </span>
-                        </Form.Group>
-                        
-                        <Button className="primary-btn mt-5" onClick={this.handleValidation}>
-                            <p className="text-bold-large text-institutional-white m-0 p-0">Unggah</p>
-                        </Button>
-                    </Stack>
-                </Form>
-                
-            </Container>
-            
+                    </Container>
+                : null
+                }
+            </div>
         );
     }
 }

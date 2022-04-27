@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import Button from 'react-bootstrap/Button'
 import AddIcon from '@mui/icons-material/Add';
+import AuthenticationDataService from "../../services/authentication.service.js";
 import Dasbor from "../dasbor";
 
 
@@ -31,6 +32,7 @@ import { Link } from "react-router-dom";
 const KelolaKaril = () => {
   const [listKaril, setListKaril] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [role, setRole] = useState("");
   const [year, setYear] = useState(null);
   const [karilChecked, setKarilChecked] = useState({
     tesis: false,
@@ -41,6 +43,7 @@ const KelolaKaril = () => {
   const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
 
   useEffect(() => {
+    loadUser();
     fetchKaril();
   },[keyword, year, karilChecked])
 
@@ -73,107 +76,126 @@ const KelolaKaril = () => {
     });
   };
 
+  const loadUser = async() =>{
+    try {
+        let token = localStorage.getItem("ssoui");
+        console.log(token);
+        token = JSON.parse(token);
+        console.log(token);
+        if (token !== null){
+            const response = await AuthenticationDataService.profile(token);
+            console.log(response);
+            console.log(response.data.role);
+            setRole({role:response.data.role});
+        }
+
+    } catch {
+        console.log("Load user error!");
+    }
+  }
+
   console.log("DATA: ", listKaril)
   return (
     <Dasbor>
-      <Box py={8} px={8} height={'100vh'}>
-        <Grid container spacing={8}>
-          <Grid item lg={9}>
-            <Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
-                    Kelola Karya Ilmiah
-                  </Typography>
-
-                <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
-                  <Button className="btn-orange">
-                    <AddIcon/>&nbsp;Tambah Karya Ilmiah
-                  </Button>
-                </Link>
-
-              </Box>
-              
-              <Box my={5}>
-                <TextField
-                  label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
-                  fullWidth
-                  value={keyword}
-                  onChange={(event) => setKeyword(event.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">
-                        <Search />
-                      </InputAdornment>
-                    ),
-                    style: { borderRadius: 8 }
-                  }}
-                />
-              </Box>
-                
-   
+      {role.role === "staf" ?
+        <Box py={8} px={8} height={'100vh'}>
+          <Grid container spacing={8}>
+            <Grid item lg={9}>
               <Box>
-                <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
-                {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
-                {listKaril.map((karil, idx) => 
-                  <Box my={3} key={idx}>
-                    {karil.status == 1
-                    ? <CardKaril 
-                    data={karil}/>
-                    : null
-                    }
-                  </Box>
-                )}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
+                      Kelola Karya Ilmiah
+                    </Typography>
+
+                  <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
+                    <Button className="btn-orange">
+                      <AddIcon/>&nbsp;Tambah Karya Ilmiah
+                    </Button>
+                  </Link>
+
+                </Box>
+                
+                <Box my={5}>
+                  <TextField
+                    label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
+                    fullWidth
+                    value={keyword}
+                    onChange={(event) => setKeyword(event.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="start">
+                          <Search />
+                        </InputAdornment>
+                      ),
+                      style: { borderRadius: 8 }
+                    }}
+                  />
+                </Box>
+                  
+    
+                <Box>
+                  <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
+                  {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
+                  {listKaril.map((karil, idx) => 
+                    <Box my={3} key={idx}>
+                      <CardKaril 
+                      data={karil}/>
+                    </Box>
+                  )}
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-          <Grid item lg={3}>
-            <Box bgcolor="#F8F8F8" p={3}>
-              <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
-                Filter
-              </Typography>
-              <Box mt={4}>
-                <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                  Tahun Publikasi
+            </Grid>
+            <Grid item lg={3}>
+              <Box bgcolor="#F8F8F8" p={3}>
+                <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
+                  Filter
                 </Typography>
-                <DatePicker
-                  selected={year}
-                  onChange={(date) => setYear(date)}
-                  showYearPicker
-                  dateFormat="yyyy"
-                />
+                <Box mt={4}>
+                  <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                    Tahun Publikasi
+                  </Typography>
+                  <DatePicker
+                    selected={year}
+                    onChange={(date) => setYear(date)}
+                    showYearPicker
+                    dateFormat="yyyy"
+                    wrapperClassName="w-full"
+                  />
+                </Box>
+                <Box mt={4}>
+                  <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                    Tipe Karya Ilmiah
+                  </Typography>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
+                      label="Skripsi"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
+                      label="Tesis"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
+                      label="Disertasi"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
+                      label="Non-skripsi"
+                    />
+                  </FormGroup>
+                </Box>
               </Box>
-              <Box mt={4}>
-                <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                  Tipe Karya Ilmiah
-                </Typography>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
-                    label="Skripsi"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
-                    label="Tesis"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
-                    label="Disertasi"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
-                    label="Non-skripsi"
-                  />
-                </FormGroup>
-              </Box>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+        : null
+      }
     </Dasbor>
   );               
 }
