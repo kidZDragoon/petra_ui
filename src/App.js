@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
 import Sidebar from './components/sidebar';
+import DashboardSidebar from './components/sidebar/DashboardSidebar';
 
 class App extends React.Component {
     constructor(props) {

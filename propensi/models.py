@@ -82,14 +82,19 @@ class KaryaIlmiah(models.Model):
     status = models.CharField(max_length=500)
     jenis = models.CharField(max_length=500)
     abstrak = models.CharField(max_length=5000)
-    kataKunci = models.CharField(max_length=5000,null=True)
+    kataKunci = models.CharField(max_length=5000, null=True)
     tglDisetujui = models.DateField(null=True)
-    semesterDisetujui = models.ForeignKey(Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
+    semesterDisetujui = models.ForeignKey(
+        Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
     tglVerifikasi = models.DateField(null=True)
-    userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
-    dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
-    verifikator = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
-    fileURI = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    userPengunggah = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
+    dosenPembimbing = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
+    verifikator = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
+    fileURI = models.UUIDField(
+        primary_key=False, default=uuid.uuid4, editable=False)
 
     def get_upload_path(instance, filename):
         return os.path.join("files/%s" % instance.fileURI)
@@ -99,6 +104,7 @@ class KaryaIlmiah(models.Model):
 
     filePDF = models.FileField(upload_to=get_upload_path, null=True,
                                max_length=500, validators=[FileExtensionValidator(['pdf'])])
+
 
 class DaftarUnduhan(models.Model):
     karyaIlmiah = models.ForeignKey(KaryaIlmiah, on_delete=models.CASCADE)
@@ -118,6 +124,7 @@ class Pengumuman(models.Model):
 class Kategori(models.Model):
     nama = models.CharField(max_length=50)
     listKaryaIlmiah = models.ManyToManyField(KaryaIlmiah)
+
 
 class Visitors(models.Model):
     ip = models.CharField(max_length=200)

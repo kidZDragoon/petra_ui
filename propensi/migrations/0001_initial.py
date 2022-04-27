@@ -34,14 +34,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('org_code', models.CharField(blank=True, max_length=11, verbose_name='kode organisasi')),
-                ('role', models.CharField(blank=True, max_length=128, verbose_name='peran pengguna')),
-                ('npm', models.CharField(blank=True, max_length=10, verbose_name='Nomor Pokok Mahasiswa')),
-                ('faculty', models.CharField(blank=True, max_length=128, verbose_name='fakultas')),
-                ('study_program', models.CharField(blank=True, max_length=128, verbose_name='program studi')),
-                ('educational_program', models.CharField(blank=True, max_length=128, verbose_name='program pendidikan')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('org_code', models.CharField(blank=True,
+                 max_length=11, verbose_name='kode organisasi')),
+                ('role', models.CharField(blank=True,
+                 max_length=128, verbose_name='peran pengguna')),
+                ('npm', models.CharField(blank=True, max_length=10,
+                 verbose_name='Nomor Pokok Mahasiswa')),
+                ('faculty', models.CharField(blank=True,
+                 max_length=128, verbose_name='fakultas')),
+                ('study_program', models.CharField(blank=True,
+                 max_length=128, verbose_name='program studi')),
+                ('educational_program', models.CharField(blank=True,
+                 max_length=128, verbose_name='program pendidikan')),
+                ('user', models.OneToOneField(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'profil',
@@ -67,7 +75,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True,
                  primary_key=True, serialize=False, verbose_name='ID')),
                 ('nama', models.CharField(max_length=50)),
-                ('listKaryaIlmiah', models.ManyToManyField(to='propensi.KaryaIlmiah')),
+                ('listKaryaIlmiah', models.ManyToManyField(
+                    to='propensi.KaryaIlmiah')),
             ],
         ),
         migrations.AddField(
@@ -84,11 +93,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='karyailmiah',
             name='userPengunggah',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='user_penunggah', to='propensi.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='user_penunggah', to='propensi.profile'),
         ),
         migrations.AddField(
             model_name='karyailmiah',
             name='verifikator',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='verifikator', to='propensi.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='verifikator', to='propensi.profile'),
         ),
     ]

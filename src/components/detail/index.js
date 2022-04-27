@@ -57,12 +57,15 @@ export default class Detail extends (Component, App) {
             idProfile:"",
             fullName:"",
             tglUnduh:"",
+            filePDF:"",
+            role:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
         this.handleToken = this.handleToken.bind(this);
         
     }
     componentDidMount() {
+        this.loadUser()
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
         this.handleDetailKaryaIlimah(pathname);
         let token = localStorage.getItem("ssoui")
@@ -82,7 +85,7 @@ export default class Detail extends (Component, App) {
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
             tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci}) //tglDisetuji jgn lupa diganti tglVerfikasi
-            
+            this.setState({id:item})
            
         }catch(error){
             alert("Oops terjadi masalah pada server")
@@ -224,17 +227,52 @@ export default class Detail extends (Component, App) {
         }
     }
 
+    async loadUser(){
+        try {
+            let token = localStorage.getItem("ssoui");
+            console.log(token);
+            token = JSON.parse(token);
+            console.log(token);
+            if (token !== null){
+                const response = await AuthenticationDataService.profile(token);
+                console.log(response);
+                console.log(response.data.role);
+                this.setState({role:response.data.role});
+            }
+
+        } catch {
+            console.log("Load user error!");
+        }
+    }
+
+
     render (){
         return (
-            <Container className="pt-4" id={classes["containerID"]}>
-                    <h6>{this.state.jenis}</h6>
+            <Container id={classes["containerID"]}>
+                <Grid container spacing={2}>
+                    <Grid item xs={10}>
+                        <h6>{this.state.jenis}</h6>
                     <h3 id={classes["title"]}>{this.state.judul}</h3>
-                    <p className={classes.date}>{this.state.tglVerifikasi}</p>
-                    <p>{this.state.authors}</p>
-                    
+                    <p className={classes.date}>Tanggal Publikasi: {this.state.tglVerifikasi}</p>
+                    <p>Oleh :{this.state.authors}</p>
                     {this.state.kataKunci.map((item) => (
                     <button className={classes.roundedPill}>{item}</button>
                     ))}
+                    </Grid>
+                        <Grid item xs={2} id={classes["actionbutton"]}>
+                            {this.state.role === "staf" ?
+                            <div className="d-flex">
+                                <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
+                                    <FaEdit size={24}/>
+                                </Link>
+                                <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
+                                    <RiDeleteBin6Fill size={24}/>
+                                </button>
+                            </div>
+                            : null
+                            }
+                        </Grid>
+                </Grid>
 
                 <div className="d-flex py-2">
                     {this.state.user == null ? 
