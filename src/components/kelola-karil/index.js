@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import Button from 'react-bootstrap/Button'
 import AddIcon from '@mui/icons-material/Add';
+import Dasbor from "../dasbor";
 
 
 import {
@@ -74,98 +75,100 @@ const KelolaKaril = () => {
 
   console.log("DATA: ", listKaril)
   return (
-    <Box py={8} px={12} height={'100vh'}>
-      <Grid container spacing={8}>
-        <Grid item lg={3}>
-          <Box bgcolor="#F8F8F8" p={3}>
-            <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
-              Filter
-            </Typography>
-            <Box mt={4}>
-              <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Tahun Publikasi
+    <Dasbor>
+      <Box py={8} px={8} height={'100vh'}>
+        <Grid container spacing={8}>
+          <Grid item lg={3}>
+            <Box bgcolor="#F8F8F8" p={3}>
+              <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
+                Filter
               </Typography>
-              <DatePicker
-                selected={year}
-                onChange={(date) => setYear(date)}
-                showYearPicker
-                dateFormat="yyyy"
-              />
-            </Box>
-            <Box mt={4}>
-              <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Tipe Karya Ilmiah
-              </Typography>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
-                  label="Skripsi"
+              <Box mt={4}>
+                <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                  Tahun Publikasi
+                </Typography>
+                <DatePicker
+                  selected={year}
+                  onChange={(date) => setYear(date)}
+                  showYearPicker
+                  dateFormat="yyyy"
                 />
-                <FormControlLabel
-                  control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
-                  label="Tesis"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
-                  label="Disertasi"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
-                  label="Non-skripsi"
-                />
-              </FormGroup>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item lg={9}>
-          <Box>
-            <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
-              Kelola Karya Ilmiah
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={9}>
-                <Box my={5}>
-                  <TextField
-                    label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
-                    fullWidth
-                    value={keyword}
-                    onChange={(event) => setKeyword(event.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="start">
-                          <Search />
-                        </InputAdornment>
-                      ),
-                      style: { borderRadius: 8 }
-                    }}
+              </Box>
+              <Box mt={4}>
+                <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                  Tipe Karya Ilmiah
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
+                    label="Skripsi"
                   />
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
-                  <Button className="btn-orange mt-5">
-                    <AddIcon/>&nbsp;Tambah Karya Ilmiah
-                  </Button>
-                </Link>
-              </Grid>   
-            </Grid>
-            <Box>
-              <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
-              {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
-              {listKaril.map((karil, idx) => 
-                <Box my={3} key={idx}>
-                  {karil.status == 1
-                  ? <CardKaril 
-                  data={karil}/>
-                  : null
-                  }
-                </Box>
-              )}
+                  <FormControlLabel
+                    control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
+                    label="Tesis"
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
+                    label="Disertasi"
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
+                    label="Non-skripsi"
+                  />
+                </FormGroup>
+              </Box>
             </Box>
-          </Box>
+          </Grid>
+          <Grid item lg={9}>
+            <Box>
+              <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
+                Kelola Karya Ilmiah
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={9}>
+                  <Box my={5}>
+                    <TextField
+                      label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
+                      fullWidth
+                      value={keyword}
+                      onChange={(event) => setKeyword(event.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            <Search />
+                          </InputAdornment>
+                        ),
+                        style: { borderRadius: 8 }
+                      }}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={3}>
+                  <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
+                    <Button className="btn-orange mt-5">
+                      <AddIcon/>&nbsp;Tambah Karya Ilmiah
+                    </Button>
+                  </Link>
+                </Grid>   
+              </Grid>
+              <Box>
+                <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
+                {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
+                {listKaril.map((karil, idx) => 
+                  <Box my={3} key={idx}>
+                    {karil.status == 1
+                    ? <CardKaril 
+                    data={karil}/>
+                    : null
+                    }
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </Dasbor>
   );               
 }
 // }

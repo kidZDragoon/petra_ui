@@ -5,6 +5,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import ChatIcon from '@mui/icons-material/Chat';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import DirectionsRunOutlinedIcon from '@mui/icons-material/DirectionsRunOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
@@ -13,9 +14,9 @@ export const sidebarData =[
     {
         title: "Metriks",
         icon: <InsertChartOutlinedOutlinedIcon/>,
-        link: "/metriks",
+        link: "/metriks/pengunjung",
         iconClosed: <ArrowDropDownIcon/>,
-        iconOpen: <ArrowDropUpIcon/>,
+        iconOpen: <ArrowRightIcon/>,
         subNav: [
             {
                 title: "Pengunjung", 

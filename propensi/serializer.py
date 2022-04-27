@@ -216,8 +216,8 @@ class SemesterSerializer(serializers.ModelSerializer):
 class KarilSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
-<<<<<<< HEAD
-        fields = "__all__"
+        fields = ['id', 'judul', 'status', 'jenis',
+                  'kataKunci', 'tglDisetujui', 'dosenPembimbing', 'author', 'fileURI']
 
 class VisitorsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -235,7 +235,3 @@ class VisitorsSerializer(serializers.ModelSerializer):
     #     else: 
     #         print("visit not yet saved")
     #         return Visitors(ip=ip, tanggalKunjungan=today)
-=======
-        fields = ['id', 'judul', 'status', 'jenis',
-                  'kataKunci', 'tglDisetujui', 'dosenPembimbing', 'author', 'fileURI']
->>>>>>> 4cc4f6f53d1d98ec41b98d1475b838e789247ace

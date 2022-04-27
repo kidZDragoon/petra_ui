@@ -15,6 +15,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import AuthenticationDataService from "../../services/authentication.service";
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import SuccessModalWithButton from "../modals/success-modal-with-button";
+import Dasbor from "../dasbor";    
 
 export default class EditKaryaIlmiah extends Component {
     constructor(props) {
@@ -345,7 +346,7 @@ export default class EditKaryaIlmiah extends Component {
                     </span>
                     Ubah Data Karya Ilmiah
                 </p>
-               
+            
                 <ConfirmationPopUp action={this.submitData}
                     show={this.state.confirmationPopUp}
                     hide={this.hideConfirmation}
@@ -374,7 +375,7 @@ export default class EditKaryaIlmiah extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">NPM penulis</Form.Label>
                             <Form.Control type="number" name="npm" placeholder="NPM"
-                             value={this.state.npm} onChange={this.handleChangeField}/>
+                            value={this.state.npm} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                             {this.state.errors["npm"]}
                             </span>
@@ -383,7 +384,7 @@ export default class EditKaryaIlmiah extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Judul karya ilmiah</Form.Label>
                             <Form.Control type="text" name="judul" placeholder="Judul karya ilmiah" 
-                             value={this.state.judul} onChange={this.handleChangeField}/>
+                            value={this.state.judul} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["judul"]}
                             </span>
@@ -392,7 +393,7 @@ export default class EditKaryaIlmiah extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Tanggal yudisium</Form.Label>
                             <Form.Control type="date" name="tglDisetujui" placeholder="Tanggal yudisium"
-                             value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
+                            value={this.state.tglDisetujui} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["tglDisetujui"]}
                             </span>
@@ -401,13 +402,13 @@ export default class EditKaryaIlmiah extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Semester yudisium</Form.Label>
                             <Form.Select name="semesterDisetujui" aria-label="Semester yudisium"
-                             value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
+                            value={this.state.semesterDisetujui} onChange={this.handleChangeField}>
                                 <option>Pilih semester</option>
-                                 {this.state.semesters.map(smt => (
-                                     <option key={smt.id} value={smt.id}>
-                                         {smt.semester}
+                                {this.state.semesters.map(smt => (
+                                    <option key={smt.id} value={smt.id}>
+                                        {smt.semester}
                                         </option>
-                                 ))}
+                                ))}
                             </Form.Select>
                             <span className="text-error text-small">
                                 {this.state.errors["semesterDisetujui"]}
@@ -417,7 +418,7 @@ export default class EditKaryaIlmiah extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Jenis karya ilmiah</Form.Label>
                             <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
-                             value={this.state.jenis} onChange={this.handleChangeField} >
+                            value={this.state.jenis} onChange={this.handleChangeField} >
                                 <option>Pilih jenis karya ilmiah</option>
                                 <option value="Skripsi">Skripsi</option>
                                 <option value="Tesis">Tesis</option>
@@ -436,13 +437,13 @@ export default class EditKaryaIlmiah extends Component {
                             {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
                             Caranya diloop pake function map */}
                             <Form.Select name="dosenPembimbing" aria-label="Nama dosen pembimbing"
-                             value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
+                            value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
                                 <option>Pilih dosen pembimbing</option>
-                                 {this.state.verificators.map(verificator => (
-                                     <option key={verificator.id} value={verificator.id}>
-                                         {verificator.full_name}
+                                {this.state.verificators.map(verificator => (
+                                    <option key={verificator.id} value={verificator.id}>
+                                        {verificator.full_name}
                                         </option>
-                                 ))}
+                                ))}
                             </Form.Select>
                             <span className="text-error text-small">
                                 {this.state.errors["dosenPembimbing"]}
@@ -452,7 +453,7 @@ export default class EditKaryaIlmiah extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Abstrak</Form.Label>
                             <Form.Control name="abstrak" as="textarea" rows={8} 
-                             value={this.state.abstrak} onChange={this.handleChangeField}/>
+                            value={this.state.abstrak} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["abstrak"]}
                             </span>
@@ -464,7 +465,7 @@ export default class EditKaryaIlmiah extends Component {
                                 Contoh: Customer experience, sentiment analysis, e-commerce
                             </p>
                             <Form.Control name="kataKunci" as="textarea" rows={3} 
-                             value={this.state.kataKunci} onChange={this.handleChangeField}/>
+                            value={this.state.kataKunci} onChange={this.handleChangeField}/>
                             <span className="text-error text-small">
                                 {this.state.errors["kataKunci"]}
                             </span>

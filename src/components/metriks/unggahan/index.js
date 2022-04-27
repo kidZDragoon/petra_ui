@@ -3,6 +3,7 @@ import classes from '../styles.module.css';
 import '../../../index.css';
 import axios from "axios";
 import "@fontsource/mulish";     
+import Dasbor from "../../dasbor";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -15,6 +16,7 @@ import {
 import {
     Stack,
     Box,
+    Button
   } from "@mui/material";
 import BarChart from "../chart.component";
 
@@ -49,8 +51,23 @@ const MetriksUnggahan = () => {
     }
 
     return (
-        <Box className={classes.mainContent}>
+        <Dasbor className={classes.mainContent}>
             <Box py={8} px={12}>
+                <Box
+                    sx={{
+                    width: '60%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    p: 1,
+                    mb:4,
+                    borderRadius: 1,
+                    }}
+                >
+                    <Button mx={4} variant="outlined" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
+                    <Button mx={4} variant="outlined" href="#/metriks/unduhan">Metriks Unduhan</Button>
+                    <Button mx={4} variant="outlined" href="#/metriks/unggahan">Metriks Unggahan</Button>
+                </Box>
+
                 <p className="text-section-header px-0">
                     Statistik Unggahan Karya Ilmiah
                 </p>
@@ -82,7 +99,7 @@ const MetriksUnggahan = () => {
                     </Box>
                 </Stack>
             </Box>
-        </Box>
+        </Dasbor>
         
     );               
 }

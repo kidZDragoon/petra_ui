@@ -117,7 +117,7 @@ class App extends React.Component {
                                 <Nav.Link href="#/karya-ilmiah-saya/upload">Upload</Nav.Link>
                                 <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi</Nav.Link>
                                 <Nav.Link href="#/Search">Search</Nav.Link>
-                                <Nav.Link href="#/AdvancedSearch">Advanced Search</Nav.Link>
+                                <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
                             </Nav>
 
                             <Nav>
@@ -128,7 +128,7 @@ class App extends React.Component {
                     </Container>
                 </Navbar>
                 {/* kondisi untuk admin saja */}
-                <Sidebar/>
+                {/* <Sidebar></Sidebar> */}
             </div>
         );
     }

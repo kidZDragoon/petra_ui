@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import classes from '../styles.module.css';
 import '../../../index.css';
 import axios from "axios";
-import "@fontsource/mulish";     
+import "@fontsource/mulish";
+import Dasbor from "../../dasbor";     
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -16,6 +17,7 @@ import { Bar } from 'react-chartjs-2';
 import {
     Stack,
     Box,
+    Button,
   } from "@mui/material";
 import { BarChartSelectYear } from "../chart.component";
 
@@ -74,8 +76,22 @@ const MetriksUnduhan = () => {
       };
 
     return (
-        <Box className={classes.mainContent}>
+        <Dasbor className={classes.mainContent}>
             <Box py={8} px={12}>
+                <Box
+                    sx={{
+                    width: '60%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    p: 1,
+                    mb:4,
+                    borderRadius: 1,
+                    }}
+                >
+                    <Button mx={4} variant="outlined" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
+                    <Button mx={4} variant="outlined" href="#/metriks/unduhan">Metriks Unduhan</Button>
+                    <Button mx={4} variant="outlined" href="#/metriks/unggahan">Metriks Unggahan</Button>
+                </Box>
                 <p className="text-section-header px-0">
                     Statistik Unduhan Karya Ilmiah
                 </p>
@@ -89,7 +105,7 @@ const MetriksUnduhan = () => {
                     {dataMetriks.dataTop3 && dataMetriks.dataTop3.labels && dataMetriks.dataTop3.chartData ? 
                         <Box py={4} pl={4} pr={12} className={classes.metricsCard}>
                             <p className="text-bold-title px-0">
-                                Top 3 Unduhan Karya Ilmiah
+                                Top 3 Karya Ilmiah Paling Banyak Diunduh
                             </p>
                 
                             <Bar width={100}
@@ -113,7 +129,7 @@ const MetriksUnduhan = () => {
 
                 </Stack>
             </Box>
-        </Box>
+        </Dasbor>
         
     );               
 }
