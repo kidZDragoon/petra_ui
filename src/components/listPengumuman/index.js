@@ -69,31 +69,43 @@ export default class ListPengumuman extends Component {
 
     render(){
         return(
-            <Dasbor>
-                 <Container py={4} px={8}>
-                    {this.state.isStaf ?
-                    <div class="d-flex justify-content-between" id={classes["heading"]}>
-                    <div class="p-2"> <h3 className={classes.judulPengumuman}>Kelola Pengumuman</h3></div>
-                    <div class="p-2" >
-                        <Link to="/form-pengumuman" className={classes.link}>
-                            <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
-                                <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
-                            </Button>
-                        </Link>
-                    </div>
-            
-                </div>:
-                    <h3 className={classes.judulListPengumuman}>List Pengumuman</h3>
-                    }
-                    
-                    {this.state.listPengumuman.map((pengumuman) => (
-                        <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
-                        pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
-                        isStaf={this.state.isStaf}/>
-                    ))}
-                </Container>
-            </Dasbor>
-           
+            <div>
+                {this.state.isStaf?
+                <Dasbor>
+                    <Container py={4} px={8}>
+                        <div class="d-flex justify-content-between" id={classes["heading"]}>
+                        <div class="p-2"> <h3 className={classes.judulPengumuman}>Kelola Pengumuman</h3></div>
+                        <div class="p-2" >
+                            <Link to="/form-pengumuman" className={classes.link}>
+                                <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
+                                    <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
+                                </Button>
+                            </Link>
+                        </div>
+                
+                        </div>
+                        
+                        {this.state.listPengumuman.map((pengumuman) => (
+                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                            pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
+                            isStaf={this.state.isStaf}/>
+                        ))}
+                    </Container>
+                </Dasbor>:
+                <Container py={4} px={8}>
+                <div class="d-flex justify-content-between" id={classes["heading"]}>
+                <div class="p-2"> <h3 className={classes.judulPengumuman}>List Pengumuman</h3></div>        
+                </div>
+                
+                {this.state.listPengumuman.map((pengumuman) => (
+                    <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                    pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
+                    isStaf={this.state.isStaf}/>
+                ))}
+             </Container>
+               
+                }
+            </div>
         )
     }
 }

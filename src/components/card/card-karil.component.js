@@ -124,7 +124,7 @@ const CardKaril = ({data}) => {
       <Card.Body>
         <Grid container spacing={2}>
           {window.location.hash === "#/kelola-karil" ?
-            <Grid item xs={9}>
+            <Grid item xs={8}>
               <Stack>
                 <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
                 <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
@@ -149,7 +149,7 @@ const CardKaril = ({data}) => {
           }
 
           {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <div className="d-flex">
                 <div className="mx-3">
                 <TagVerifikasi status={data.status}/>

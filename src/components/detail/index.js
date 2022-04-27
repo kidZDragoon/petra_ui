@@ -336,8 +336,8 @@ export default class Detail extends (Component, App) {
                     <Grid item xs={10}>
                         <h6>{this.state.jenis}</h6>
                     <h3 id={classes["title"]}>{this.state.judul}</h3>
-                    <p className={classes.date}>Tanggal Publikasi: {this.state.tglVerifikasi}</p>
-                    <p>Oleh :{this.state.authors}</p>
+                    <p className={classes.date}>{this.state.tglVerifikasi}</p>
+                    <p>{this.state.authors}</p>
                     {this.state.kataKunci.map((item) => (
                     <button className={classes.roundedPill}>{item}</button>
                     ))}

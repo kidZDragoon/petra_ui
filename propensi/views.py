@@ -16,8 +16,7 @@ from propensi import serializer
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan, Visitors, Pengumuman
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, DaftarUnduhanSerializer, VisitorsSerializer, \
-    KaryaIlmiahEditUploadSerializer, KaryaIlmiahEditSerializer, PengumumanSeriliazer
+    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, KaryaIlmiahEditSerializer, DaftarUnduhanSerializer, PengumumanSeriliazer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -328,8 +327,6 @@ class KaryaIlmiahUpdateUploadView(APIView):
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update without upload karil
-
-
 class KaryaIlmiahUpdateView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
         print("file sama")
@@ -394,6 +391,18 @@ class DaftarVerifikasiView(ListAPIView):
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KarilSeriliazer
     filter_backends = (DjangoFilterBackend, )
+    filterset_fields = ('status', 'status')
+
+class KaryaIlmiahStatusView(UpdateAPIView):
+    def put(self, request, pk, *args, **kwargs):
+        print("file sama")
+        karil = KaryaIlmiah.objects.get(pk=pk)
+        karya_ilmiah_serializer = KaryaIlmiahStatusSerializer(
+            karil, data=request.data, partial=True)
+        if karya_ilmiah_serializer.is_valid():
+            karya_ilmiah_serializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     filterset_fields = ('status',)
 
 # Metrics View
@@ -698,3 +707,13 @@ class PengumumanUpdateDeleteView(APIView):
             pengumumanSerializer.save()
             return Response({"status": "success"}, status=status.HTTP_200_OK)
         return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class KaryaIlmiahSaya(APIView):
+ 
+   def get(self, request, userId, *args, **kwargs):
+        data = KaryaIlmiah.objects.filter(userPengunggah=userId)
+        serializer = KaryaIlmiahSeriliazer(data, many=True)
+ 
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
