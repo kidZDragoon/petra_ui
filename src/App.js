@@ -45,11 +45,7 @@ class App extends React.Component {
     }
 
     popUpLogin() {
-<<<<<<< HEAD
         const serviceURL = "http://localhost:8000/login/"
-=======
-         const serviceURL = "http://localhost:8000/login/"
->>>>>>> 1b4445a16f6ad36d3d1ecd439f3ce3d4e63b2539
         // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 

@@ -263,8 +263,6 @@ class KaryaIlmiahUpdateUploadView(APIView):
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update without upload karil
-
-
 class KaryaIlmiahUpdateView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
         print("file sama")
