@@ -29,7 +29,7 @@ export default class KaryaIlmiahSaya extends Component {
                 this.setState({userId:response.data.id}); //atau kalau pake functional component sama aja tinggal disesuain
             }
 
-            const { data } = await axios.get(`http://localhost:8000/api/karya-ilmiah-saya/get-all/${this.state.userId}`);
+            const { data } = await axios.get(`/api/karya-ilmiah-saya/get-all/${this.state.userId}`);
             this.setState({ karyaIlmiahSaya: data.data });
             console.log(this.state.karyaIlmiahSaya)
             console.log(this.state.userId)
