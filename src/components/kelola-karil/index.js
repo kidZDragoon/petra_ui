@@ -164,7 +164,7 @@ const KelolaKaril = () => {
                     onChange={(date) => setYear(date)}
                     showYearPicker
                     dateFormat="yyyy"
-                    wrapperClassName="w-full"
+                    className="react-datepicker"
                   />
                 </Box>
                 <Box mt={4}>

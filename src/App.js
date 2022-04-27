@@ -40,6 +40,7 @@ class App extends React.Component {
                     document.getElementById("logout").innerHTML = 'Halo, ' + this.state.full_name
                 })
             VisitorTrackingService.countVisit()
+            this.loadUser()
         } catch {}
     }
 
@@ -47,7 +48,6 @@ class App extends React.Component {
         // const serviceURL = "http://localhost:8000/login/"
         const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
-
 
         const SSOWindow = window.open(
             new URL(
@@ -96,6 +96,23 @@ class App extends React.Component {
         localStorage.setItem("ssoui", JSON.stringify(data))
     }
 
+    async loadUser(){
+        try {
+            let token = localStorage.getItem("ssoui");
+            console.log(token);
+            token = JSON.parse(token);
+            console.log(token);
+            if (token !== null){
+                const response = await AuthenticationDataService.profile(token);
+                console.log(response);
+                console.log(response.data.role);
+                this.setState({role:response.data.role});
+            }
+        } catch {
+            console.log("Load user error!");
+        }
+    }
+
     render() {
         return (
             <div>
@@ -114,13 +131,19 @@ class App extends React.Component {
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
-                            <Nav className="me-auto">
-                                <Nav.Link href="#/KaryaIlmiah/1">Contoh</Nav.Link>
-                                <Nav.Link href="#/karya-ilmiah-saya/upload">Upload</Nav.Link>
-                                <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi</Nav.Link>
-                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                {this.state.role === "staf" ?
+                                <Nav className="me-auto"> 
                                 <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
-                            </Nav>
+                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                </Nav>
+                                :                            
+                                <Nav className="me-auto">
+                                <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
+                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                </Nav>
+                                }
 
                             <Nav>
                                 <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>

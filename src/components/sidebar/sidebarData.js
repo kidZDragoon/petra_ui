@@ -9,6 +9,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import DirectionsRunOutlinedIcon from '@mui/icons-material/DirectionsRunOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
 export const sidebarData =[
     {
@@ -39,6 +40,11 @@ export const sidebarData =[
         title: "Kelola Karya Ilmiah",
         icon: <LibraryBooksIcon/>,
         link: "/kelola-karil"
+    },
+    {
+        title: "Daftar Verifikasi",
+        icon: <DomainVerificationIcon/>,
+        link: "/DaftarVerifikasi"
     },
     {
         title: "Kelola User",
