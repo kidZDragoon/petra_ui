@@ -16,6 +16,7 @@ import SuccessModalWithHide from "../modals/success-modal-with-hide";
 import TagVerifikasi from "../modals/tag-verifikasi";
 import { MoreHoriz } from "@mui/icons-material";
 import authenticationService from "../../services/authentication.service";
+import AuthenticationDataService from "../../services/authentication.service";
 
 var fileDownload = require('js-file-download');
 
@@ -48,10 +49,37 @@ const CardKaril = ({data}) => {
   const handlePDFDownload = () => {
     console.log("masuk pdf ")
     setIsOpen(false)
-    axios.get('api/download/'+ data.fileURI, { 
+
+    try {
+        let token = localStorage.getItem("ssoui");
+        token = JSON.parse(token);
+        AuthenticationDataService.profile(token)
+            .then(response => {
+                console.log('get profile & fill state')
+                console.log(response)
+                try {
+                    axios.post('/api/daftarUnduhan', {
+                        'karyaIlmiah': data.id,
+                        'idProfile': response.data.id,
+                        'fullName': response.data.full_name,
+                        'tglUnduh': new Date().toLocaleString() + "",
+                    }).then(response => {
+                        console.log('fire DaftarUnduhan state to API')
+                        console.log(response)
+                    })
+                } catch {
+                    alert('POST DaftarUnduhan to API error')
+                }
+            })
+    } catch {
+        alert("Load profile error");
+    }
+
+    axios.get('/api/download/'+ data.fileURI, {
         responseType: 'blob',
     }).then(res => {
-        fileDownload(res.data, data.judul +'.pdf');
+        console.log('get the pdf file from cloud')
+        fileDownload(res.data, data.judul+'.pdf');
         console.log(res);
     }).catch(err => {
         console.log(err);
@@ -71,8 +99,53 @@ const CardKaril = ({data}) => {
   };
 
   const favoriteControl = () => {
-    setIsFavorite(!isFavorite);
-    console.log(isFavorite);
+        if (isFavorite) {
+            try {
+                let token = localStorage.getItem("ssoui");
+                token = JSON.parse(token);
+                AuthenticationDataService.profile(token)
+                    .then(response => {
+                        console.log('get profile')
+                        console.log(response)
+                        try {
+                            axios.put('/api/daftarBookmark/delete/'+data.id, {
+                                "idProfile": response.data.id
+                            }).then(response => {
+                                console.log('delete bookmark')
+                                console.log(response)
+                                setIsFavorite(false)
+                            })
+                        } catch {
+                            alert('DeleteBookmark API error')
+                        }
+                    })
+            } catch {
+                alert("Load profile error");
+            }
+        } else {
+            try {
+                let token = localStorage.getItem("ssoui");
+                token = JSON.parse(token);
+                AuthenticationDataService.profile(token)
+                    .then(response => {
+                        console.log('get profile')
+                        console.log(response)
+                        try {
+                            axios.put('/api/daftarBookmark/add/'+data.id, {
+                                "idProfile": response.data.id
+                            }).then(response => {
+                                console.log('PUT daftarBookmark')
+                                console.log(response)
+                                setIsFavorite(true)
+                            })
+                        } catch {
+                            alert('POST daftarBookmark to API error')
+                        }
+                    })
+            } catch {
+                alert("Load profile error");
+            }
+        }
   };
 
   const openDeleteButton = () => {
@@ -103,18 +176,48 @@ const CardKaril = ({data}) => {
   const loadUser = async() =>{
     try {
         let token = localStorage.getItem("ssoui");
-        console.log(token);
+        // console.log(token);
         token = JSON.parse(token);
-        console.log(token);
+        // console.log(token);
         if (token !== null){
             const response = await authenticationService.profile(token);
-            console.log(response);
-            console.log(response.data.role);
             setRole({role:response.data.role});
         }
 
     } catch {
         console.log("Load user error!");
+    }
+
+
+    try {
+        let token = localStorage.getItem("ssoui");
+        token = JSON.parse(token);
+        AuthenticationDataService.profile(token)
+            .then(response => {
+                console.log('get profile')
+                console.log(response)
+                try {
+                    axios.put('/api/daftarBookmark/check/' + data.id, {
+                        'idProfile': response.data.id,
+                    }).then(response => {
+                        console.log('fire DaftarUnduhan state to API')
+                        console.log(response)
+                        if (response.data['bookmarked'] == "true") {
+                            setIsFavorite(true)
+                            console.log('bookmarked')
+                            console.log(isFavorite)
+                        } else {
+                            setIsFavorite(false)
+                            console.log('not bookmarked')
+                            console.log(isFavorite)
+                        }
+                    })
+                } catch {
+                    alert('CheckStatusBookmark error!')
+                }
+            })
+    } catch {
+        alert("Load profile error");
     }
   }
 

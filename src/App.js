@@ -99,13 +99,13 @@ class App extends React.Component {
     async loadUser(){
         try {
             let token = localStorage.getItem("ssoui");
-            console.log(token);
+            // console.log(token);
             token = JSON.parse(token);
-            console.log(token);
+            // console.log(token);
             if (token !== null){
                 const response = await AuthenticationDataService.profile(token);
-                console.log(response);
-                console.log(response.data.role);
+                // console.log(response);
+                // console.log(response.data.role);
                 this.setState({role:response.data.role});
             }
         } catch {
