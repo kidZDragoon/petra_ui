@@ -27,13 +27,13 @@ const Sidebar = () => {
                                         >                                    
                                             <div id={classes["icon"]}>{val.icon}</div>
                                             <div id={classes["title"]}>{val.title}</div>    
-                                            <div onClick={showSubnav}>
+                                            {/* <div onClick={showSubnav}>
                                                 {val.subNav && subnav
                                                 ? val.iconOpen
                                                 : val.subNav
                                                 ? val.iconClosed
                                                 : null}
-                                            </div>
+                                            </div> */}
                                         </li>
                                     </Link>
                                 </Box>

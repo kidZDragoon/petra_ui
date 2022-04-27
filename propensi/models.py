@@ -124,3 +124,8 @@ class Pengumuman(models.Model):
 class Kategori(models.Model):
     nama = models.CharField(max_length=50)
     listKaryaIlmiah = models.ManyToManyField(KaryaIlmiah)
+
+
+class Visitors(models.Model):
+    ip = models.CharField(max_length=200)
+    tanggalKunjungan = models.DateField()

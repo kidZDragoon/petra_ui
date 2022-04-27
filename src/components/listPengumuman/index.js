@@ -1,11 +1,13 @@
 import React, {Component} from "react";
 import classes from "./styles.module.css";
 import CardPengumuman from "../cardPengumuman";
-import { Container, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import axios from "axios";
 import AuthenticationDataService from "../../services/authentication.service";
 import { Link } from "react-router-dom";
 import {PlusLg} from "react-bootstrap-icons";
+import Dasbor from "../dasbor";
+import { Container } from "@mui/material"
 
 export default class ListPengumuman extends Component {
     constructor(props) {
@@ -67,29 +69,31 @@ export default class ListPengumuman extends Component {
 
     render(){
         return(
-            <Container >
-            {this.state.isStaf ?
-             <div class="d-flex justify-content-between" id={classes["heading"]}>
-             <div class="p-2"> <h3 className={classes.judulPengumuman}>Kelola Pengumuman</h3></div>
-             <div class="p-2" >
-                 <Link to="/form-pengumuman" className={classes.link}>
-                     <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
-                         <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
-                     </Button>
-                 </Link>
-             </div>
-      
-         </div>:
-            <h3 className={classes.judulListPengumuman}>List Pengumuman</h3>
-            }
+            <Dasbor>
+                 <Container py={4} px={8}>
+                    {this.state.isStaf ?
+                    <div class="d-flex justify-content-between" id={classes["heading"]}>
+                    <div class="p-2"> <h3 className={classes.judulPengumuman}>Kelola Pengumuman</h3></div>
+                    <div class="p-2" >
+                        <Link to="/form-pengumuman" className={classes.link}>
+                            <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
+                                <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
+                            </Button>
+                        </Link>
+                    </div>
             
-            {this.state.listPengumuman.map((pengumuman) => (
-                <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
-                pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
-                isStaf={this.state.isStaf}/>
-            ))}
-        
-            </Container>
+                </div>:
+                    <h3 className={classes.judulListPengumuman}>List Pengumuman</h3>
+                    }
+                    
+                    {this.state.listPengumuman.map((pengumuman) => (
+                        <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                        pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
+                        isStaf={this.state.isStaf}/>
+                    ))}
+                </Container>
+            </Dasbor>
+           
         )
     }
 }

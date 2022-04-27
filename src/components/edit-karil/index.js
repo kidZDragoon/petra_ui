@@ -15,6 +15,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import AuthenticationDataService from "../../services/authentication.service";
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import SuccessModalWithButton from "../modals/success-modal-with-button";
+import Dasbor from "../dasbor";    
 
 export default class EditKaryaIlmiah extends Component {
     constructor(props) {

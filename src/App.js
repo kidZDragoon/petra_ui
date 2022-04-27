@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-
+import VisitorTrackingService from "./services/visitorTracking.service"
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
@@ -39,13 +39,14 @@ class App extends React.Component {
                     document.getElementById("login").innerHTML = ''
                     document.getElementById("logout").innerHTML = 'Halo, ' + this.state.full_name
                 })
+            VisitorTrackingService.countVisit()
         } catch {}
     }
 
     popUpLogin() {
-        const serviceURL = "http://localhost:8000/login/"
-        // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
-        // // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
+        // const serviceURL = "http://localhost:8000/login/"
+        const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+        // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
 
         const SSOWindow = window.open(
@@ -118,6 +119,7 @@ class App extends React.Component {
                                 <Nav.Link href="#/karya-ilmiah-saya/upload">Upload</Nav.Link>
                                 <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi</Nav.Link>
                                 <Nav.Link href="#/Search">Search</Nav.Link>
+                                <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
                             </Nav>
 
                             <Nav>
@@ -128,8 +130,7 @@ class App extends React.Component {
                     </Container>
                 </Navbar>
                 {/* kondisi untuk admin saja */}
-                {/* <Sidebar/> */}
-                {/* <DashboardSidebar/> */}
+                {/* <Sidebar></Sidebar> */}
             </div>
         );
     }

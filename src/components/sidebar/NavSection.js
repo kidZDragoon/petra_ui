@@ -4,7 +4,8 @@ import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText } from 
 // material
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import { HashRouter, matchPath, NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
+import { matchPath } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +73,7 @@ function NavItem({ item, active }) {
               return (
                 <ListItemStyle
                   key={title}
-                  component={HashRouter}
+                  component={Link}
                   to={path}
                   sx={{
                     ...(isActiveSub && activeSubStyle)
@@ -109,7 +110,7 @@ function NavItem({ item, active }) {
 
   return (
     <ListItemStyle
-      component={HashRouter}
+      component={Link}
       to={path}
       sx={{
         ...(isActiveRoot && activeRootStyle)
@@ -123,20 +124,15 @@ function NavItem({ item, active }) {
 }
 
 export default function NavSection({ navConfig, ...other }) {
-  const { pathname } = useLocation();
-
-  console.log('pn: ', pathname)
+  const pathname = useLocation();
 
   const match = (path) => {
-    console.log('match: ', path)
-    return true
-    // if (!path) return false;
-    // if (path === '/') return matchPath(pathname, { path, end: false }).isExact;
-    // return !!matchPath(pathname, { path, end: false });
+    if (!path) return false;
+    if (path === '/') return matchPath(pathname, { path, end: false }).isExact;
+    return !!matchPath(pathname, { path, end: false });
   };
 
   const matchExact = (path) => {
-    console.log('match ex: ', path)
     const result = matchPath(pathname, { path, end: false });
     if (!result) return false;
     return result.isExact;

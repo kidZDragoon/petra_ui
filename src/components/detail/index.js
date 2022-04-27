@@ -17,12 +17,12 @@ import {FaEdit} from "react-icons/fa";
 import {RiDeleteBin6Fill} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import AuthenticationDataService from "../../services/authentication.service";
 import Button from 'react-bootstrap/Button'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Grid from '@mui/material/Grid';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import AuthenticationDataService from "../../services/authentication.service.js";
 import App from "../../App"; //buat sso
 
 var fileDownload = require('js-file-download');
@@ -72,9 +72,11 @@ export default class Detail extends (Component, App) {
         token = JSON.parse(token)
         this.setState({user: token})
     }
+
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
         try{
+            console.log("item: " ,item)
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
             console.log("getting karyaIlmiah data from API")
             console.log(data)
@@ -91,7 +93,7 @@ export default class Detail extends (Component, App) {
         }
 
         try {
-            await axios.get('/api/daftarUnduhan/'+this.state.karyaIlmiah.id)
+            await axios.get('api/daftarUnduhan/'+this.state.karyaIlmiah.id)
                 .then(response => {
                     console.log('getting daftarUnduhan karyaIlmiah from API')
                     console.log(response)
@@ -146,7 +148,6 @@ export default class Detail extends (Component, App) {
             console.log('get the pdf file from cloud')
             fileDownload(res.data, this.state.judul+'.pdf');
             console.log(res);
-            window.location.reload();
         }).catch(err => {
             console.log(err);
         })
@@ -273,7 +274,7 @@ export default class Detail extends (Component, App) {
                         </Grid>
                 </Grid>
 
-                <div className="d-flex">
+                <div className="d-flex py-2">
                     {this.state.user == null ? 
                     <button id={classes["features"]} onClick={this.handleToken}>
                     <BoxArrowDown/> &nbsp;Unduh PDF
