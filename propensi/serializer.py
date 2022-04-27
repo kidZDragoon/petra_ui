@@ -5,20 +5,27 @@ from rest_framework.serializers import ReadOnlyField, SerializerMethodField
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 
-from .models import User, Profile, KaryaIlmiah, Semester
+from .models import User, Profile, KaryaIlmiah, Semester, DaftarUnduhan, Pengumuman
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name',
+                  'email', 'id')  # ditambahin id
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'org_code', 'role', 'npm',
-                  'faculty', 'study_program', 'educational_program')
+        fields = ('id', 'full_name', 'user', 'org_code', 'role',
+                  'npm', 'faculty', 'study_program', 'educational_program')
+
+
+class DaftarUnduhanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DaftarUnduhan
+        fields = ('karyaIlmiah', 'idProfile', 'fullName', 'tglUnduh')
 
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
@@ -134,34 +141,6 @@ class KaryaIlmiahEditUploadSerializer(serializers.ModelSerializer):
         karyaIlmiah.save()
         return karyaIlmiah
 
-    # def update(self, instance, validated_data):
-    #     instance.id = validated_data.get('id', instance.id)
-    #     # object_karil = KaryaIlmiah.objects.get(pk=instance.id)
-    #     instance.author = validated_data.get('author', instance.author)
-    #     instance.npm = validated_data.get('npm', instance.npm)
-    #     instance.judul = validated_data.get('judul', instance.judul)
-    #     instance.tglDisetujui = validated_data.get(
-    #         'tglDisetujui', instance.tglDisetujui)
-    #     instance.semesterDisetujui = validated_data.get(
-    #         'semesterDisetujui', instance.semesterDisetujui)
-    #     instance.abstrak = validated_data.get('abstrak', instance.abstrak)
-    #     instance.jenis = validated_data.get('jenis', instance.jenis)
-    #     instance.filePDF = validated_data.get('filePDF', instance.filePDF)
-    #     instance.dosenPembimbing = validated_data.get(
-    #         'dosenPembimbing', instance.dosenPembimbing)
-    #     instance.userPengunggah = validated_data.get(
-    #         'userPengunggah', instance.userPengunggah)
-    #     instance.kataKunci = validated_data.get(
-    #         'kataKunci', instance.kataKunci)
-    #     instance.statusVerifikasi = validated_data.get(
-    #         'statusVerifikasi', instance.statusVerifikasi)
-    #     instance.karyaIlmiah = KaryaIlmiah(id=instance.id, author=instance.author, npm=instance.npm, judul=instance.judul, tglDisetujui=instance.tglDisetujui, semesterDisetujui=instance.semesterDisetujui,
-    #                                        abstrak=instance.abstrak, kataKunci=instance.kataKunci, jenis=instance.jenis, filePDF=instance.filePDF, dosenPembimbing=instance.dosenPembimbing,
-    #                                        status=instance.statusVerifikasi, userPengunggah=instance.userPengunggah)
-
-    # instance.save()
-    # return instance
-
 
 class KaryaIlmiahEditSerializer(serializers.ModelSerializer):
     class Meta:
@@ -229,5 +208,29 @@ class SemesterSerializer(serializers.ModelSerializer):
 class KarilSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
-        fields = ['id', 'judul', 'status', 'jenis',
-                  'kataKunci', 'tglDisetujui', 'dosenPembimbing', 'author', 'fileURI']
+        fields = "__all__"
+
+
+class PengumumanSeriliazer(serializers.ModelSerializer):
+    class Meta:
+        model = Pengumuman
+        fields = "__all__"
+
+    def create(self, validated_data):
+        print("masuk serializer")
+        print(validated_data)
+        judul = validated_data['judul']
+        print("author")
+        isiPengumuman = validated_data['isiPengumuman']
+        print("npm")
+        tglDibuat = validated_data['tglDibuat']
+        print("judul")
+        tglDisunting = validated_data['tglDisunting']
+        print("tglDisetujui")
+        stafPembuat = validated_data['stafPembuat']
+        print("smtDisetujui")
+        pengumuman = Pengumuman(judul=judul, isiPengumuman=isiPengumuman, tglDibuat=tglDibuat, tglDisunting=tglDisunting,
+                                stafPembuat=stafPembuat)
+        print("created pengumuman object")
+        pengumuman.save()
+        return pengumuman

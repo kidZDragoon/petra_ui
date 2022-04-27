@@ -11,10 +11,6 @@
     padding: 0px 17px 0px 17px;
     transition: 0.3s;
 }
-.roundedPill:hover{
-    background-color: #FFFFFF;
-    color: #58929C;
-}
 #containerID{
     padding-top: 20px;
     width: 60%;

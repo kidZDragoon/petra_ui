@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import '../../index.css';
 import Card from "react-bootstrap/Card";
-import {BoxArrowDown} from "react-bootstrap-icons";
+import {BoxArrowDown, Heart, HeartFill} from "react-bootstrap-icons";
 import classes from "./styles.module.css";
 import {Link, useNavigate} from "react-router-dom";
 import {browserHistory} from 'react-router'
@@ -15,6 +15,7 @@ import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import SuccessModalWithHide from "../modals/success-modal-with-hide";
 import TagVerifikasi from "../modals/tag-verifikasi";
 import { MoreHoriz } from "@mui/icons-material";
+import authenticationService from "../../services/authentication.service";
 
 var fileDownload = require('js-file-download');
 
@@ -25,9 +26,14 @@ const CardKaril = ({data}) => {
   const [successModalUnduh, setSuccessModalUnduh] = useState(false);
   const [successModalDelete, setSuccessModalDelete] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [role, setRole] = useState("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   
+  useEffect(() => {
+    loadUser();
+  },[])
+
   const handleEdit = () => {
     navigate(`/edit-karil/${data.id}`)
   }
@@ -94,6 +100,24 @@ const CardKaril = ({data}) => {
     }
   }
 
+  const loadUser = async() =>{
+    try {
+        let token = localStorage.getItem("ssoui");
+        console.log(token);
+        token = JSON.parse(token);
+        console.log(token);
+        if (token !== null){
+            const response = await authenticationService.profile(token);
+            console.log(response);
+            console.log(response.data.role);
+            setRole({role:response.data.role});
+        }
+
+    } catch {
+        console.log("Load user error!");
+    }
+  }
+
   return (
     <div>
     <Card className={classes.cardkaril}>
@@ -109,63 +133,66 @@ const CardKaril = ({data}) => {
               <BoxArrowDown/> &nbsp;Unduh PDF
             </button>
           </Stack>
+          
+          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
+            <div className="d-flex">
+              <div className="mx-3">
+              <TagVerifikasi status={data.status}/>
+              </div>
+              <div>
+                <IconButton
+                  aria-label="more"
+                  id="more-button"
+                  aria-controls={open ? 'more-menu' : undefined}
+                  aria-expanded={open ? 'true' : undefined}
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                >
+                <MoreHoriz />
+                </IconButton>
+                <Menu
+                  id="more-menu"
+                  aria-labelledby="more-button"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                  }}
+                >
+                  <MenuItem onClick={() => handleEdit()}>
+                    <ListItemIcon>
+                      <FaEdit size={24}/>
+                    </ListItemIcon>
+                    Edit
+                  </MenuItem>
 
-          {/* {isFavorite === false ? (
-            <button id={classes["features"]} onClick={favoriteControl}>
-                <Heart size={24}/>
-            </button>
-            ):
-            <button id={classes["features"]} onClick={favoriteControl}>
-                <HeartFill size={24}/>
-            </button>
-          }   */}
-
-          <div className="d-flex">
-            <div className="mx-3">
-            <TagVerifikasi status={data.status}/>
+                  <MenuItem onClick={openDeleteButton}>
+                    <ListItemIcon>
+                      <RiDeleteBin6Fill size={24}/>
+                    </ListItemIcon>
+                    Delete
+                  </MenuItem>
+                </Menu>
+              </div>
             </div>
-            <div>
-              <IconButton
-                aria-label="more"
-                id="more-button"
-                aria-controls={open ? 'more-menu' : undefined}
-                aria-expanded={open ? 'true' : undefined}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-              <MoreHoriz />
-              </IconButton>
-              <Menu
-                id="more-menu"
-                aria-labelledby="more-button"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-              >
-                <MenuItem onClick={() => handleEdit()}>
-                  <ListItemIcon>
-                    <FaEdit size={24}/>
-                  </ListItemIcon>
-                  Edit
-                </MenuItem>
 
-                <MenuItem onClick={openDeleteButton}>
-                  <ListItemIcon>
-                    <RiDeleteBin6Fill size={24}/>
-                  </ListItemIcon>
-                  Delete
-                </MenuItem>
-              </Menu>
-            </div>
-          </div>
+          :
+            isFavorite === false ? (
+              <button id={classes["features"]} onClick={favoriteControl}>
+                  <Heart size={24}/>
+              </button>
+              ):
+              <button id={classes["features"]} onClick={favoriteControl}>
+                  <HeartFill size={24}/>
+              </button>
+          }
+          
                     
         {/* </Stack> */}
         </Grid>

@@ -22,12 +22,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Grid from '@mui/material/Grid';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import AuthenticationDataService from "../../services/authentication.service.js";
+import App from "../../App"; //buat sso
 
 var fileDownload = require('js-file-download');
 
-export default class Detail extends Component {
-    constructor(props) {
-        super(props);
+export default class Detail extends (Component, App) {
+    constructor() {
+        super();
         this.state = {
             karyaIlmiah: null,
             isOpen:false,
@@ -41,7 +43,7 @@ export default class Detail extends Component {
             abstrak:"",
             authors:"",
             jenis:"",
-            kategori:[],
+            kataKunci:[],
             tglVerifikasi:Date,
             url:"",
             APAstyle:"",
@@ -49,43 +51,106 @@ export default class Detail extends Component {
             IEEEstyleL:"",
             MLAstyleU:"",
             MLAstyleL:"",
+            fileURI:"",
+            user:"",
+            daftarPengunduh:[],
+            idProfile:"",
+            fullName:"",
+            tglUnduh:"",
             filePDF:"",
+            role:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
-        // this.handleDelete = this.handleDelete(this);
-        // this.showSuccessModal = this.showSuccessModal.bind(this);
-        // this.hideSuccessModal = this.hideSuccessModal.bind(this);
+        this.handleToken = this.handleToken.bind(this);
+        
     }
     componentDidMount() {
+        this.loadUser()
         const pathname = window.location.href.split("/KaryaIlmiah/")[1];
         this.handleDetailKaryaIlimah(pathname);
+        let token = localStorage.getItem("ssoui")
+        token = JSON.parse(token)
+        this.setState({user: token})
     }
     async handleDetailKaryaIlimah(item,event){
         // event.preventDefault()
         try{
-            console.log("item: " ,item)
             const {data}= await axios.get("/api/karyaIlmiah/"+ item);
+            console.log("getting karyaIlmiah data from API")
             console.log(data)
+            const listkataKunci = data.kataKunci.split(", ")
+            console.log(listkataKunci)
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
-            tglVerifikasi:data.tglDisetujui}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci}) //tglDisetuji jgn lupa diganti tglVerfikasi
             this.setState({id:item})
            
         }catch(error){
             alert("Oops terjadi masalah pada server")
 
         }
+
+        try {
+            await axios.get('/api/daftarUnduhan/'+this.state.karyaIlmiah.id)
+                .then(response => {
+                    console.log('getting daftarUnduhan karyaIlmiah from API')
+                    console.log(response)
+                    for (var i = 0; i < response.data.length; i++) {
+                        const temp = [
+                            response.data[i].fullName,
+                        ]
+                        // console.log(temp)
+
+                        this.setState(prevState => ({
+                          daftarPengunduh: [...prevState.daftarPengunduh, temp]
+                        }))
+                    }
+                })
+        } catch {
+            alert("GET DaftarUnduhan from API error")
+        }
+
+        console.log(this.state.daftarPengunduh)
     }
     
     handlePDFDownload = () => {
-        axios.get('api/download/'+ this.state.fileURI, { 
+        try {
+            let token = localStorage.getItem("ssoui");
+            token = JSON.parse(token);
+            AuthenticationDataService.profile(token)
+                .then(response => {
+                    console.log('get profile & fill state')
+                    console.log(response)
+                    try {
+                        axios.post('api/daftarUnduhan', {
+                            'karyaIlmiah': this.state.karyaIlmiah.id,
+                            'idProfile': response.data.id,
+                            'fullName': response.data.full_name,
+                            'tglUnduh': new Date().toLocaleString() + "",
+                        }).then(response => {
+                            console.log('fire DaftarUnduhan state to API')
+                            console.log(response)
+                        })
+                    } catch {
+                        alert('POST DaftarUnduhan to API error')
+                    }
+                })
+            // console.log(response)
+        } catch {
+            alert("Load profile error");
+        }
+
+        axios.get('api/download/'+ this.state.fileURI, {
             responseType: 'blob',
         }).then(res => {
+            console.log('get the pdf file from cloud')
             fileDownload(res.data, this.state.judul+'.pdf');
             console.log(res);
+            window.location.reload();
         }).catch(err => {
             console.log(err);
         })
+
     };
 
     showModal = () => {
@@ -131,6 +196,15 @@ export default class Detail extends Component {
     hideCite = () => {
         this.setState({isCite:false})
     };
+    
+    async handleToken(){
+        await this.loginHandler()
+        let token = localStorage.getItem("ssoui")
+        token = JSON.parse(token)
+        console.log(token)
+        this.setState({user: token})
+        console.log(this.state.user)
+    }
 
     openDeleteButton = () => {
         this.setState({isOpenDelete:true})
@@ -152,35 +226,62 @@ export default class Detail extends Component {
         }
     }
 
+    async loadUser(){
+        try {
+            let token = localStorage.getItem("ssoui");
+            console.log(token);
+            token = JSON.parse(token);
+            console.log(token);
+            if (token !== null){
+                const response = await AuthenticationDataService.profile(token);
+                console.log(response);
+                console.log(response.data.role);
+                this.setState({role:response.data.role});
+            }
+
+        } catch {
+            console.log("Load user error!");
+        }
+    }
+
+
     render (){
         return (
             <Container id={classes["containerID"]}>
                 <Grid container spacing={2}>
                     <Grid item xs={10}>
                         <h6>{this.state.jenis}</h6>
-                        <h3 id={classes["title"]}>{this.state.judul}</h3>
-                        <p className={classes.date}>{this.state.tglVerifikasi}</p>
-                        <p>{this.state.authors}</p>
-                    {/* {this.state.kategori.map((item) => (
-                        <button className={classes.roundedPill}>{item.nama}</button>
-                        ))} */}
+                    <h3 id={classes["title"]}>{this.state.judul}</h3>
+                    <p className={classes.date}>Tanggal Publikasi: {this.state.tglVerifikasi}</p>
+                    <p>Oleh :{this.state.authors}</p>
+                    {this.state.kataKunci.map((item) => (
+                    <button className={classes.roundedPill}>{item}</button>
+                    ))}
                     </Grid>
-                    <Grid item xs={2} id={classes["actionbutton"]}>
-                        <div className="d-flex">
-                            <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
-                                <FaEdit size={24}/>
-                            </Link>
-                            <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
-                                <RiDeleteBin6Fill size={24}/>
-                            </button>
-                        </div>
-                    </Grid>
+                        <Grid item xs={2} id={classes["actionbutton"]}>
+                            {this.state.role === "staf" ?
+                            <div className="d-flex">
+                                <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
+                                    <FaEdit size={24}/>
+                                </Link>
+                                <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
+                                    <RiDeleteBin6Fill size={24}/>
+                                </button>
+                            </div>
+                            : null
+                            }
+                        </Grid>
                 </Grid>
 
                 <div className="d-flex">
-                    <button id={classes["features"]} onClick={this.showModal}>
-                        <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button>
+                    {this.state.user == null ? 
+                    <button id={classes["features"]} onClick={this.handleToken}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                    </button>: 
+                     <button id={classes["features"]} onClick={this.showModal}>
+                     <BoxArrowDown/> &nbsp;Unduh PDF
+                    </button> 
+                    }
                     <button id={classes["features"]} onClick={this.showCite}>
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
@@ -208,6 +309,33 @@ export default class Detail extends Component {
                              aria-labelledby="panelsStayOpen-headingOne">
                             <AccordionBody className="accordion-body">
                                 {this.state.abstrak}
+                            </AccordionBody>
+                        </div>
+                    </AccordionItem>
+
+                </Accordion>
+
+                <br/>
+
+                <Accordion className="accordion" id="accordionPanelsStayOpenExample">
+                    <AccordionItem className="accordion-item">
+                        <AccordionHeader className="accordion-header" >
+                            Daftar Pengunduh
+                            <div className="line"></div>
+                        </AccordionHeader>
+                        <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show"
+                             aria-labelledby="panelsStayOpen-headingOne">
+                            <AccordionBody className="accordion-body">
+                                <ol>
+                                {this.state.daftarPengunduh.map((pengunduh) =>
+                                    (
+                                        <li>{
+                                            pengunduh
+                                        }</li>
+                                    )
+                                )
+                                }
+                                </ol>
                             </AccordionBody>
                         </div>
                     </AccordionItem>

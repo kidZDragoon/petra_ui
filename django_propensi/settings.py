@@ -134,7 +134,10 @@ DATABASES = {
         'NAME': 'django_propensi',
         'USER': 'aditdj',
         'PASSWORD': 'aditdj',
-        # 'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
+        'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
@@ -198,6 +201,13 @@ SSO_UI_ORG_DETAIL_LANG = "id"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
+
+CORS_ORIGIN_WHITELIST = [
+    'https://propensi-a03.herokuapp.com',
+    'https://propensi-a03-staging.herokuapp.com',
+    'http://localhost:8000',
+    'http://localhost:3000'
+]
 
 # Add this line
 # PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))

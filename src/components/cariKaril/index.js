@@ -26,6 +26,7 @@ const SearchList = () => {
   const [listKaril, setListKaril] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [year, setYear] = useState(null);
+  const [foundKaril, setFoundKaril] = useState([]);
   const [karilChecked, setKarilChecked] = useState({
     tesis: false,
     skripsi: false,
