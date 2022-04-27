@@ -5,19 +5,24 @@ from rest_framework.serializers import ReadOnlyField, SerializerMethodField
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 
-from .models import User, Profile, KaryaIlmiah, Semester
+from .models import User, Profile, KaryaIlmiah, Semester, DaftarUnduhan, Pengumuman
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'id') #ditambahin id
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+        fields = ('id', 'full_name', 'user', 'org_code', 'role', 'npm', 'faculty', 'study_program', 'educational_program')
+
+class DaftarUnduhanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DaftarUnduhan
+        fields = ('karyaIlmiah', 'idProfile', 'fullName', 'tglUnduh')
 
 class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
     class Meta:
@@ -132,3 +137,27 @@ class KaryaIlmiahStatusSerializer(serializers.ModelSerializer):
 
         karyaIlmiah.save()
         return karyaIlmiah
+
+class PengumumanSeriliazer(serializers.ModelSerializer):
+    class Meta:
+        model = Pengumuman
+        fields = "__all__"
+
+    def create(self, validated_data):
+        print("masuk serializer")
+        print(validated_data)
+        judul = validated_data['judul']
+        print("author")
+        isiPengumuman = validated_data['isiPengumuman']
+        print("npm")
+        tglDibuat = validated_data['tglDibuat']
+        print("judul")
+        tglDisunting = validated_data['tglDisunting']
+        print("tglDisetujui")
+        stafPembuat = validated_data['stafPembuat']
+        print("smtDisetujui")
+        pengumuman = Pengumuman (judul=judul, isiPengumuman=isiPengumuman, tglDibuat=tglDibuat, tglDisunting=tglDisunting, 
+                        stafPembuat=stafPembuat)
+        print("created pengumuman object")
+        pengumuman.save()
+        return pengumuman

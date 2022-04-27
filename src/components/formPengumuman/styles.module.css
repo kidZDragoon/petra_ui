@@ -1,0 +1,14 @@
+.button{
+    width: 180px;
+    margin-right: 20px;
+    height: 40px;
+    border-radius: 7px;
+    border: 2px solid;
+    border-color:hsl(30, 97%, 42%);
+}
+#solid{
+    background-color: #d26903;
+}
+#outline{
+    color: #d26903;
+}
