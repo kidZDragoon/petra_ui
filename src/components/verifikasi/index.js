@@ -115,8 +115,8 @@ const DaftarVerifikasi = () => {
     
 
     return(
-        <Container>
-            <h3 className="text-section-header pl-0 mx-4"><span class="pull-right"><LibraryBooksIcon className="mr-2" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
+        <Container className="pt-4 mt-4">
+            <h3 className="text-section-header px-0"><span class="pull-right"><LibraryBooksIcon className="pl-0 mx-4" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
 
             <Box>
             {listToVerify.map((toVerify, i) =>
@@ -126,7 +126,7 @@ const DaftarVerifikasi = () => {
             )}
             </Box>
 
-            <h3 className="text-section-header pl-0 mx-4"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
+            <h3 className="text-section-header px-0"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large" className="pl-0 mx-4"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
             
             <div>
                 <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
