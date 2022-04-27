@@ -226,16 +226,17 @@ export default class Detail extends (Component, App) {
 
     render (){
         return (
-            <Container id={classes["containerID"]}>
+            <Container className="pt-4" id={classes["containerID"]}>
                     <h6>{this.state.jenis}</h6>
                     <h3 id={classes["title"]}>{this.state.judul}</h3>
-                    <p className={classes.date}>Tanggal Publikasi: {this.state.tglVerifikasi}</p>
-                    <p>Oleh :{this.state.authors}</p>
-                {this.state.kataKunci.map((item) => (
+                    <p className={classes.date}>{this.state.tglVerifikasi}</p>
+                    <p>{this.state.authors}</p>
+                    
+                    {this.state.kataKunci.map((item) => (
                     <button className={classes.roundedPill}>{item}</button>
                     ))}
 
-                <div className="d-flex">
+                <div className="d-flex py-2">
                     {this.state.user == null ? 
                     <button id={classes["features"]} onClick={this.handleToken}>
                     <BoxArrowDown/> &nbsp;Unduh PDF
