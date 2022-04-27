@@ -107,7 +107,7 @@ const CardNotVerified = ({data}) => {
     }
 
     return (
-        <Container>
+        <div>
             <Card>
                 <Card.Body>
                     <Card.Subtitle className="mb-2">{data.jenis}</Card.Subtitle>
@@ -117,7 +117,6 @@ const CardNotVerified = ({data}) => {
 
                     <Stack direction="horizontal" gap={3}>
                         <Card.Link href=""><span><FileDownloadOutlinedIcon/></span>Unduh PDF</Card.Link>
-                        <Card.Link href="">Abstrak<span><ExpandMoreIcon/></span></Card.Link>
                     
                         <Button className="ms-auto" variant="outline-danger" onClick={handleShowTolak}>Tolak verifikasi</Button>
                         <Button variant="success" onClick={handleShowVerifikasi}>Verifikasi</Button>
@@ -157,7 +156,7 @@ const CardNotVerified = ({data}) => {
                 buttonText="Kembali">
             </SuccessModalWithHide>
 
-        </Container>
+        </div>
     )
 }
 

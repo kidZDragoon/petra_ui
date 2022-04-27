@@ -14,6 +14,8 @@ const CardKarilStatus = ({data}) => {
             verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="success">Sudah Diverifikasi</Button>;
         } else if (status === "2") {
             verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="danger">Verifikasi Ditolak</Button>;
+        } else {
+            verifiedTag = <Button className="rounded-pill ms-auto mb-auto" variant="warning">Menunggu Verifikasi</Button>;
         }
 
         return (
@@ -24,11 +26,7 @@ const CardKarilStatus = ({data}) => {
                         <Card.Subtitle className="mb-2">{data.jenis}</Card.Subtitle>
                         <Card.Title>{data.judul}</Card.Title>
                         <Card.Text className="mt-1 mb-1 text-muted">{data.author}</Card.Text>
-
-                        <Stack className="mt-1" direction="horizontal" gap={3}>
-                            <Card.Link href=""><span><FileDownloadOutlinedIcon/></span>Unduh PDF</Card.Link>
-                            <Card.Link href="">Abstrak<span><ExpandMoreIcon/></span></Card.Link>
-                        </Stack>
+                        <Card.Link href=""><span><FileDownloadOutlinedIcon/></span>Unduh PDF</Card.Link>
                     </Stack>
                 {verifiedTag}
                 </Stack>

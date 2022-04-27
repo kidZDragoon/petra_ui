@@ -116,17 +116,17 @@ const DaftarVerifikasi = () => {
 
     return(
         <Container>
-            <h3 className="text-section-header px-0 mt-3"><span class="pull-right"><LibraryBooksIcon className="mr-2" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
+            <h3 className="text-section-header pl-0 mx-4"><span class="pull-right"><LibraryBooksIcon className="mr-2" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
 
             <Box>
             {listToVerify.map((toVerify, i) =>
-                <Box my={3} key={i}>
-                    <CardNotVerified data={toVerify}/>
+                <Box my={3} key={i} >
+                    <CardNotVerified className="p-0" data={toVerify}/>
                 </Box>
             )}
             </Box>
 
-            <h3 className="text-section-header px-0 mt-5"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
+            <h3 className="text-section-header pl-0 mx-4"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
             
             <div>
                 <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
@@ -145,7 +145,7 @@ const DaftarVerifikasi = () => {
                     ):
                         <Button className="rounded-pill" variant="primary">Verifikasi ditolak</Button>
                     }
-                    <a href="" className="ms-auto">Lihat Semua</a>
+                    <a href="" className="ms-auto text-orange">Lihat Semua</a>
                 </Stack>
             </div>
 

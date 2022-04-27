@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView,SemesterView, DaftarVerifikasiView, CariKaril, KaryaIlmiahStatusView, DownloadPDF
 from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, \
-    DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan,  PengumumanView, PengumumanUpdateDeleteView
+    DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan,  PengumumanView, KaryaIlmiahSaya, PengumumanUpdateDeleteView
 
 urlpatterns = [
     path('user', UserView.as_view(), name='UserView'),
@@ -20,5 +20,6 @@ urlpatterns = [
     path('edit-status/<int:pk>', KaryaIlmiahStatusView.as_view(), name='KaryaIlmiahStatusView'),
     path('pengumuman/', PengumumanView.as_view(), name='pengumumanView'),
     path('pengumuman/<int:pk>/', PengumumanUpdateDeleteView.as_view(), name='PengumumanUpdateDeleteView'),
+    path('karya-ilmiah-saya/get-all/<int:userId>/', KaryaIlmiahSaya.as_view(), name='karyaIlmiahSaya')
    
 ]

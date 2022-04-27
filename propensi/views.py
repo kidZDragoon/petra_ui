@@ -34,12 +34,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 def login(request):
     print('tesss')
-    # originURL = "http://localhost:8000/"
-    originURL = "https://propensi-a03-staging.herokuapp.com/"
+    originURL = "http://localhost:8000/"
+    # originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    # serverURL = "http://localhost:8000/login/"
-    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    serverURL = "http://localhost:8000/login/"
+    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -348,3 +348,13 @@ class PengumumanUpdateDeleteView(APIView):
             pengumumanSerializer.save()
             return Response({"status": "success"}, status=status.HTTP_200_OK)
         return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class KaryaIlmiahSaya(APIView):
+ 
+   def get(self, request, userId, *args, **kwargs):
+        data = KaryaIlmiah.objects.filter(userPengunggah=userId)
+        serializer = KaryaIlmiahSeriliazer(data, many=True)
+ 
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
