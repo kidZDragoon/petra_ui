@@ -122,79 +122,98 @@ const CardKaril = ({data}) => {
     <div>
     <Card className={classes.cardkaril}>
       <Card.Body>
-        {/* <Stack direction="horizontal" gap={5} className="mb-3"> */}
         <Grid container spacing={2}>
-          <Stack>
-            <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
-            <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
-            <Card.Text>{data.author}</Card.Text>
-            <button id={classes["features"]} onClick={showModal}>
-              <BoxArrowDown/> &nbsp;Unduh PDF
-            </button>
-          </Stack>
-          
-          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
-            <div className="d-flex">
-              <div className="mx-3">
-              <TagVerifikasi status={data.status}/>
-              </div>
-              <div>
-                <IconButton
-                  aria-label="more"
-                  id="more-button"
-                  aria-controls={open ? 'more-menu' : undefined}
-                  aria-expanded={open ? 'true' : undefined}
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                >
-                <MoreHoriz />
-                </IconButton>
-                <Menu
-                  id="more-menu"
-                  aria-labelledby="more-button"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                  }}
-                >
-                  <MenuItem onClick={() => handleEdit()}>
-                    <ListItemIcon>
-                      <FaEdit size={24}/>
-                    </ListItemIcon>
-                    Edit
-                  </MenuItem>
+          {window.location.hash === "#/kelola-karil" ?
+            <Grid item xs={9}>
+              <Stack>
+                <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
+                <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
+                <Card.Text>{data.author}</Card.Text>
+                <button id={classes["features"]} onClick={showModal}>
+                  <BoxArrowDown/> &nbsp;Unduh PDF
+                </button>
+              </Stack>
+            </Grid>
+          : <Grid item xs={10}>
+              <Stack>
+                <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
+                <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
+                <Card.Text>{data.author}</Card.Text>
+                <button id={classes["features"]} onClick={showModal}>
+                  <BoxArrowDown/> &nbsp;Unduh PDF
+                </button>
+              </Stack>
+            </Grid>
+          }
 
-                  <MenuItem onClick={openDeleteButton}>
-                    <ListItemIcon>
-                      <RiDeleteBin6Fill size={24}/>
-                    </ListItemIcon>
-                    Delete
-                  </MenuItem>
-                </Menu>
+          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
+            <Grid item xs={3}>
+              <div className="d-flex">
+                <div className="mx-3">
+                <TagVerifikasi status={data.status}/>
+                </div>
+                <div>
+                  <IconButton
+                    aria-label="more"
+                    id="more-button"
+                    aria-controls={open ? 'more-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                  <MoreHoriz />
+                  </IconButton>
+                  <Menu
+                    id="more-menu"
+                    aria-labelledby="more-button"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right'
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right'
+                    }}
+                  >
+                    <MenuItem onClick={() => handleEdit()}>
+                      <ListItemIcon>
+                        <FaEdit size={24}/>
+                      </ListItemIcon>
+                      Edit
+                    </MenuItem>
+
+                    <MenuItem onClick={openDeleteButton}>
+                      <ListItemIcon>
+                        <RiDeleteBin6Fill size={24}/>
+                      </ListItemIcon>
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </div>
               </div>
-            </div>
+            </Grid>
 
           :
-            isFavorite === false ? (
-              <button id={classes["features"]} onClick={favoriteControl}>
+            isFavorite === false ? 
+            <Grid item xs={2}>
+              <button id={classes["featuresheart"]} onClick={favoriteControl}>
                   <Heart size={24}/>
               </button>
-              ):
-              <button id={classes["features"]} onClick={favoriteControl}>
+              
+            </Grid>
+              :
+            <Grid item xs={2}>
+              <button id={classes["featuresheart"]} onClick={favoriteControl}>
                   <HeartFill size={24}/>
               </button>
+            </Grid>
           }
-          
-                    
-        {/* </Stack> */}
+
         </Grid>
       </Card.Body>
     </Card>

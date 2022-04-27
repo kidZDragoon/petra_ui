@@ -2,7 +2,8 @@ from django.urls import path, re_path
 from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView, VerificatorView, SemesterView, \
     DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhan, MetriksUnggahanView, \
     MetriksPengunjung, TahunMetriksPengunjung, MetriksUnduhanView, TahunMetriksUnduhan, MetriksTop3Unduhan, \
-    DeleteKarilView, KaryaIlmiahUpdateUploadView, KaryaIlmiahUpdateView, PengumumanView, PengumumanUpdateDeleteView
+    DeleteKarilView, KaryaIlmiahUpdateUploadView, KaryaIlmiahUpdateView, PengumumanView, KaryaIlmiahSaya, PengumumanUpdateDeleteView, \
+    PengumumanUpdateDeleteView, KaryaIlmiahStatusView
 
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('search/', CariKaril.as_view(), name='cariKaril'),
     path('daftar-verifikasi/', DaftarVerifikasiView.as_view(),
          name='daftarVerifikasiView'),
+    path('edit-status/<int:pk>', KaryaIlmiahStatusView.as_view(), name='KaryaIlmiahStatusView'),
     path('metriks/unggahan/', MetriksUnggahanView.as_view(),
          name='metriksUnggahanView'),
     path('metriks/pengunjung/', MetriksPengunjung.as_view(), name='countVisit'),
@@ -43,5 +45,6 @@ urlpatterns = [
     path('pengumuman/', PengumumanView.as_view(), name='pengumumanView'),
     path('pengumuman/<int:pk>/', PengumumanUpdateDeleteView.as_view(),
          name='PengumumanUpdateDeleteView'),
+    path('karya-ilmiah-saya/get-all/<int:userId>/', KaryaIlmiahSaya.as_view(), name='karyaIlmiahSaya')
 
 ]

@@ -259,19 +259,19 @@ export default class Detail extends (Component, App) {
                     <button className={classes.roundedPill}>{item}</button>
                     ))}
                     </Grid>
-                        <Grid item xs={2} id={classes["actionbutton"]}>
-                            {this.state.role === "staf" ?
-                            <div className="d-flex">
-                                <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
-                                    <FaEdit size={24}/>
-                                </Link>
-                                <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
-                                    <RiDeleteBin6Fill size={24}/>
-                                </button>
-                            </div>
-                            : null
-                            }
-                        </Grid>
+                    <Grid item xs={2} id={classes["actionbutton"]}>
+                        {this.state.role === "staf" ?
+                        <div className="d-flex">
+                            <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
+                                <FaEdit size={24}/>
+                            </Link>
+                            <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
+                                <RiDeleteBin6Fill size={24}/>
+                            </button>
+                        </div>
+                        : null
+                        }
+                    </Grid>
                 </Grid>
 
                 <div className="d-flex py-2">
