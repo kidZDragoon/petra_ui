@@ -119,3 +119,16 @@ class KarilSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
         fields = "__all__"
+
+class KaryaIlmiahStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KaryaIlmiah
+        fields = ["status"]
+
+
+    def create(self, validated_data):
+        status = validated_data['status']
+        karyaIlmiah = KaryaIlmiah(status=status)
+
+        karyaIlmiah.save()
+        return karyaIlmiah

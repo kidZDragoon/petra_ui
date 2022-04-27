@@ -7,9 +7,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import Container from 'react-bootstrap/Container'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
+import SuccessModalWithHide from "../modals/success-modal-with-hide";
+import axios from "axios";
 
 const CardNotVerified = ({data}) => {
 
+    const [status, setStatus] = useState("0");
     const [showVerifikasi, setShowVerifikasi] = useState(false);
     const [showTolak, setShowTolak] = useState(false);
     const [confVerifikasi, setConfVerifikasi] = useState(false);
@@ -38,6 +41,69 @@ const CardNotVerified = ({data}) => {
         setConfVerifikasi(false);
         setShowTolak(false);
         setShowVerifikasi(false);
+        window.location.reload();
+    }
+
+    // const handleVerifikasi = async() => {
+    //     console.log("sebelum: ", status)
+    //     setStatus("1");
+    //     console.log("sesudah: ", status)
+    //     handleSubmit();
+    // }
+
+    // const handleTolak = () => {
+    //     console.log("sebelum: ", status)
+    //     setStatus("2");
+    //     console.log("sesudah: ", status)
+    //     handleSubmit();
+    // }
+
+    const handleVerifikasi = async() => {
+        // event.preventDefault();
+
+        try {
+            setShowVerifikasi(false);
+
+            let formData = new FormData();
+            formData.append('status', "1");
+
+            const res = await axios.put(
+                "/api/edit-status/" + data.id ,
+                formData,
+                { headers: {
+                    'content-type': 'multipart/form-data'
+                }
+                }
+            )
+            
+            setConfVerifikasi(true);
+        } catch (error) {
+            alert("Terjadi error di server. Mohon tunggu beberapa saat.");
+        }
+    }
+
+    const handleTolak = async() => {
+            // event.preventDefault();
+    
+        try {
+            setShowTolak(false);
+
+            let formData = new FormData();
+            formData.append('status', "2");
+
+            const res = await axios.put(
+                "/api/edit-status/" + data.id ,
+                formData,
+                { headers: {
+                    'content-type': 'multipart/form-data'
+                }
+                }
+            )
+            
+            setConfTolak(true);
+        } catch (error) {
+            alert("Terjadi error di server. Mohon tunggu beberapa saat.");
+        }
     }
 
     return (
@@ -60,7 +126,7 @@ const CardNotVerified = ({data}) => {
             </Card>
 
             <ConfirmationPopUp
-                action={handleConfirmVerifikasi}
+                action={handleVerifikasi}
                 show={showVerifikasi}
                 hide={handleCloseModal}
                 title="Apakah Anda yakin ingin memverifikasi karya ilmiah ini?"
@@ -68,28 +134,28 @@ const CardNotVerified = ({data}) => {
             </ConfirmationPopUp>
 
             <ConfirmationPopUp
-                action={handleConfirmTolak}
+                action={handleTolak}
                 show={showTolak}
                 hide={handleCloseModal}
                 title="Apakah Anda yakin ingin menolak verifikasi karya ilmiah ini?"
                 content="">
             </ConfirmationPopUp>
 
-            <SuccessModalWithButton
+            <SuccessModalWithHide
                 show={confVerifikasi}
                 hide={handleCloseModal}
                 title="Karya ilmiah berhasil diverifikasi!"
                 content=""
-                buttonText="Lihat daftar verifikasi">
-            </SuccessModalWithButton>
+                buttonText="Kembali">
+            </SuccessModalWithHide>
 
-            <SuccessModalWithButton
+            <SuccessModalWithHide
                 show={confTolak}
                 hide={handleCloseModal}
                 title="Verifikasi Karya ilmiah berhasil ditolak!"
                 content=""
-                buttonText="Lihat daftar verifikasi">
-            </SuccessModalWithButton>
+                buttonText="Kembali">
+            </SuccessModalWithHide>
 
         </Container>
     )

@@ -10,13 +10,13 @@ from django.http import HttpResponse
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer
+    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.decorators import api_view
 from rest_framework_jwt.settings import api_settings
 import urllib3
@@ -241,3 +241,14 @@ class DaftarVerifikasiView(ListAPIView):
     serializer_class = KarilSeriliazer
     filter_backends = (DjangoFilterBackend, )
     filterset_fields = ('status', 'status')
+
+class KaryaIlmiahStatusView(UpdateAPIView):
+    def put(self, request, pk, *args, **kwargs):
+        print("file sama")
+        karil = KaryaIlmiah.objects.get(pk=pk)
+        karya_ilmiah_serializer = KaryaIlmiahStatusSerializer(
+            karil, data=request.data, partial=True)
+        if karya_ilmiah_serializer.is_valid():
+            karya_ilmiah_serializer.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
