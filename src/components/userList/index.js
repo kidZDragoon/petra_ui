@@ -4,6 +4,8 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
+import Dasbor from "../dasbor";
+import {Container, Typography} from "@mui/material"
 
 export default class UserList extends Component {
     constructor(props) {
@@ -176,79 +178,84 @@ export default class UserList extends Component {
 
     render (){
         return (
-            <div className="container" id={classes["container"]}>
-                <table className="table table-borderless">
-                    <thead>
-                    <tr className="d-flex" id={classes["tabelHeader"]}>
-                        <th className="col-1">No</th>
-                        <th className="col-3">Nama Lengkap</th>
-                        <th className="col-3">Email</th>
-                        <th className="col-3">Role</th>
-                        <th className="col-1"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.merge.map((usr, index) => (
-                        <tr className="d-flex">
-                        <td className="col-1">{index += 1}</td>
-                        <td className="col-3">{usr.full_name}</td> 
-                        <td className="col-3">{usr.email}</td>
-                        <td className="col-3">{usr.role}</td>
-                    
-                        <td className="col-1">
-                            <button  name="selected_name" value={usr.full_name}
-                            id={classes["features"]} onClick={() => this.showModal(usr)}>Update Role</button>
-                        </td>
-                    
-                    </tr>
-                    ))} 
+            <Dasbor>
+                <Container py={4} px={8} id={classes["container"]}>
+                    <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
+                        Kelola User
+                    </Typography>
+                    <table className="table table-borderless">
+                        <thead>
+                        <tr className="d-flex" id={classes["tabelHeader"]}>
+                            <th className="col-1">No</th>
+                            <th className="col-3">Nama Lengkap</th>
+                            <th className="col-3">Email</th>
+                            <th className="col-3">Role</th>
+                            <th className="col-1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.merge.map((usr, index) => (
+                            <tr className="d-flex">
+                            <td className="col-1">{index += 1}</td>
+                            <td className="col-3">{usr.full_name}</td> 
+                            <td className="col-3">{usr.email}</td>
+                            <td className="col-3">{usr.role}</td>
+                        
+                            <td className="col-1">
+                                <button  name="selected_name" value={usr.full_name}
+                                id={classes["features"]} onClick={() => this.showModal(usr)}>Update Role</button>
+                            </td>
+                        
+                        </tr>
+                        ))} 
 
-                    </tbody>
+                        </tbody>
 
-                </table>
-                <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
-                    <ModalHeader className={classes.modalHeader} >
-                        <h5 className="modal-title" id="exampleModalLongTitle">Update Role</h5>
-                        <h4 type="button" className={classes.close}  onClick={this.hideModal}>
-                            <span aria-hidden="true">&times;</span>
-                        </h4>
-                    </ModalHeader>
-                    <ModalBody className={classes.modalBody}>
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Nama</Form.Label>
-                            <Form.Control type="text" name="selected_name" value={this.state.selected_name}
-                             disabled/>
-                        </Form.Group>
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Role</Form.Label>
-                                <Form.Select name="selected_role" aria-label="role"
-                                    value={this.state.selected_role} onChange={this.handleChangeField} >
-                                    {this.state.roles.map((role) => (
-                                        <option value={role}>{role}</option>
-                                    ))} 
-                            </Form.Select>
-                        </Form.Group>
-                    </ModalBody>
-                    <ModalFooter className={classes.modalFooter}>
-                        <button type="button" className="btn btn-primary" onClick={this.hideModal}
-                                id={classes["cancle"]}>Batal</button>
-                        <button type="button" className="btn btn-primary" id={classes["accept"]}
-                        onClick={this.submitData}>Ya</button>
-                    </ModalFooter>
+                    </table>
+                    <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
+                        <ModalHeader className={classes.modalHeader} >
+                            <h5 className="modal-title" id="exampleModalLongTitle">Update Role</h5>
+                            <h4 type="button" className={classes.close}  onClick={this.hideModal}>
+                                <span aria-hidden="true">&times;</span>
+                            </h4>
+                        </ModalHeader>
+                        <ModalBody className={classes.modalBody}>
+                            <Form.Group className="">
+                                <Form.Label className="text-large">Nama</Form.Label>
+                                <Form.Control type="text" name="selected_name" value={this.state.selected_name}
+                                disabled/>
+                            </Form.Group>
+                            <Form.Group className="">
+                                <Form.Label className="text-large">Role</Form.Label>
+                                    <Form.Select name="selected_role" aria-label="role"
+                                        value={this.state.selected_role} onChange={this.handleChangeField} >
+                                        {this.state.roles.map((role) => (
+                                            <option value={role}>{role}</option>
+                                        ))} 
+                                </Form.Select>
+                            </Form.Group>
+                        </ModalBody>
+                        <ModalFooter className={classes.modalFooter}>
+                            <button type="button" className="btn btn-primary" onClick={this.hideModal}
+                                    id={classes["cancle"]}>Batal</button>
+                            <button type="button" className="btn btn-primary" id={classes["accept"]}
+                            onClick={this.submitData}>Ya</button>
+                        </ModalFooter>
 
-                </Modal>
+                    </Modal>
 
-                <SuccessModalWithButton show={this.state.successModal}
-                        title="Role berhasil diubah!"
-                        content={this.state.message}
-                        buttonText="Lihat daftar user"
-                        link="/list-user" 
-                        notLink={true}
-                        action={this.hideSuccessModal}
-                        >
-                </SuccessModalWithButton>
-            
-            </div>
+                    <SuccessModalWithButton show={this.state.successModal}
+                            title="Role berhasil diubah!"
+                            content={this.state.message}
+                            buttonText="Lihat daftar user"
+                            link="/list-user" 
+                            notLink={true}
+                            action={this.hideSuccessModal}
+                            >
+                    </SuccessModalWithButton>
+                
+                </Container>
+            </Dasbor>
         )
     }
 }

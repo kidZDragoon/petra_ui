@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import {Link} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -8,6 +9,10 @@ import Box from "@mui/material/Box";
 import "@fontsource/mulish";
 import Stack from "react-bootstrap/Stack";
 import classes from "./styles.module.css";
+import AdvSearch from './AdvSearch.svg';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+
+
 // import Searching from "../assets/Searching.svg";
 import { IconButton } from "@mui/material";
 import { ArrowBackIosNew } from "@mui/icons-material";
@@ -15,17 +20,17 @@ import { ArrowBackIosNew } from "@mui/icons-material";
 const AdvancedSearch = () => {
   return (
     <div>
-      <Container>
-        <Box display="flex" alignItems="center" mb={3}>
-          <IconButton onClick={() => {}} sx={{ mr: 1.5 }}>
-            <ArrowBackIosNew primaryColor="black" size="large" />
-          </IconButton>
-          <p class="text-section-header">Advanced Search</p>
-        </Box>
-      </Container>
-
       <Stack gap={4}>
         <Container>
+        <p className="text-section-header px-0">
+          <span class="pull-right">
+              <Link to="/" className="pl-0 mx-4 text-orange">
+                  <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
+                  </Link>
+          </span>
+          Advanced Search
+      </p>
+      
           <Row>
             <Col>
               <div>
@@ -71,7 +76,7 @@ const AdvancedSearch = () => {
 
             <Col>
               <div className="bg-advsearch">
-                {/* <img src={Searching} alt="gambar" /> */}
+                <img src={AdvSearch} alt="gambar" />
               </div>
             </Col>
           </Row>

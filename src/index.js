@@ -8,6 +8,12 @@ import DaftarVerifikasi from './components/verifikasi';
 import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SeachList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
+import MetriksUnggahan from './components/metriks/unggahan';
+import MetriksPengunjung from './components/metriks/pengunjung';
+import MetriksUnduhan from './components/metriks/unduhan';
+import EditKaryaIlmiah from './components/edit-karil';
+import Metriks from './components/metriks';
+import KelolaKaril from './components/kelola-karil';
 import UserList from './components/userList';
 import FormPengumuman from './components/formPengumuman';
 import ListPengumuman from './components/listPengumuman';
@@ -25,9 +31,17 @@ ReactDOM.render(
             <Route path="/Search" element={<SeachList/>}/>
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
-            <Route path="/list-user" element={<UserList/>}/>
+            <Route path="/metriks/unggahan" element={<MetriksUnggahan/>} />
+            <Route path="/metriks/pengunjung" element={<MetriksPengunjung/>} />
+            <Route path="/metriks/unduhan" element={<MetriksUnduhan/>} />
+            <Route path="/edit-karil/:id" element={<EditKaryaIlmiah/>} />
+            <Route path="/metriks" element={<Metriks/>}/>
+            <Route path="/kelola-karil" element={<KelolaKaril/>}/>
+
+            {/* <Route path="/sidebar" element={<DashboardSidebar/>}/> */}
+            <Route path="/kelola-user" element={<UserList/>}/>
             <Route path="/form-pengumuman" element={<FormPengumuman/>}/>
-            <Route path="/list-pengumuman" element={<ListPengumuman/>}/>
+            <Route path="/kelola-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/update-pengumuman/:id" element={<UpdatePengumuman/>}/>
             <Route path="/detail-pengumuman/:id" element={<DetailPengumuman/>}/>
             <Route path="/" element={<Home/>}/>
