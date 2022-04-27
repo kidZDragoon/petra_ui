@@ -18,17 +18,9 @@ const Dasbor = (props) => {
         console.log(token);
         const response = await AuthenticationDataService.profile(token);
         console.log(response);
-        if(response.data.role === 'staff'){
+        if(response.data.role === 'staf'){
             setAuthorized(true);
         };
-    }
-
-    const responseView = () => {
-        
-    };
-
-    const missingPage = () => {
-        <MissingPage></MissingPage>
     }
 
     return (
