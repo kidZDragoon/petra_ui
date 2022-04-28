@@ -439,8 +439,6 @@ class MetriksUnggahanView(APIView):
             "chartData": status_data,
         }
 
-        print(data_status)
-
         # Data berdasarkan jenis
         jenis_labels = [
             'Skripsi',
