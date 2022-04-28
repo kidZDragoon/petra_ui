@@ -19,19 +19,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import CardKaril from "./card-karil.component";
+import CardKaril from "../card/card-karil.component";
 import { Search } from "@mui/icons-material";
 
 const SearchList = () => {
   const [listKaril, setListKaril] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [year, setYear] = useState(null);
+  const [foundKaril, setFoundKaril] = useState([]);
   const [karilChecked, setKarilChecked] = useState({
     tesis: false,
     skripsi: false,
     disertasi: false,
+    nonskripsi: false,
   });
-  const { tesis, skripsi, disertasi } = karilChecked;
+  const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
 
   useEffect(() => {
     fetchKaril();
@@ -42,6 +44,7 @@ const SearchList = () => {
     if (tesis) karilType.push('Tesis');
     if (skripsi) karilType.push('Skripsi');
     if (disertasi) karilType.push('Disertasi');
+    if (nonskripsi) karilType.push('Non-skripsi');
     let query = karilType.join();
     return query;
   }
@@ -67,7 +70,7 @@ const SearchList = () => {
 
   console.log("DATA: ", listKaril)
   return (
-    <Box py={8} px={12}>
+    <Box py={8} px={12} height={'100vh'}>
       <Grid container spacing={8}>
         <Grid item lg={3}>
           <Box bgcolor="#F8F8F8" p={3}>
@@ -76,7 +79,7 @@ const SearchList = () => {
             </Typography>
             <Box mt={4}>
               <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Tahun
+                Tahun Publikasi
               </Typography>
               <DatePicker
                 selected={year}
@@ -102,35 +105,12 @@ const SearchList = () => {
                   control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
                   label="Disertasi"
                 />
+                <FormControlLabel
+                  control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
+                  label="Non-skripsi"
+                />
               </FormGroup>
             </Box>
-            {/* <Box mt={4}>
-              <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Kategori Topik
-              </Typography>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Lorem Ipsum"
-                />
-              </FormGroup>
-            </Box> */}
           </Box>
         </Grid>
         <Grid item lg={9}>
@@ -140,7 +120,7 @@ const SearchList = () => {
             </Typography>
             <Box my={5}>
               <TextField
-                label="Cari Karya Ilmiah"
+                label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
                 fullWidth
                 value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
@@ -150,14 +130,20 @@ const SearchList = () => {
                       <Search />
                     </InputAdornment>
                   ),
+                  style: { borderRadius: 8 }
                 }}
               />
             </Box>
             <Box>
               <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
+              {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
               {listKaril.map((karil, idx) => 
                 <Box my={3} key={idx}>
-                  <CardKaril data={karil}/>
+                  {karil.status == 1
+                  ? <CardKaril 
+                  data={karil}/>
+                  : null
+                  }
                 </Box>
               )}
             </Box>
@@ -166,6 +152,6 @@ const SearchList = () => {
       </Grid>
     </Box>
   );               
-  // }
 }
+// }
 export default SearchList;

@@ -3,10 +3,12 @@ import {Link} from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-
+import VisitorTrackingService from "./services/visitorTracking.service"
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
+import Sidebar from './components/sidebar';
+import DashboardSidebar from './components/sidebar/DashboardSidebar';
 
 class App extends React.Component {
     constructor(props) {
@@ -37,6 +39,7 @@ class App extends React.Component {
                     document.getElementById("login").innerHTML = ''
                     document.getElementById("logout").innerHTML = 'Halo, ' + this.state.full_name
                 })
+            VisitorTrackingService.countVisit()
         } catch {}
     }
 
@@ -116,7 +119,7 @@ class App extends React.Component {
                                 <Nav.Link href="#/karya-ilmiah-saya/upload">Upload</Nav.Link>
                                 <Nav.Link href="#/DaftarVerifikasi">Daftar Verifikasi</Nav.Link>
                                 <Nav.Link href="#/Search">Search</Nav.Link>
-                                <Nav.Link href="#/AdvancedSearch">Advanced Search</Nav.Link>
+                                <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
                             </Nav>
 
                             <Nav>
@@ -126,6 +129,8 @@ class App extends React.Component {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
+                {/* kondisi untuk admin saja */}
+                {/* <Sidebar></Sidebar> */}
             </div>
         );
     }

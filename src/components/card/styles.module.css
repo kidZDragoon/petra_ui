@@ -1,0 +1,119 @@
+.cardkaril {
+  border-radius: 16px;
+  box-shadow: inset;
+  box-shadow: 0 4px 8px 0 rgba(0.05, 0.05, 0.05, 0.05);
+  padding: 20px;
+  padding-bottom: 0;
+}
+
+#features {
+  /* margin-right: 18px; */
+  color: #d26903;
+  font-weight: 620;
+  padding: auto;
+  border: 0;
+  background-color: #ffffff;
+  /*background-color: #F8F8F8;*/
+  /* width: 140px; */
+  align-self: flex-start;
+  margin-top: 20px;
+}
+/* #features:hover {
+  background-color: #d26903;
+  color: #f8f8f8;
+} */
+
+.link {
+  color: black;
+}
+
+.link:hover {
+  color: #d26903;
+}
+
+.close {
+  border: 0;
+  margin-top: -40px;
+  padding-left: 7px;
+  padding-bottom: 5px;
+  border-radius: 50px;
+  width: 35px;
+  background-color: #d3d3d3;
+}
+
+#cancle {
+  background-color: #f8f8f8;
+  border-color: #d26903;
+  color: #d26903;
+  width: 200px;
+}
+#accept {
+  background-color: #d26903;
+  border-color: #d26903;
+  color: #ffffff;
+  width: 200px;
+}
+.modal {
+  height: 600px;
+  margin-top: 150px;
+}
+.modalHeader {
+  height: 100px;
+}
+.modalBody {
+  height: fit-content;
+}
+.modalFooter {
+  margin-right: 27px;
+}
+
+.button-unduh {
+  color: #d26903;
+}
+
+.seachbar {
+  border-radius: 60px;
+}
+
+/* .seachbaru {
+  display: flex;
+  justify-content: space-between;
+  background-color: aqua;
+} */
+
+#actionbutton {
+  padding-right: 0%;
+  margin-right: 0%;
+}
+
+#editbutton {
+  color: black;
+  font-weight: 620;
+  padding: 2px;
+  border: 0;
+  background-color: #ffffff;
+  align-self: flex-start;
+  margin: 20px;
+  margin-right: 10px;
+  margin-top: 0px;
+}
+
+#editbutton:hover {
+  color: #d26903;
+}
+
+#deletebutton {
+  color: #A74C46;
+  font-weight: 620;
+  padding: 2px;
+  border: 0;
+  margin: 20px;
+  background-color: #ffffff;
+  align-self: flex-start;
+  margin-left: 10px;
+  margin-top: 0px;
+}
+
+#deletebutton:hover {
+  color: #d26903;
+}
