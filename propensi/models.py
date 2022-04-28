@@ -24,8 +24,10 @@ class Profile(models.Model):
     role = models.CharField('peran pengguna', max_length=128, blank=True)
     npm = models.CharField('Nomor Pokok Mahasiswa', max_length=10, blank=True)
     faculty = models.CharField('fakultas', max_length=128, blank=True)
-    study_program = models.CharField('program studi', max_length=128, blank=True)
-    educational_program = models.CharField('program pendidikan', max_length=128, blank=True)
+    study_program = models.CharField(
+        'program studi', max_length=128, blank=True)
+    educational_program = models.CharField(
+        'program pendidikan', max_length=128, blank=True)
 
     class Meta:
         verbose_name = 'profil'
@@ -73,7 +75,6 @@ class Semester(models.Model):
     semester = models.CharField(max_length=500)
 
 
-
 class KaryaIlmiah(models.Model):
     author = models.CharField(max_length=500)
     npm = models.CharField(max_length=15)
@@ -81,22 +82,33 @@ class KaryaIlmiah(models.Model):
     status = models.CharField(max_length=500)
     jenis = models.CharField(max_length=500)
     abstrak = models.CharField(max_length=5000)
+    kataKunci = models.CharField(max_length=5000, null=True)
     tglDisetujui = models.DateField(null=True)
-    semesterDisetujui = models.ForeignKey(Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
+    semesterDisetujui = models.ForeignKey(
+        Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
     tglVerifikasi = models.DateField(null=True)
     userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
-    dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing")
+    dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
     verifikator = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
-    daftarPengunduh = models.ManyToManyField(Profile)
     fileURI = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    userPenandaBuku = models.ManyToManyField(Profile)
 
     def get_upload_path(instance, filename):
         return os.path.join("files/%s" % instance.fileURI)
-    
+
     def validate_file_extension(value):
         pass
 
-    filePDF = models.FileField(upload_to=get_upload_path, null=True, max_length=500, validators=[FileExtensionValidator(['pdf'])])
+    filePDF = models.FileField(upload_to=get_upload_path, null=True,
+                               max_length=500, validators=[FileExtensionValidator(['pdf'])])
+
+
+
+class DaftarUnduhan(models.Model):
+    karyaIlmiah = models.ForeignKey(KaryaIlmiah, on_delete=models.CASCADE)
+    idProfile = models.CharField(max_length=500)
+    fullName = models.CharField(max_length=500)
+    tglUnduh = models.CharField(max_length=500)
 
 
 class Pengumuman(models.Model):
@@ -110,3 +122,8 @@ class Pengumuman(models.Model):
 class Kategori(models.Model):
     nama = models.CharField(max_length=50)
     listKaryaIlmiah = models.ManyToManyField(KaryaIlmiah)
+
+
+class Visitors(models.Model):
+    ip = models.CharField(max_length=200)
+    tanggalKunjungan = models.DateField()

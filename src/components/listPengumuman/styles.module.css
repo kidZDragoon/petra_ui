@@ -1,0 +1,34 @@
+.dropdownToogle::after {
+    display: none !important;
+    color:red;
+  }
+  .dropdown{
+      background-color: aqua !important;
+      color: aqua;
+  }
+  .judulPengumuman{
+    font-weight: 800;
+    color: #d26903;
+    padding-top: 10px;
+  }
+  .link{
+    text-decoration: none;
+  }
+  #button{
+    border: 2px solid;
+    border-radius: 20px;
+  }
+  #button:hover{
+    background-color: white;
+    color: #d26903;
+    border-color: #d26903;
+  }
+  #heading{
+    margin-top: 30px;
+  }
+  .judulListPengumuman{
+    padding-top: 70px;
+    padding-bottom: 20px;
+    font-weight: 800;
+    color: #d26903;
+  }

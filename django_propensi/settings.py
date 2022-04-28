@@ -36,7 +36,7 @@ PRODUCTION = os.environ.get('DATABASE_URL') != None
 SECRET_KEY = 'django-insecure-c107z^^ik2we(=ljwz&d8xke&y&6%qjjmpc#9i8x5^xe145w@q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -135,6 +135,9 @@ DATABASES = {
         'USER': 'aditdj',
         'PASSWORD': 'aditdj',
         'HOST': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
@@ -167,7 +170,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bangkok'
 USE_I18N = True
 USE_TZ = True
 
@@ -198,6 +201,13 @@ SSO_UI_ORG_DETAIL_LANG = "id"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
+
+CORS_ORIGIN_WHITELIST = [
+    'https://propensi-a03.herokuapp.com',
+    'https://propensi-a03-staging.herokuapp.com',
+    'http://localhost:8000',
+    'http://localhost:3000'
+]
 
 # Add this line
 # PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
