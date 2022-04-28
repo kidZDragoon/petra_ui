@@ -87,14 +87,11 @@ class KaryaIlmiah(models.Model):
     semesterDisetujui = models.ForeignKey(
         Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
     tglVerifikasi = models.DateField(null=True)
-    userPengunggah = models.ForeignKey(
-        Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
-    dosenPembimbing = models.ForeignKey(
-        Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
-    verifikator = models.ForeignKey(
-        Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
-    fileURI = models.UUIDField(
-        primary_key=False, default=uuid.uuid4, editable=False)
+    userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
+    dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
+    verifikator = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
+    fileURI = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    userPenandaBuku = models.ManyToManyField(Profile)
 
     def get_upload_path(instance, filename):
         return os.path.join("files/%s" % instance.fileURI)
@@ -104,6 +101,7 @@ class KaryaIlmiah(models.Model):
 
     filePDF = models.FileField(upload_to=get_upload_path, null=True,
                                max_length=500, validators=[FileExtensionValidator(['pdf'])])
+
 
 
 class DaftarUnduhan(models.Model):

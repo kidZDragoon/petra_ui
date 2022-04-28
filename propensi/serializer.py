@@ -202,6 +202,19 @@ class VisitorsSerializer(serializers.ModelSerializer):
         fields = ['ip']
 
 
+class KaryaIlmiahStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KaryaIlmiah
+        fields = ["status"]
+
+
+    def create(self, validated_data):
+        status = validated_data['status']
+        karyaIlmiah = KaryaIlmiah(status=status)
+
+        karyaIlmiah.save()
+        return karyaIlmiah
+
 class PengumumanSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = Pengumuman

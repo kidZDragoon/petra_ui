@@ -95,7 +95,7 @@ export default class FormPengumuman extends Component {
                 console.log(this.state.confirmationPopUp)
                 
                 const res = await axios.put(
-                        "/api/pengumuman/" + this.props.id,
+                        "/api/pengumuman/" + this.props.id +"/",
                         formData,
                         { headers: {
                             'content-type': 'multipart/form-data'

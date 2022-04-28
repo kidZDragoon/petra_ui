@@ -16,6 +16,7 @@ import SuccessModalWithHide from "../modals/success-modal-with-hide";
 import TagVerifikasi from "../modals/tag-verifikasi";
 import { MoreHoriz } from "@mui/icons-material";
 import authenticationService from "../../services/authentication.service";
+import AuthenticationDataService from "../../services/authentication.service";
 
 var fileDownload = require('js-file-download');
 
@@ -48,10 +49,37 @@ const CardKaril = ({data}) => {
   const handlePDFDownload = () => {
     console.log("masuk pdf ")
     setIsOpen(false)
-    axios.get('api/download/'+ data.fileURI, { 
+
+    try {
+        let token = localStorage.getItem("ssoui");
+        token = JSON.parse(token);
+        AuthenticationDataService.profile(token)
+            .then(response => {
+                console.log('get profile & fill state')
+                console.log(response)
+                try {
+                    axios.post('/api/daftarUnduhan', {
+                        'karyaIlmiah': data.id,
+                        'idProfile': response.data.id,
+                        'fullName': response.data.full_name,
+                        'tglUnduh': new Date().toLocaleString() + "",
+                    }).then(response => {
+                        console.log('fire DaftarUnduhan state to API')
+                        console.log(response)
+                    })
+                } catch {
+                    alert('POST DaftarUnduhan to API error')
+                }
+            })
+    } catch {
+        alert("Load profile error");
+    }
+
+    axios.get('/api/download/'+ data.fileURI, {
         responseType: 'blob',
     }).then(res => {
-        fileDownload(res.data, data.judul +'.pdf');
+        console.log('get the pdf file from cloud')
+        fileDownload(res.data, data.judul+'.pdf');
         console.log(res);
     }).catch(err => {
         console.log(err);
@@ -71,8 +99,53 @@ const CardKaril = ({data}) => {
   };
 
   const favoriteControl = () => {
-    setIsFavorite(!isFavorite);
-    console.log(isFavorite);
+        if (isFavorite) {
+            try {
+                let token = localStorage.getItem("ssoui");
+                token = JSON.parse(token);
+                AuthenticationDataService.profile(token)
+                    .then(response => {
+                        console.log('get profile')
+                        console.log(response)
+                        try {
+                            axios.put('/api/daftarBookmark/delete/'+data.id, {
+                                "idProfile": response.data.id
+                            }).then(response => {
+                                console.log('delete bookmark')
+                                console.log(response)
+                                setIsFavorite(false)
+                            })
+                        } catch {
+                            alert('DeleteBookmark API error')
+                        }
+                    })
+            } catch {
+                alert("Load profile error");
+            }
+        } else {
+            try {
+                let token = localStorage.getItem("ssoui");
+                token = JSON.parse(token);
+                AuthenticationDataService.profile(token)
+                    .then(response => {
+                        console.log('get profile')
+                        console.log(response)
+                        try {
+                            axios.put('/api/daftarBookmark/add/'+data.id, {
+                                "idProfile": response.data.id
+                            }).then(response => {
+                                console.log('PUT daftarBookmark')
+                                console.log(response)
+                                setIsFavorite(true)
+                            })
+                        } catch {
+                            alert('POST daftarBookmark to API error')
+                        }
+                    })
+            } catch {
+                alert("Load profile error");
+            }
+        }
   };
 
   const openDeleteButton = () => {
@@ -103,18 +176,48 @@ const CardKaril = ({data}) => {
   const loadUser = async() =>{
     try {
         let token = localStorage.getItem("ssoui");
-        console.log(token);
+        // console.log(token);
         token = JSON.parse(token);
-        console.log(token);
+        // console.log(token);
         if (token !== null){
             const response = await authenticationService.profile(token);
-            console.log(response);
-            console.log(response.data.role);
             setRole({role:response.data.role});
         }
 
     } catch {
         console.log("Load user error!");
+    }
+
+
+    try {
+        let token = localStorage.getItem("ssoui");
+        token = JSON.parse(token);
+        AuthenticationDataService.profile(token)
+            .then(response => {
+                console.log('get profile')
+                console.log(response)
+                try {
+                    axios.put('/api/daftarBookmark/check/' + data.id, {
+                        'idProfile': response.data.id,
+                    }).then(response => {
+                        console.log('fire DaftarUnduhan state to API')
+                        console.log(response)
+                        if (response.data['bookmarked'] == "true") {
+                            setIsFavorite(true)
+                            console.log('bookmarked')
+                            // console.log(isFavorite)
+                        } else {
+                            setIsFavorite(false)
+                            console.log('not bookmarked')
+                            // console.log(isFavorite)
+                        }
+                    })
+                } catch {
+                    alert('CheckStatusBookmark error!')
+                }
+            })
+    } catch {
+        alert("Load profile error");
     }
   }
 
@@ -122,79 +225,98 @@ const CardKaril = ({data}) => {
     <div>
     <Card className={classes.cardkaril}>
       <Card.Body>
-        {/* <Stack direction="horizontal" gap={5} className="mb-3"> */}
         <Grid container spacing={2}>
-          <Stack>
-            <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
-            <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
-            <Card.Text>{data.author}</Card.Text>
-            <button id={classes["features"]} onClick={showModal}>
-              <BoxArrowDown/> &nbsp;Unduh PDF
-            </button>
-          </Stack>
-          
-          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
-            <div className="d-flex">
-              <div className="mx-3">
-              <TagVerifikasi status={data.status}/>
-              </div>
-              <div>
-                <IconButton
-                  aria-label="more"
-                  id="more-button"
-                  aria-controls={open ? 'more-menu' : undefined}
-                  aria-expanded={open ? 'true' : undefined}
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                >
-                <MoreHoriz />
-                </IconButton>
-                <Menu
-                  id="more-menu"
-                  aria-labelledby="more-button"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                  }}
-                >
-                  <MenuItem onClick={() => handleEdit()}>
-                    <ListItemIcon>
-                      <FaEdit size={24}/>
-                    </ListItemIcon>
-                    Edit
-                  </MenuItem>
+          {window.location.hash === "#/kelola-karil" ?
+            <Grid item xs={8}>
+              <Stack>
+                <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
+                <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
+                <Card.Text>{data.author}</Card.Text>
+                <button id={classes["features"]} onClick={showModal}>
+                  <BoxArrowDown/> &nbsp;Unduh PDF
+                </button>
+              </Stack>
+            </Grid>
+          : <Grid item xs={10}>
+              <Stack>
+                <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
+                <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
+                <Card.Text>{data.author}</Card.Text>
+                <button id={classes["features"]} onClick={showModal}>
+                  <BoxArrowDown/> &nbsp;Unduh PDF
+                </button>
+              </Stack>
+            </Grid>
+          }
 
-                  <MenuItem onClick={openDeleteButton}>
-                    <ListItemIcon>
-                      <RiDeleteBin6Fill size={24}/>
-                    </ListItemIcon>
-                    Delete
-                  </MenuItem>
-                </Menu>
+          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
+            <Grid item xs={4}>
+              <div className="d-flex">
+                <div className="mx-3">
+                <TagVerifikasi status={data.status}/>
+                </div>
+                <div>
+                  <IconButton
+                    aria-label="more"
+                    id="more-button"
+                    aria-controls={open ? 'more-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                  <MoreHoriz />
+                  </IconButton>
+                  <Menu
+                    id="more-menu"
+                    aria-labelledby="more-button"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right'
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right'
+                    }}
+                  >
+                    <MenuItem onClick={() => handleEdit()}>
+                      <ListItemIcon>
+                        <FaEdit size={24}/>
+                      </ListItemIcon>
+                      Edit
+                    </MenuItem>
+
+                    <MenuItem onClick={openDeleteButton}>
+                      <ListItemIcon>
+                        <RiDeleteBin6Fill size={24}/>
+                      </ListItemIcon>
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </div>
               </div>
-            </div>
+            </Grid>
 
           :
-            isFavorite === false ? (
-              <button id={classes["features"]} onClick={favoriteControl}>
+            isFavorite === false ? 
+            <Grid item xs={2}>
+              <button id={classes["featuresheart"]} onClick={favoriteControl}>
                   <Heart size={24}/>
               </button>
-              ):
-              <button id={classes["features"]} onClick={favoriteControl}>
+              
+            </Grid>
+              :
+            <Grid item xs={2}>
+              <button id={classes["featuresheart"]} onClick={favoriteControl}>
                   <HeartFill size={24}/>
               </button>
+            </Grid>
           }
-          
-                    
-        {/* </Stack> */}
+
         </Grid>
       </Card.Body>
     </Card>

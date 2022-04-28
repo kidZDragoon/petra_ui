@@ -18,6 +18,21 @@
   align-self: flex-start;
   margin-top: 20px;
 }
+#featuresheart {
+  /* margin-right: 18px; */
+  color: #d26903;
+  /* font-weight: 620; */
+  /* padding: auto; */
+  border: 0;
+  background-color: #ffffff;
+  /*background-color: #F8F8F8;*/
+  /* width: 140px; */
+  align-self: flex-start;
+  margin-top: 20px;
+  justify-content: center;
+  /* margin-left: 10px; */
+  /* align-items: center; */
+}
 /* #features:hover {
   background-color: #d26903;
   color: #f8f8f8;

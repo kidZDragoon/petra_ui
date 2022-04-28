@@ -104,7 +104,7 @@ export default class UploadKaryaIlmiah extends Component {
             this.setState({userPengunggah: response.data.id});
             console.log("user pengunggah");
             console.log(response.data.id);
-            if(response.data.role == 'mahasiswa' && response.data.study_program === 'Kesejahteraan Sosial'){
+            if((response.data.role == 'mahasiswa' && response.data.study_program === 'Kesejahteraan Sosial') || response.data.role == 'staf'){
                 this.setState({authorized: true});
             }
 
