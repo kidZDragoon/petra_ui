@@ -205,11 +205,11 @@ const CardKaril = ({data}) => {
                         if (response.data['bookmarked'] == "true") {
                             setIsFavorite(true)
                             console.log('bookmarked')
-                            console.log(isFavorite)
+                            // console.log(isFavorite)
                         } else {
                             setIsFavorite(false)
                             console.log('not bookmarked')
-                            console.log(isFavorite)
+                            // console.log(isFavorite)
                         }
                     })
                 } catch {

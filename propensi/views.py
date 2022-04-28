@@ -227,15 +227,11 @@ class AddBookmarkView(APIView):
         profile = Profile.objects.get(id=request.data['idProfile'])
         print(profile)
         karil = KaryaIlmiah.objects.get(pk=pk)
-        print(karil)
+        print(karil.userPenandaBuku)
         karil.userPenandaBuku.add(profile)
-        print(karil)
+        print(karil.userPenandaBuku)
         karil.save()
-        karil2 = KaryaIlmiah.objects.filter(userPenandaBuku__id=1)
-        print(karil2)
-        if karil2:
-            return Response("Karil berhasil ditambahkan pada bookmark", status=status.HTTP_200_OK)
-        return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Karil berhasil ditambahkan pada bookmark", status=status.HTTP_200_OK)
 
 
 class BookmarkListView(APIView):
@@ -256,17 +252,11 @@ class DeleteBookmarkView(APIView):
         profile = Profile.objects.get(id=request.data['idProfile'])
         print(profile)
         karil = KaryaIlmiah.objects.get(pk=pk)
-        print(karil)
-        karil2 = profile.karyailmiah_set.filter(id=pk)
-        print(karil2)
+        print(karil.userPenandaBuku)
         karil.userPenandaBuku.remove(profile)
-        print(karil)
+        print(karil.userPenandaBuku)
         karil.save()
-        karil3 = profile.karyailmiah_set.filter(id=pk)
-        print(karil3)
-        if not karil3:
-            return Response("Karil berhasil dihapus dari bookmark", status=status.HTTP_200_OK)
-        return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Karil berhasil dihapus dari bookmark", status=status.HTTP_200_OK)
 
 
 class CheckBookmarkStatusView(APIView):
