@@ -34,7 +34,7 @@ export default class Bookmark extends Component {
                     console.log('get profile')
                     console.log(response)
                     try {
-                        axios.post('http://localhost:8000/api/daftarBookmark', {
+                        axios.post('/api/daftarBookmark', {
                             "idProfile": response.data.id
                         }).then(response => {
                             console.log('Get bookmarkList')
