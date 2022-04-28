@@ -16,7 +16,8 @@ from propensi import serializer
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan, Visitors, Pengumuman
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, KaryaIlmiahEditSerializer, DaftarUnduhanSerializer, PengumumanSeriliazer
+    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, \
+    KaryaIlmiahEditSerializer, DaftarUnduhanSerializer, PengumumanSeriliazer, VisitorsSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
