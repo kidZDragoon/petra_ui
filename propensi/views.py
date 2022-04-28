@@ -39,12 +39,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    originURL = "http://localhost:8000/"
-    # originURL = "https://propensi-a03-staging.herokuapp.com/"
+    # originURL = "http://localhost:8000/"
+    originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    serverURL = "http://localhost:8000/login/"
-    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    # serverURL = "http://localhost:8000/login/"
+    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://propensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -438,8 +438,6 @@ class MetriksUnggahanView(APIView):
             "chartLabel": status_chart_label,
             "chartData": status_data,
         }
-
-        print(data_status)
 
         # Data berdasarkan jenis
         jenis_labels = [
