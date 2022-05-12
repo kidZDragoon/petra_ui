@@ -17,7 +17,6 @@ import axios from "axios";
 import fileDownload from "js-file-download";
 import {Heart,HeartFill} from "react-bootstrap-icons";
 import CardPengumuman from "../cardPengumuman";
-import CardKaril from "../card/card-karil.component";
 
 export default class Bookmark extends Component {
     constructor(props) {
