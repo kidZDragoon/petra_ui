@@ -16,7 +16,8 @@ from propensi import serializer
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan, Visitors, Pengumuman
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
     KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, KaryaIlmiahEditSerializer, DaftarUnduhanSerializer, PengumumanSeriliazer
+    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, \
+    KaryaIlmiahEditSerializer, DaftarUnduhanSerializer, PengumumanSeriliazer, VisitorsSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -221,28 +222,27 @@ class AddBookmarkView(APIView):
     pada kolom "userPenandaBuku".
     Pake PUT dengan pk utk id karil, dan idProfile dalam request datanya
     """
+
     def put(self, request, pk):
         print(request.data)
         profile = Profile.objects.get(id=request.data['idProfile'])
         print(profile)
         karil = KaryaIlmiah.objects.get(pk=pk)
-        print(karil)
+        print(karil.userPenandaBuku)
         karil.userPenandaBuku.add(profile)
-        print(karil)
+        print(karil.userPenandaBuku)
         karil.save()
-        karil2 = KaryaIlmiah.objects.filter(userPenandaBuku__id=1)
-        print(karil2)
-        if karil2:
-            return Response("Karil berhasil ditambahkan pada bookmark", status=status.HTTP_200_OK)
-        return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Karil berhasil ditambahkan pada bookmark", status=status.HTTP_200_OK)
 
 
 class BookmarkListView(APIView):
     """
     Mendapatkan list Bookmark. Butuh ID profilenya, dikirim melalui POST
     """
+
     def post(self, request):
-        karil = Profile.objects.get(id=request.data['idProfile']).karyailmiah_set.all()
+        karil = Profile.objects.get(
+            id=request.data['idProfile']).karyailmiah_set.all()
         print(karil)
         karil_serializer = KaryaIlmiahSeriliazer(karil, many=True)
         print(karil_serializer.data)
@@ -255,17 +255,11 @@ class DeleteBookmarkView(APIView):
         profile = Profile.objects.get(id=request.data['idProfile'])
         print(profile)
         karil = KaryaIlmiah.objects.get(pk=pk)
-        print(karil)
-        karil2 = profile.karyailmiah_set.filter(id=pk)
-        print(karil2)
+        print(karil.userPenandaBuku)
         karil.userPenandaBuku.remove(profile)
-        print(karil)
+        print(karil.userPenandaBuku)
         karil.save()
-        karil3 = profile.karyailmiah_set.filter(id=pk)
-        print(karil3)
-        if not karil3:
-            return Response("Karil berhasil dihapus dari bookmark", status=status.HTTP_200_OK)
-        return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Karil berhasil dihapus dari bookmark", status=status.HTTP_200_OK)
 
 
 class CheckBookmarkStatusView(APIView):
@@ -279,7 +273,7 @@ class CheckBookmarkStatusView(APIView):
         return Response({"bookmarked": "false"}, status=status.HTTP_200_OK)
 
 
-class KaryaIlmiahView(RetrieveAPIView): #auto pk
+class KaryaIlmiahView(RetrieveAPIView):  # auto pk
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
 
@@ -327,6 +321,8 @@ class KaryaIlmiahUpdateUploadView(APIView):
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update without upload karil
+
+
 class KaryaIlmiahUpdateView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
         print("file sama")
@@ -393,6 +389,7 @@ class DaftarVerifikasiView(ListAPIView):
     filter_backends = (DjangoFilterBackend, )
     filterset_fields = ('status', 'status')
 
+
 class KaryaIlmiahStatusView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
         print("file sama")
@@ -437,8 +434,6 @@ class MetriksUnggahanView(APIView):
             "chartLabel": status_chart_label,
             "chartData": status_data,
         }
-
-        print(data_status)
 
         # Data berdasarkan jenis
         jenis_labels = [
@@ -710,10 +705,9 @@ class PengumumanUpdateDeleteView(APIView):
 
 
 class KaryaIlmiahSaya(APIView):
- 
-   def get(self, request, userId, *args, **kwargs):
+
+    def get(self, request, userId, *args, **kwargs):
         data = KaryaIlmiah.objects.filter(userPengunggah=userId)
         serializer = KaryaIlmiahSeriliazer(data, many=True)
- 
-        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)

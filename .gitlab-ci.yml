@@ -34,6 +34,3 @@ staging:
     url: https://$HEROKU_APP_STAGING.herokuapp.com
   only:
     - staging-django
-    - staging
-    - hotfix
-    - coldfix

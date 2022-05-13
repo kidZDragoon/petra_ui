@@ -18,6 +18,7 @@ export default class FormPengumuman extends Component {
         this.handleChangeField = this.handleChangeField.bind(this);
         this.submitData = this.submitData.bind(this);
         this.hideConfirmation = this.hideConfirmation.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
        
         this.state = {
             judul: this.props.judul,
@@ -29,7 +30,9 @@ export default class FormPengumuman extends Component {
             successModal:false,
             confirmationPopUp:false,
             message:"",
-            role:""
+            role:"",
+            formIsValid: false,
+            errors: {}
         };
       
     }
@@ -92,7 +95,7 @@ export default class FormPengumuman extends Component {
                 console.log(this.state.confirmationPopUp)
                 
                 const res = await axios.put(
-                        "/api/pengumuman/" + this.props.id,
+                        "/api/pengumuman/" + this.props.id +"/",
                         formData,
                         { headers: {
                             'content-type': 'multipart/form-data'
@@ -156,6 +159,34 @@ export default class FormPengumuman extends Component {
         this.setState({confirmationPopUp:false})
     };
 
+    handleValidation(){
+
+        let isValid = true;
+        let errors = {}
+
+        console.log("masuk handle validation")
+
+        //Author
+        if (this.state.judul === "") {
+            console.log(this.state.judul)
+            isValid = false;
+            errors["judul"] = "Mohon lengkapi judul dari pengumuman";
+        }
+
+        //NPM
+        if (this.state.pesan === "") {
+            console.log(this.state.pesan)
+            isValid = false;
+            errors["pesan"] = "Mohon lengkapi pesan pengumuman";
+        }
+        console.log(errors)
+        this.setState({ formIsValid: isValid, errors: errors  });
+
+        if(isValid === true){
+            this.submitData()
+        }
+
+    }
 
     render (){
         return (
@@ -180,14 +211,20 @@ export default class FormPengumuman extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Judul</Form.Label>
                             <Form.Control type="text" name="judul" placeholder="Judul Pengumuman"
-                            value={this.state.judul} onChange={this.handleChangeField} required/>
+                            value={this.state.judul} onChange={this.handleChangeField} />
+                            <span className="text-error text-small">
+                                {this.state.errors["judul"]}
+                            </span>
                         </Form.Group>
 
                         
                         <Form.Group className="">
                             <Form.Label className="text-large">Pesan</Form.Label>
                             <Form.Control name="pesan" as="textarea" rows={8} placeholder="Pesan Pengumuman"
-                             value={this.state.pesan} onChange={this.handleChangeField} required/>
+                             value={this.state.pesan} onChange={this.handleChangeField} />
+                             <span className="text-error text-small">
+                                {this.state.errors["pesan"]}
+                            </span>
                         </Form.Group>
                         <ButtonGroup >
                             <button className={classes.button} id={classes["solid"]} onClick={this.submitData}>
