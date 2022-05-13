@@ -39,7 +39,6 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    print('tesss')
     # originURL = "http://localhost:8000/"
     originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
@@ -223,6 +222,7 @@ class AddBookmarkView(APIView):
     pada kolom "userPenandaBuku".
     Pake PUT dengan pk utk id karil, dan idProfile dalam request datanya
     """
+
     def put(self, request, pk):
         print(request.data)
         profile = Profile.objects.get(id=request.data['idProfile'])
@@ -239,8 +239,10 @@ class BookmarkListView(APIView):
     """
     Mendapatkan list Bookmark. Butuh ID profilenya, dikirim melalui POST
     """
+
     def post(self, request):
-        karil = Profile.objects.get(id=request.data['idProfile']).karyailmiah_set.all()
+        karil = Profile.objects.get(
+            id=request.data['idProfile']).karyailmiah_set.all()
         print(karil)
         karil_serializer = KaryaIlmiahSeriliazer(karil, many=True)
         print(karil_serializer.data)
@@ -271,7 +273,7 @@ class CheckBookmarkStatusView(APIView):
         return Response({"bookmarked": "false"}, status=status.HTTP_200_OK)
 
 
-class KaryaIlmiahView(RetrieveAPIView): #auto pk
+class KaryaIlmiahView(RetrieveAPIView):  # auto pk
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
 
@@ -319,6 +321,8 @@ class KaryaIlmiahUpdateUploadView(APIView):
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update without upload karil
+
+
 class KaryaIlmiahUpdateView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
         print("file sama")
@@ -384,6 +388,7 @@ class DaftarVerifikasiView(ListAPIView):
     serializer_class = KarilSeriliazer
     filter_backends = (DjangoFilterBackend, )
     filterset_fields = ('status', 'status')
+
 
 class KaryaIlmiahStatusView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
@@ -700,10 +705,9 @@ class PengumumanUpdateDeleteView(APIView):
 
 
 class KaryaIlmiahSaya(APIView):
- 
-   def get(self, request, userId, *args, **kwargs):
+
+    def get(self, request, userId, *args, **kwargs):
         data = KaryaIlmiah.objects.filter(userPengunggah=userId)
         serializer = KaryaIlmiahSeriliazer(data, many=True)
- 
-        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)

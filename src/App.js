@@ -3,12 +3,15 @@ import {Link} from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import VisitorTrackingService from "./services/visitorTracking.service"
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
-import Sidebar from './components/sidebar';
-import DashboardSidebar from './components/sidebar/DashboardSidebar';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 class App extends React.Component {
     constructor(props) {
@@ -41,11 +44,12 @@ class App extends React.Component {
                 })
             VisitorTrackingService.countVisit()
             this.loadUser()
+            console.log("login:", this.state.loggedIn)
         } catch {}
     }
 
     popUpLogin() {
-        //  const serviceURL = "http://localhost:8000/login/"
+        // const serviceURL = "http://localhost:8000/login/"
         const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
@@ -94,6 +98,7 @@ class App extends React.Component {
         document.getElementById("login").innerHTML = ''
         document.getElementById("logout").innerHTML = 'Halo, ' + data['nama']
         localStorage.setItem("ssoui", JSON.stringify(data))
+        this.setState({loggedIn: true,})
     }
 
     async loadUser(){
@@ -145,15 +150,34 @@ class App extends React.Component {
                                 </Nav>
                                 }
 
-                            <Nav>
+                            
+                                {this.state.loggedIn === false
+                                ? 
+                                <Nav>
+                                    <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                </Nav>
+                                :
+                                <Nav>
+                                    <NavDropdown title={"Halo, " + this.state.full_name} id="logout navbarScrollingDropdown">
+                                        <NavDropdown.Item id="logout" onClick={this.logout}>
+                                            <MenuItem>
+                                            <ListItemIcon>
+                                                <LogoutIcon fontSize="small" />
+                                            </ListItemIcon>
+                                            <ListItemText>Keluar</ListItemText>
+                                            </MenuItem>
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
+                                </Nav>
+                                }
+
+                                {/* <Nav>
                                 <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
                                 <Nav.Link id="logout" onClick={this.logout}/>
-                            </Nav>
+                                </Nav> */}
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-                {/* kondisi untuk admin saja */}
-                {/* <Sidebar></Sidebar> */}
             </div>
         );
     }
