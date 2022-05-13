@@ -49,8 +49,8 @@ class App extends React.Component {
     }
 
     popUpLogin() {
-        // const serviceURL = "http://localhost:8000/login/"
-        const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+        const serviceURL = "http://localhost:8000/login/"
+        // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
         const SSOWindow = window.open(
@@ -113,6 +113,7 @@ class App extends React.Component {
                 // console.log(response.data.role);
                 this.setState({role:response.data.role});
             }
+            console.log("role: ", this.state.role)
         } catch {
             console.log("Load user error!");
         }
