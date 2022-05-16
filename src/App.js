@@ -157,30 +157,6 @@ class App extends React.Component {
                                     </NavDropdown>
                                 </Nav>
                             
-                                // {this.state.loggedIn === false
-                                // ? 
-                                // <Nav>
-                                //     <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                // </Nav>
-                                // :
-                                // <Nav>
-                                //     <NavDropdown title={"Halo, " + this.state.full_name} id="logout navbarScrollingDropdown">
-                                //         <NavDropdown.Item id="logout" onClick={this.logout}>
-                                //             <MenuItem>
-                                //             <ListItemIcon>
-                                //                 <LogoutIcon fontSize="small" />
-                                //             </ListItemIcon>
-                                //             <ListItemText>Keluar</ListItemText>
-                                //             </MenuItem>
-                                //         </NavDropdown.Item>
-                                //     </NavDropdown>
-                                // </Nav>
-                                // }
-
-                                // <Nav>
-                                // <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                // <Nav.Link id="logout" onClick={this.logout}/>
-                                // </Nav>
 
                         </Navbar.Collapse>
                     </Container>
