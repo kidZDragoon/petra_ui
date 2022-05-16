@@ -177,10 +177,10 @@ class App extends React.Component {
                                 // </Nav>
                                 // }
 
-                                {/* <Nav>
-                                <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                <Nav.Link id="logout" onClick={this.logout}/>
-                                </Nav> */}
+                                // <Nav>
+                                // <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                // <Nav.Link id="logout" onClick={this.logout}/>
+                                // </Nav>
 
                         </Navbar.Collapse>
                     </Container>
