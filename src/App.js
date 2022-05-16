@@ -63,11 +63,11 @@ class App extends React.Component {
             window.addEventListener(
             "message", (e) => {
                     if (SSOWindow) {
-                        window.location.reload()
                         SSOWindow.close()
                     }
                     const data = e.data
                     resolve(data)
+                    window.location.reload()
                 },
                 {
                     once: true
@@ -76,20 +76,31 @@ class App extends React.Component {
         })
     }
 
-    logout() {
-        let token = localStorage.getItem("ssoui")
-        token = JSON.parse(token)
-        AuthenticationDataService.user(token)
-            .then(() => {
-                this.setState({
-                    username: "",
-                    full_name: "",
-                    email: "",
-                    loggedIn: false,
-                })
-                localStorage.removeItem("ssoui")
-                window.location.reload()
-            })
+    async logout() {
+        let token = localStorage.getItem("ssoui");
+        token = JSON.parse(token);
+
+        this.setState({
+            username: "",
+            full_name: "",
+            email: "",
+            loggedIn: false,
+        })
+        localStorage.removeItem("ssoui")
+
+        const SSOWindow = window.open(
+            new URL(
+                `https://sso.ui.ac.id/cas2/logout`
+            ).toString(),
+            "SSO UI Logout",
+            "left=50, top=50, width=480, height=480"
+        )
+
+        const response = await AuthenticationDataService.profile(token);
+
+        SSOWindow.close()
+
+        window.location.reload()
     }
 
     async loginHandler() {
