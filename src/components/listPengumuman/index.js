@@ -6,9 +6,9 @@ import axios from "axios";
 import AuthenticationDataService from "../../services/authentication.service";
 import { Link } from "react-router-dom";
 import {PlusLg} from "react-bootstrap-icons";
-// import Pagination from '@material-ui/lab/Pagination';
 import Dasbor from "../dasbor";
 import { Container } from "@mui/material"
+import { Pagination } from "@material-ui/lab";
 
 export default class ListPengumuman extends Component {
     constructor(props) {
@@ -19,6 +19,7 @@ export default class ListPengumuman extends Component {
             isStaf:false,
             page:0,
             totalPage:0,
+            totalPengumuman:[],
         }
         this.loadPengumumanListData = this.loadPengumumanListData.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this)
@@ -43,7 +44,9 @@ export default class ListPengumuman extends Component {
             }else{
                 total_page = Math.round(data.data.length/5)
             }
-            this.setState({ listPengumuman: data.data.reverse(), isDelete: false, totalPage:total_page});
+            this.setState({ totalPengumuman: data.data.reverse(), isDelete: false, totalPage:total_page,
+                listPengumuman: data.data.slice(0,5)});
+            console.log(this.state.totalPengumuman)
             console.log(this.state.listPengumuman)
             console.log(this.state.totalPage)
 
@@ -79,8 +82,13 @@ export default class ListPengumuman extends Component {
 
     handleChangePage(event, value){
         console.log("val: " + value)
-        this.setState({page:value})
-        console.log(this.state.page)
+        var pengumumans = this.state.totalPengumuman;
+        pengumumans = pengumumans.slice((5*value)-5, 5*value)
+        console.log(pengumumans)
+        this.setState({listPengumuman:pengumumans})
+        document.getElementById("judul").scrollIntoView();
+        console.log(this.state.listPengumuman)
+        console.log(this.state.totalPengumuman)
     }
 
     render(){
@@ -90,7 +98,7 @@ export default class ListPengumuman extends Component {
                 <Dasbor>
                     <Container py={4} px={8}>
                         <div class="d-flex justify-content-between" id={classes["heading"]}>
-                        <div class="p-2"> <h3 className={classes.judulPengumuman}>Kelola Pengumuman</h3></div>
+                        <div class="p-2"> <h3 className={classes.judulPengumuman} id="judul">Kelola Pengumuman</h3></div>
                         <div class="p-2" >
                             <Link to="/form-pengumuman" className={classes.link}>
                                 <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
@@ -100,12 +108,13 @@ export default class ListPengumuman extends Component {
                         </div>
                 
                         </div>
-                        
+                       
                         {this.state.listPengumuman.map((pengumuman) => (
                             <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
                             pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                             isStaf={this.state.isStaf}/>
                         ))}
+                       
                     </Container>
                 </Dasbor>:
                 <Container py={4} px={8}>
@@ -119,8 +128,10 @@ export default class ListPengumuman extends Component {
                     isStaf={this.state.isStaf}/>
                 ))}
              </Container>
-               
+ 
                 }
+                <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                id={classes["pagination"]}/>
             </div>
         )
     }
