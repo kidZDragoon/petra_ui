@@ -63,6 +63,7 @@ class App extends React.Component {
             window.addEventListener(
             "message", (e) => {
                     if (SSOWindow) {
+                        window.location.reload()
                         SSOWindow.close()
                     }
                     const data = e.data
