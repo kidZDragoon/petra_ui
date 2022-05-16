@@ -3,12 +3,12 @@ import {Link} from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import VisitorTrackingService from "./services/visitorTracking.service"
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
-import Sidebar from './components/sidebar';
-import DashboardSidebar from './components/sidebar/DashboardSidebar';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 class App extends React.Component {
     constructor(props) {
@@ -45,8 +45,8 @@ class App extends React.Component {
     }
 
     popUpLogin() {
-         const serviceURL = "http://localhost:8000/login/"
-        // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+        //  const serviceURL = "http://localhost:8000/login/"
+        const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
         const SSOWindow = window.open(
@@ -145,10 +145,14 @@ class App extends React.Component {
                                 </Nav>
                                 }
 
-                            <Nav>
-                                <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                <Nav.Link id="logout" onClick={this.logout}/>
-                            </Nav>
+                                <Nav>
+                                    <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                    <NavDropdown id="logout">
+                                        <NavDropdown.Item onClick={this.logout}>
+                                                <LogoutIcon fontSize="small" /> keluar
+                                            </NavDropdown.Item>
+                                    </NavDropdown>
+                                </Nav>
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
