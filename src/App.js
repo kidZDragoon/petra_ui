@@ -9,9 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
 import LogoutIcon from '@mui/icons-material/Logout';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -150,31 +148,40 @@ class App extends React.Component {
                                 </Nav>
                                 }
 
-                            
-                                {this.state.loggedIn === false
-                                ? 
                                 <Nav>
                                     <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                </Nav>
-                                :
-                                <Nav>
-                                    <NavDropdown title={"Halo, " + this.state.full_name} id="logout navbarScrollingDropdown">
-                                        <NavDropdown.Item id="logout" onClick={this.logout}>
-                                            <MenuItem>
-                                            <ListItemIcon>
-                                                <LogoutIcon fontSize="small" />
-                                            </ListItemIcon>
-                                            <ListItemText>Keluar</ListItemText>
-                                            </MenuItem>
-                                        </NavDropdown.Item>
+                                    <NavDropdown id="logout">
+                                        <NavDropdown.Item onClick={this.logout}>
+                                                <LogoutIcon fontSize="small" /> keluar
+                                            </NavDropdown.Item>
                                     </NavDropdown>
                                 </Nav>
-                                }
+                            
+                                // {this.state.loggedIn === false
+                                // ? 
+                                // <Nav>
+                                //     <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                // </Nav>
+                                // :
+                                // <Nav>
+                                //     <NavDropdown title={"Halo, " + this.state.full_name} id="logout navbarScrollingDropdown">
+                                //         <NavDropdown.Item id="logout" onClick={this.logout}>
+                                //             <MenuItem>
+                                //             <ListItemIcon>
+                                //                 <LogoutIcon fontSize="small" />
+                                //             </ListItemIcon>
+                                //             <ListItemText>Keluar</ListItemText>
+                                //             </MenuItem>
+                                //         </NavDropdown.Item>
+                                //     </NavDropdown>
+                                // </Nav>
+                                // }
 
                                 {/* <Nav>
                                 <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
                                 <Nav.Link id="logout" onClick={this.logout}/>
                                 </Nav> */}
+
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
