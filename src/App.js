@@ -10,6 +10,7 @@ import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
 import LogoutIcon from '@mui/icons-material/Logout';
 
+
 class App extends React.Component {
     constructor(props) {
         super(props)
@@ -41,11 +42,12 @@ class App extends React.Component {
                 })
             VisitorTrackingService.countVisit()
             this.loadUser()
+            console.log("login:", this.state.loggedIn)
         } catch {}
     }
 
     popUpLogin() {
-        //  const serviceURL = "http://localhost:8000/login/"
+        // const serviceURL = "http://localhost:8000/login/"
         const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
@@ -94,6 +96,7 @@ class App extends React.Component {
         document.getElementById("login").innerHTML = ''
         document.getElementById("logout").innerHTML = 'Halo, ' + data['nama']
         localStorage.setItem("ssoui", JSON.stringify(data))
+        this.setState({loggedIn: true,})
     }
 
     async loadUser(){
@@ -153,11 +156,35 @@ class App extends React.Component {
                                             </NavDropdown.Item>
                                     </NavDropdown>
                                 </Nav>
+                            
+                                // {this.state.loggedIn === false
+                                // ? 
+                                // <Nav>
+                                //     <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                // </Nav>
+                                // :
+                                // <Nav>
+                                //     <NavDropdown title={"Halo, " + this.state.full_name} id="logout navbarScrollingDropdown">
+                                //         <NavDropdown.Item id="logout" onClick={this.logout}>
+                                //             <MenuItem>
+                                //             <ListItemIcon>
+                                //                 <LogoutIcon fontSize="small" />
+                                //             </ListItemIcon>
+                                //             <ListItemText>Keluar</ListItemText>
+                                //             </MenuItem>
+                                //         </NavDropdown.Item>
+                                //     </NavDropdown>
+                                // </Nav>
+                                // }
+
+                                {/* <Nav>
+                                <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
+                                <Nav.Link id="logout" onClick={this.logout}/>
+                                </Nav> */}
+
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-                {/* kondisi untuk admin saja */}
-                {/* <Sidebar></Sidebar> */}
             </div>
         );
     }
