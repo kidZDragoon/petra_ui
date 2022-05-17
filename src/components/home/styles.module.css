@@ -4,14 +4,23 @@
 
 }
 .section {
-  height: 700px;  
+  height: 700px;
+  width: 100%;  
 }
+
+.section_pengumuman {
+  height: 900px;
+  width: 100%;
+}
+
 .pengumuman{
-  width: 50%;
+  margin-left: 50px;
+  width: 75%;
 }
 .home{
-  margin-top: 80px;
-  margin-left: 300px;
+  margin-top: 150px;
+  margin-left: 80px;
+  margin-right: 80px;
 }
 .jargon{
   font-size: 50px;
@@ -23,7 +32,8 @@
   height: 50px;
 }
 .space{
-  height: 200px;
+  margin-right: 0px;
+  padding: 0px;
 }
 .link{
   text-decoration: none;
@@ -31,4 +41,11 @@
 }
 .link:hover{
   color: #d26903;
+}
+
+.search_bar {
+  border-radius: 16px;
+  border-style: hidden;
+  box-shadow: inset;
+  box-shadow: 4px 4px 8px 4px rgba(0.05, 0.05, 0.05, 0.05);
 }

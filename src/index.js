@@ -31,6 +31,7 @@ ReactDOM.render(
             <Route path='/DaftarVerifikasi' element={<DaftarVerifikasi/>}/>
             <Route path="/karya-ilmiah-saya/upload" element={<UploadKaryaIlmiah/>} />
             <Route path="/Search" element={<SeachList/>}/>
+            <Route path="/Search/:keyword" element={<SeachList/>}/>
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
             <Route path="/metriks/unggahan" element={<MetriksUnggahan/>} />

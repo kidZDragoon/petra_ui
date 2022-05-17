@@ -16,6 +16,7 @@ import AuthenticationDataService from "../../services/authentication.service";
 import axios from "axios";
 import fileDownload from "js-file-download";
 import {Heart,HeartFill} from "react-bootstrap-icons";
+import CardPengumuman from "../cardPengumuman";
 
 export default class Bookmark extends Component {
     constructor(props) {
