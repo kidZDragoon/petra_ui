@@ -119,7 +119,7 @@ export default class ListPengumuman extends Component {
                 </Dasbor>:
                 <Container py={4} px={8}>
                 <div class="d-flex justify-content-between" id={classes["heading"]}>
-                <div class="p-2"> <h3 className={classes.judulPengumuman}>List Pengumuman</h3></div>        
+                <div class="p-2"> <h3 className={classes.judulPengumuman}>Pengumuman</h3></div>        
                 </div>
                 
                 {this.state.listPengumuman.map((pengumuman) => (

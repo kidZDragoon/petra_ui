@@ -32,3 +32,10 @@
 .link:hover{
   color: #d26903;
 }
+
+.search_bar {
+  border-radius: 16px;
+  border-style: hidden;
+  box-shadow: inset;
+  box-shadow: 4px 4px 8px 4px rgba(0.05, 0.05, 0.05, 0.05);
+}

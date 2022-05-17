@@ -5,12 +5,20 @@ import { Container } from "react-bootstrap";
 import axios from "axios";
 import logo_text from '../../logo_text.svg';
 import { Link } from "react-router-dom";
+import {
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import Box from "@mui/material/Box";
+import { Search } from "@mui/icons-material";
+
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listPengumuman:[],
+            keyword : "",
         }
         this.loadPengumumanListData = this.loadPengumumanListData.bind(this);
 
@@ -31,6 +39,10 @@ export default class Home extends Component {
         }
     }
 
+    pencarian() {
+        window.location.replace("#/Search/" + this.state.keyword)
+    }
+
     render(){
         return(
             <Container >
@@ -45,8 +57,32 @@ export default class Home extends Component {
                     id={classes["logo_text"]}/>
                     {/* <p>Perpustakaan Digital Departemen<br/>Kesejahteraan Sosial FISIP  UI</p> */}
                     <h2  className={classes.jargon}>Jelajahi karya ilmiah tentang kesejahteraan sosial. </h2>
+                    
+                    <Box my={5}>
+                    <TextField
+                        className={classes.search_bar}
+                        label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
+                        fullWidth
+                        value={this.state.keyword}
+                        onChange={(event) => this.setState({keyword: event.target.value})}
+                        onKeyPress={(ev) => {
+                            if (ev.key === "Enter") {
+                            this.pencarian()
+                            }
+                        }}
+                        InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="start">
+                            <Search />
+                            </InputAdornment>
+                        ),
+                        // style: { borderRadius: 8 }
+                        }}
+                    />
+                    </Box> 
+
                     </div>
-                
+                                   
                 </div>
                
                 <div className={classes.pengumuman}>
