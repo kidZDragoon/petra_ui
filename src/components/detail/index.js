@@ -357,33 +357,39 @@ export default class Detail extends (Component, App) {
                     </Grid>
                 </Grid>
 
-                <div className="d-flex py-2">
+                <div className="row">
                     {this.state.user == null ? 
-                    <button id={classes["features"]} onClick={this.handleToken}>
+                    <button id={classes["features"]} onClick={this.handleToken} className="col">
                     <BoxArrowDown/> &nbsp;Unduh PDF
                     </button>: 
-                     <button id={classes["features"]} onClick={this.showModal}>
+                     <button id={classes["features"]} onClick={this.showModal} className="col">
                      <BoxArrowDown/> &nbsp;Unduh PDF
                     </button> 
                     }
-                    <button id={classes["features"]} onClick={this.showCite}>
+                    <button id={classes["features"]} onClick={this.showCite} className="col">
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
-                    {this.state.isFavorite === false ? (
-                        <button id={classes["features"]} onClick={this.favoriteControl}>
-                            <Heart/> &nbsp;Tambahkan ke favorit
-                        </button>
-                    ):
-                        <button id={classes["features"]} onClick={this.favoriteControl}>
-                            <HeartFill/> &nbsp;Karya Ilmiah sudah ada dalam daftar favorit!
-                        </button>
+                    {this.state.user !== null ?
+                    <>
+                         {this.state.isFavorite === false ? (
+                            <button id={classes["features"]} onClick={this.favoriteControl} className="col">
+                                <Heart/> &nbsp;Tambahkan ke favorit
+                            </button>
+                        ):
+                            <button id={classes["features"]} onClick={this.favoriteControl} className="col">
+                                <HeartFill/> &nbsp;Karya Ilmiah sudah ada dalam daftar favorit!
+                            </button>
+                        }
+                    </> :
+                    <></>
                     }
+                   
 
                 </div>
 
                 
 
-                <Accordion className="accordion" id="accordionPanelsStayOpenExample">
+                <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
                     <AccordionItem className="accordion-item">
                         <AccordionHeader className="accordion-header" >
                             Abstrak
@@ -401,7 +407,7 @@ export default class Detail extends (Component, App) {
 
                 <br/>
 
-                <Accordion className="accordion" id="accordionPanelsStayOpenExample">
+                <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
                     <AccordionItem className="accordion-item">
                         <AccordionHeader className="accordion-header" >
                             Daftar Pengunduh
