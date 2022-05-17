@@ -141,13 +141,13 @@ class App extends React.Component {
                                 <Nav className="me-auto"> 
                                 <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
                                 <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
                                 </Nav>
                                 :                            
                                 <Nav className="me-auto">
                                 <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
                                 <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
                                 </Nav>
                                 }
 
