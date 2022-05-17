@@ -23,7 +23,6 @@ const Sidebar = () => {
                                             key={key}
                                             className={classes.row} 
                                             id={window.location.pathname == val.link ? classes["active"] : ""}
-                                            
                                         >                                    
                                             <div id={classes["icon"]}>{val.icon}</div>
                                             <div id={classes["title"]}>{val.title}</div>    
