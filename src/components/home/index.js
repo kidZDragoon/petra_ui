@@ -102,7 +102,6 @@ export default class Home extends Component {
                                         <div class="p-2"><h3 className={classes.judulPengumuman}>Berita Terbaru</h3></div>
                                         <div class="p-2"><Link to="/list-pengumuman" className={classes.link}>
                                             lihat semua berita</Link></div>
-
                                     </div>
                                     {this.state.listPengumuman.map((pengumuman) => (
                                         <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat}
@@ -114,9 +113,7 @@ export default class Home extends Component {
                         </Container>
                     </Grid>
                     <Grid item xs={3} display="flex" justifyContent="flex-end">
-                        {/* <div className={classes.space}> */}
-                            <img src={Home2} alt="gambar2" />
-                        {/* </div> */}
+                        <img src={Home2} alt="gambar2" />
                     </Grid>
                 </Grid>
                 
