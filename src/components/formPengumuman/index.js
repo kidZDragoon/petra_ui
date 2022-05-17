@@ -15,12 +15,17 @@ import SuccessModalWithButton from "../modals/success-modal-with-button";
 export default class FormPengumuman extends Component {
     constructor(props) {
         super(props);
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.handleChangeField = this.handleChangeField.bind(this);
         this.submitData = this.submitData.bind(this);
+        this.showSuccessModal = this.showSuccessModal.bind(this);
+        this.showConfirmation = this.showConfirmation.bind(this);
         this.hideConfirmation = this.hideConfirmation.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
+        this.loadUser = this.loadUser.bind(this);
        
         this.state = {
-            judul: this.props.judul,
+            judul: "",
             pesan:"",
             userPengunggah:"",
             tglDibuat:Date,
@@ -29,7 +34,9 @@ export default class FormPengumuman extends Component {
             successModal:false,
             confirmationPopUp:false,
             message:"",
-            role:""
+            role:"",
+            formIsValid: false,
+            errors: {}
         };
       
     }
@@ -37,6 +44,8 @@ export default class FormPengumuman extends Component {
     
     componentDidMount() {
         this.loadUser();
+        console.log("masuk componentdidmount")
+       
     
     }
     
@@ -92,7 +101,7 @@ export default class FormPengumuman extends Component {
                 console.log(this.state.confirmationPopUp)
                 
                 const res = await axios.put(
-                        "/api/pengumuman/" + this.props.id,
+                        "/api/pengumuman/" + this.props.id +"/",
                         formData,
                         { headers: {
                             'content-type': 'multipart/form-data'
@@ -141,12 +150,11 @@ export default class FormPengumuman extends Component {
         }
     }
 
-    showSuccessModal = () => {
+    showSuccessModal(){
         this.setState({successModal:true, message:"Pengumuman dengan judul '"+this.state.judul+"' kini dapat dilihat oleh pengguna lain" })
     };
 
-    showConfirmation(event){
-        event.preventDefault()
+    showConfirmation(){
         console.log("masuk show confirmation")
         this.setState({confirmationPopUp:true})
     
@@ -156,6 +164,35 @@ export default class FormPengumuman extends Component {
         this.setState({confirmationPopUp:false})
     };
 
+    handleValidation(event){
+        event.preventDefault()
+        let isValid = true;
+        let errors = {}
+
+        console.log("masuk handle validation")
+
+       
+        if (this.state.judul === "") {
+            console.log(this.state.judul)
+            isValid = false;
+            errors["judul"] = "Mohon lengkapi judul dari pengumuman";
+        }
+
+     
+        if (this.state.pesan === "") {
+            console.log(this.state.pesan)
+            isValid = false;
+            errors["pesan"] = "Mohon lengkapi pesan pengumuman";
+        }
+        console.log(errors)
+        this.setState({ formIsValid: isValid, errors: errors  });
+
+        if(isValid === true){
+            this.setState({confirmationPopUp: true})
+            console.log(this.state.confirmationPopUp)
+        }
+
+    }
 
     render (){
         return (
@@ -180,17 +217,23 @@ export default class FormPengumuman extends Component {
                         <Form.Group className="">
                             <Form.Label className="text-large">Judul</Form.Label>
                             <Form.Control type="text" name="judul" placeholder="Judul Pengumuman"
-                            value={this.state.judul} onChange={this.handleChangeField} required/>
+                            value={this.state.judul} onChange={this.handleChangeField} maxLength="500" />
+                            <span className="text-error text-small">
+                                {this.state.errors["judul"]}
+                            </span>
                         </Form.Group>
 
                         
                         <Form.Group className="">
                             <Form.Label className="text-large">Pesan</Form.Label>
                             <Form.Control name="pesan" as="textarea" rows={8} placeholder="Pesan Pengumuman"
-                             value={this.state.pesan} onChange={this.handleChangeField} required/>
+                             value={this.state.pesan} onChange={this.handleChangeField} maxLength="5000"/>
+                             <span className="text-error text-small">
+                                {this.state.errors["pesan"]}
+                            </span>
                         </Form.Group>
                         <ButtonGroup >
-                            <button className={classes.button} id={classes["solid"]} onClick={this.submitData}>
+                            <button className={classes.button} id={classes["solid"]} onClick={this.handleValidation}>
                                 <p className="text-bold-large text-institutional-white m-0 p-0">Simpan</p>
                             </button>
                             <Link to="/list-pengumuman" className="button">

@@ -23,7 +23,7 @@ export default class Home extends Component {
     async loadPengumumanListData(){
         try {
             const { data } = await axios.get("/api/pengumuman/");
-            this.setState({ listPengumuman: data.data.reverse()});
+            this.setState({ listPengumuman: data.data.reverse().slice(0,5)});
             console.log(this.state.listPengumuman)
 
         } catch (error) {

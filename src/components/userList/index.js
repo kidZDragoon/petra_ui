@@ -151,7 +151,7 @@ export default class UserList extends Component {
             console.log(formData)
 
             const res = await axios.put(
-                    "/api/profile/" + this.state.selected_id,
+                    "/api/profile/" + this.state.selected_id +"/",
                     formData,
                     { headers: {
                         'content-type': 'multipart/form-data'

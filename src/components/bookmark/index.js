@@ -16,6 +16,7 @@ import AuthenticationDataService from "../../services/authentication.service";
 import axios from "axios";
 import fileDownload from "js-file-download";
 import {Heart,HeartFill} from "react-bootstrap-icons";
+import CardPengumuman from "../cardPengumuman";
 
 export default class Bookmark extends Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class Bookmark extends Component {
                     console.log('get profile')
                     console.log(response)
                     try {
-                        axios.post('http://localhost:8000/api/daftarBookmark', {
+                        axios.post('/api/daftarBookmark', {
                             "idProfile": response.data.id
                         }).then(response => {
                             console.log('Get bookmarkList')
