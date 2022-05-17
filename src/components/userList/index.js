@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Link} from "react-router-dom";
 import classes from "./styles.module.css";
 import axios from "axios";
 import { Form } from "react-bootstrap";
@@ -197,7 +198,7 @@ export default class UserList extends Component {
                         {this.state.merge.map((usr, index) => (
                             <tr className="d-flex">
                             <td className="col-1">{index += 1}</td>
-                            <td className="col-3">{usr.full_name}</td> 
+                            <td className="col-3"><Link to={`/kelola-user/${usr.id}`} className="link">{usr.full_name}</Link></td> 
                             <td className="col-3">{usr.email}</td>
                             <td className="col-3">{usr.role}</td>
                         

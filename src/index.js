@@ -22,6 +22,7 @@ import DetailPengumuman from './components/detailPengumuman'
 import Home from './components/home'
 import Bookmark from './components/bookmark'
 import MissingPage from './components/missing-page';
+import ProfilePage from './components/profilePage';
 
 ReactDOM.render(
     <HashRouter>
@@ -41,6 +42,7 @@ ReactDOM.render(
             <Route path="/kelola-karil" element={<KelolaKaril/>}/>
             <Route path="/list-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/kelola-user" element={<UserList/>}/>
+            <Route path="/kelola-user/:id" element={<ProfilePage />}/>
             <Route path="/form-pengumuman" element={<FormPengumuman/>}/>
             <Route path="/kelola-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/update-pengumuman/:id" element={<UpdatePengumuman/>}/>

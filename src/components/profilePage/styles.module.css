@@ -1,8 +1,8 @@
-#tabelHeader{
-    color: #D26930;
-    border: 3px solid #D26930;
+.mainContent {
+    background: rgba(252, 252, 252, 1) !important;
 }
-#features{
+
+.features{
     margin-right: 18px;
     color: #d26903;
     font-weight: 620;
@@ -13,18 +13,8 @@
     background-color: #FFFFFF;
     /*background-color: #F8F8F8;*/
 }
-#features:hover{
+
+.features:hover{
     background-color: #d26903;
     color: #F8F8F8;
-}
-#container{
-    width: 70%;
-}
-
-.link {
-    color: black;
-}
-  
-.link:hover {
-color: #d26903;
 }
