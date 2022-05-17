@@ -14,13 +14,15 @@
 }
 
 .pengumuman{
-  margin-left: 50px;
-  width: 75%;
+  /* margin-left: 50px; */
+  /* width: 75%; */
+  margin-left: 24px;
+  margin-right: 24px
 }
 .home{
   margin-top: 150px;
-  margin-left: 80px;
-  margin-right: 80px;
+  margin-left: 24px;
+  margin-right: 24px;
 }
 .jargon{
   font-size: 50px;
@@ -42,10 +44,16 @@
 .link:hover{
   color: #d26903;
 }
-
 .search_bar {
   border-radius: 16px;
   border-style: hidden;
   box-shadow: inset;
   box-shadow: 4px 4px 8px 4px rgba(0.05, 0.05, 0.05, 0.05);
+}
+@media only screen and (max-width: 600px) {
+  .jargon {
+    font-size: 40px;
+    font-weight: 800;
+    color: #d26903;
+  }
 }
