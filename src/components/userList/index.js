@@ -14,7 +14,7 @@ export default class UserList extends Component {
            user:[],
            profile:[],
            merge:[],
-           roles:["verifikator", "mahasiswa", "sivitas UI", "staf"],
+           roles:["dosen", "mahasiswa", "sivitas UI", "staf"],
            selected_role:"",
            selected_name:"",
            selected_id:"",
