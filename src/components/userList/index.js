@@ -182,10 +182,10 @@ export default class UserList extends Component {
         return (
             <Dasbor>
                 <Container py={4} px={8} id={classes["container"]}>
-                    <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
+                    <Typography fontFamily="Mulish" fontWeight={900} fontSize={28} id={classes["title"]}>
                         Kelola User
                     </Typography>
-                    <table className="table table-borderless">
+                    <table className="table table-borderless" >
                         <thead>
                         <tr className="d-flex" id={classes["tabelHeader"]}>
                             <th className="col-1">No</th>

@@ -8,6 +8,7 @@ import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlin
 import Container from 'react-bootstrap/Container'
 import CardNotVerified from "./card-notverified.component";
 import CardKarilStatus from "./card-karilstatus.component";
+import Dasbor from "../dasbor";
 import axios from "axios";
 
 // export default class DaftarVerifikasi extends Component{
@@ -115,85 +116,87 @@ const DaftarVerifikasi = () => {
     
 
     return(
-        <Container className="pt-4 mt-4">
-            <h3 className="text-section-header px-0"><span class="pull-right"><LibraryBooksIcon className="pl-0 mx-4" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
+        <Dasbor>
+            <Container className="pt-4 mt-4">
+                <h3 className="text-section-header px-0"><span class="pull-right"><LibraryBooksIcon className="pl-0 mx-4" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
 
-            <Box>
-            {listToVerify.map((toVerify, i) =>
-                <Box my={3} key={i} >
-                    <CardNotVerified className="p-0" data={toVerify}/>
-                </Box>
-            )}
-            </Box>
-
-            <h3 className="text-section-header px-0"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large" className="pl-0 mx-4"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
-            
-            <div>
-                <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
-                    {isSemua === false ? (
-                        <Button className="rounded-pill" variant="outline-primary" onClick={semuaTagControl}>Lihat Semua</Button>
-                    ):
-                        <Button className="rounded-pill" variant="primary" onClick={semuaTagControl}>Lihat Semua</Button>
-                    }
-                    {isDiterima === false ? (
-                        <Button className="rounded-pill" variant="outline-primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
-                    ):
-                        <Button className="rounded-pill" variant="primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
-                    }
-                    {isDitolak === false ? (
-                        <Button className="rounded-pill" variant="outline-primary" onClick={ditolakTagControl}>Verifikasi ditolak</Button>
-                    ):
-                        <Button className="rounded-pill" variant="primary">Verifikasi ditolak</Button>
-                    }
-                    <a href="" className="ms-auto text-orange">Lihat Semua</a>
-                </Stack>
-            </div>
-
-            <div>
-                {isSemua === false ? (
-                    null
-                ):
-                    <Box>
-                    {statusConfirmed.map((c, i) =>
-                        <Box my={3} key={i}>
-                            <CardKarilStatus data={c}/>
-                        </Box>
-                    )}
+                <Box>
+                {listToVerify.map((toVerify, i) =>
+                    <Box my={3} key={i} >
+                        <CardNotVerified className="p-0" data={toVerify}/>
                     </Box>
-                }
-                {isDiterima === false ? (
-                    null 
-                ):
-                    <Box>
-                    {listVerified.map((c, i) =>
-                        <Box my={3} key={i}>
-                            <CardKarilStatus data={c}/>
-                        </Box>
-                    )}
-                    </Box>  
-                }
-                {isDitolak === false ? (
-                    null
-                ):
-                    <Box>
-                        {listDeclined.map((c, i) =>
+                )}
+                </Box>
+
+                <h3 className="text-section-header px-0"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large" className="pl-0 mx-4"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
+                
+                <div>
+                    <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
+                        {isSemua === false ? (
+                            <Button className="rounded-pill" variant="outline-primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                        ):
+                            <Button className="rounded-pill" variant="primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                        }
+                        {isDiterima === false ? (
+                            <Button className="rounded-pill" variant="outline-primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                        ):
+                            <Button className="rounded-pill" variant="primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                        }
+                        {isDitolak === false ? (
+                            <Button className="rounded-pill" variant="outline-primary" onClick={ditolakTagControl}>Verifikasi ditolak</Button>
+                        ):
+                            <Button className="rounded-pill" variant="primary">Verifikasi ditolak</Button>
+                        }
+                        <a href="" className="ms-auto text-orange">Lihat Semua</a>
+                    </Stack>
+                </div>
+
+                <div>
+                    {isSemua === false ? (
+                        null
+                    ):
+                        <Box>
+                        {statusConfirmed.map((c, i) =>
                             <Box my={3} key={i}>
                                 <CardKarilStatus data={c}/>
                             </Box>
                         )}
+                        </Box>
+                    }
+                    {isDiterima === false ? (
+                        null 
+                    ):
+                        <Box>
+                        {listVerified.map((c, i) =>
+                            <Box my={3} key={i}>
+                                <CardKarilStatus data={c}/>
+                            </Box>
+                        )}
+                        </Box>  
+                    }
+                    {isDitolak === false ? (
+                        null
+                    ):
+                        <Box>
+                            {listDeclined.map((c, i) =>
+                                <Box my={3} key={i}>
+                                    <CardKarilStatus data={c}/>
+                                </Box>
+                            )}
+                        </Box>
+                    }
+                </div>
+
+                {/* <Box>
+                {statusConfirmed.map((c, i) =>
+                    <Box my={3} key={i}>
+                        <CardKarilStatus data={c}/>
                     </Box>
-                }
-            </div>
+                )}
+                </Box> */}
 
-            {/* <Box>
-            {statusConfirmed.map((c, i) =>
-                <Box my={3} key={i}>
-                    <CardKarilStatus data={c}/>
-                </Box>
-            )}
-            </Box> */}
-
-        </Container>
+            </Container>
+        </Dasbor>
     )
 }
 

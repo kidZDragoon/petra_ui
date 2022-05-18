@@ -7,21 +7,25 @@ production:
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - heroku config:set SPRING_PROFILES_ACTIVE=production
   script:
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
     - export HEROKU_API_KEY=$HEROKU_API_KEY
+    - heroku config:set SPRING_PROFILES_ACTIVE=deploy
   environment:
     name: production
     url: https://$HEROKU_APP.herokuapp.com
   only:
     - master
 
+#
 staging:
   stage: deploy
   image: ruby:2.6
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - heroku config:set SPRING_PROFILES_ACTIVE=deploy
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
     - export HEROKU_API_KEY=$HEROKU_API_KEY

@@ -9,6 +9,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import logo from './logo.svg';
 import AuthenticationDataService from "./services/authentication.service";
 import LogoutIcon from '@mui/icons-material/Logout';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -28,25 +32,28 @@ class App extends React.Component {
         try {
             let token = localStorage.getItem("ssoui")
             token = JSON.parse(token)
+            console.log('token: ', token)
             AuthenticationDataService.user(token)
                 .then(response => {
+                    console.log('masuk then')
                     this.setState({
                         username: response.data.username,
                         full_name: response.data.first_name + ' ' + response.data.last_name,
                         email: response.data.email,
                         loggedIn: true,
                     });
-                    document.getElementById("login").innerHTML = ''
-                    document.getElementById("logout").innerHTML = 'Halo, ' + this.state.full_name
+                    // document.getElementById("login").innerHTML = ''
+                    // document.getElementById("logout").innerHTML = 'Halo, ' + this.state.full_name
                 })
             VisitorTrackingService.countVisit()
             this.loadUser()
+            console.log("cdu login:", this.state.loggedIn)
         } catch {}
     }
 
     popUpLogin() {
-         const serviceURL = "http://localhost:8000/login/"
-        // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+        //  const serviceURL = "http://localhost:8000/login/"
+        const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
         const SSOWindow = window.open(
@@ -65,6 +72,7 @@ class App extends React.Component {
                     }
                     const data = e.data
                     resolve(data)
+                    window.location.reload()
                 },
                 {
                     once: true
@@ -73,41 +81,52 @@ class App extends React.Component {
         })
     }
 
-    logout() {
-        let token = localStorage.getItem("ssoui")
-        token = JSON.parse(token)
-        AuthenticationDataService.user(token)
-            .then(() => {
-                this.setState({
-                    username: "",
-                    full_name: "",
-                    email: "",
-                    loggedIn: false,
-                })
-                localStorage.removeItem("ssoui")
-                window.location.reload()
-            })
+    async logout() {
+        let token = localStorage.getItem("ssoui");
+        token = JSON.parse(token);
+
+        this.setState({
+            username: "",
+            full_name: "",
+            email: "",
+            loggedIn: false,
+        })
+        localStorage.removeItem("ssoui")
+
+        const SSOWindow = window.open(
+            new URL(
+                `https://sso.ui.ac.id/cas2/logout`
+            ).toString(),
+            "SSO UI Logout",
+            "left=50, top=50, width=480, height=480"
+        )
+
+        const response = await AuthenticationDataService.profile(token);
+
+        SSOWindow.close()
+
+        window.location.reload()
     }
 
     async loginHandler() {
         const data = await this.popUpLogin()
-        document.getElementById("login").innerHTML = ''
-        document.getElementById("logout").innerHTML = 'Halo, ' + data['nama']
+        // document.getElementById("login").innerHTML = ''
+        // document.getElementById("logout").innerHTML = 'Halo, ' + data['nama']
         localStorage.setItem("ssoui", JSON.stringify(data))
     }
 
     async loadUser(){
         try {
             let token = localStorage.getItem("ssoui");
-            // console.log(token);
             token = JSON.parse(token);
-            // console.log(token);
             if (token !== null){
+                console.log('load user w token')
                 const response = await AuthenticationDataService.profile(token);
-                // console.log(response);
-                // console.log(response.data.role);
                 this.setState({role:response.data.role});
+                this.setState({loggedIn: true,})
             }
+            console.log("lu login: ", this.state.loggedIn)
+            console.log("role: ", this.state.role)
         } catch {
             console.log("Load user error!");
         }
@@ -120,44 +139,43 @@ class App extends React.Component {
                     <Container>
                         <Navbar.Brand>
                             <Link to={"/"} className="nav-link">
-                            <img
-                                src={logo}
-                                width="90"
-                                height="45"
-                                className="d-inline-block align-top"
-                                alt="React Bootstrap logo"
-                            />
+                                <img
+                                    src={logo}
+                                    width="90"
+                                    height="45"
+                                    className="d-inline-block align-top"
+                                    alt="React Bootstrap logo" />
                             </Link>
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
-                                {this.state.role === "staf" ?
-                                <Nav className="me-auto"> 
-                                <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
-                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Search</Nav.Link>
-                                </Nav>
-                                :                            
+                            {this.state.role === "staf" ?
                                 <Nav className="me-auto">
-                                <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
-                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Search</Nav.Link>
+                                    <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
+                                    <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                    <Nav.Link href="#/Search">Pencarian</Nav.Link>
                                 </Nav>
-                                }
+                                :
+                                <Nav className="me-auto">
+                                    <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
+                                    <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                    <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                                </Nav>}
 
-                                <Nav>
-                                    <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                    <NavDropdown id="logout">
+                            <Nav>
+                                {this.state.loggedIn ?
+                                    <NavDropdown title={"Halo, " + this.state.full_name} id="logout">
                                         <NavDropdown.Item onClick={this.logout}>
-                                                <LogoutIcon fontSize="small" /> keluar
-                                            </NavDropdown.Item>
+                                            <LogoutIcon fontSize="small" /> Keluar
+                                        </NavDropdown.Item>
                                     </NavDropdown>
-                                </Nav>
+                                    : <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>}
+                            </Nav>
+
+
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-                {/* kondisi untuk admin saja */}
-                {/* <Sidebar></Sidebar> */}
             </div>
         );
     }

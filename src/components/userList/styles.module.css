@@ -18,7 +18,7 @@
     color: #F8F8F8;
 }
 #container{
-    width: 70%;
+    width: 90%;
 }
 .modal{
     height: 500px;
@@ -65,4 +65,8 @@
 }
 .modalTitle{
     font-weight: bold;
+}
+#title{
+    margin-top: 20px;
+    margin-bottom: 10px;
 }

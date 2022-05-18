@@ -23,8 +23,10 @@ import CardKaril from "../card/card-karil.component";
 import { Search } from "@mui/icons-material";
 
 const SearchList = () => {
+  const searchPath = window.location.href.split("/Search/")[1]
+  const searchKey = searchPath ? decodeURIComponent(searchPath) : ""
   const [listKaril, setListKaril] = useState([]);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(searchKey);
   const [year, setYear] = useState(null);
   const [foundKaril, setFoundKaril] = useState([]);
   const [karilChecked, setKarilChecked] = useState({
@@ -37,6 +39,7 @@ const SearchList = () => {
 
   useEffect(() => {
     fetchKaril();
+    hitungPenemuan();
   },[keyword, year, karilChecked])
 
   const getKarilQuery = () => {
@@ -52,6 +55,7 @@ const SearchList = () => {
   const fetchKaril = async () => {
     let karilType = getKarilQuery();
     let url = `/api/search/?search=${keyword}&tahun=${(year ? year.getFullYear() : "")}&jenis=${karilType}`
+    let newList = []
     axios.get(url)
       .then(response => {
         setListKaril(response.data);
@@ -61,6 +65,15 @@ const SearchList = () => {
       });
   }
     
+  const hitungPenemuan = () => {
+    let newList = []
+    console.log("liskaril", listKaril.length)
+    listKaril.map((item)=>
+    item.status == 1 ? newList.push(item) : null);
+    setFoundKaril(newList)
+    console.log("penemuan", foundKaril.length)
+  }
+
   const handleKarilTypeChange = (event) => {
     setKarilChecked({
       ...karilChecked,
@@ -68,7 +81,9 @@ const SearchList = () => {
     });
   };
 
-  console.log("DATA: ", listKaril)
+  // listKaril.map((item)=>
+  //   item.status == 1 ? foundKaril.includes(item) ? null : foundKaril.push(item) : null);
+
   return (
     <Box py={8} px={12} height={'100vh'}>
       <Grid container spacing={8}>
