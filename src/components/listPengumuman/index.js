@@ -110,11 +110,12 @@ export default class ListPengumuman extends Component {
                         </div>
                        
                         {this.state.listPengumuman.map((pengumuman) => (
-                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDisunting} 
                             pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                             isStaf={this.state.isStaf}/>
                         ))}
-                       
+                        <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                        id={classes["pagination"]}/>
                     </Container>
                 </Dasbor>:
                 <Container py={4} px={8}>
@@ -127,11 +128,11 @@ export default class ListPengumuman extends Component {
                     pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                     isStaf={this.state.isStaf}/>
                 ))}
+                 <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                id={classes["pagination"]}/>
              </Container>
  
                 }
-                <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
-                id={classes["pagination"]}/>
             </div>
         )
     }

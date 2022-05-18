@@ -14,7 +14,7 @@ export default class UserList extends Component {
            user:[],
            profile:[],
            merge:[],
-           roles:["verifikator", "mahasiswa", "sivitas UI", "staf"],
+           roles:["dosen", "mahasiswa", "sivitas UI", "staf"],
            selected_role:"",
            selected_name:"",
            selected_id:"",
@@ -32,6 +32,8 @@ export default class UserList extends Component {
         this.handleChangeField = this.handleChangeField.bind(this);
         this.submitData = this.submitData.bind(this);
         this.hideSuccessModal = this.hideSuccessModal.bind(this);
+        this.loadUserData = this.loadUserData.bind(this);
+        this.loadProfileData = this.loadProfileData.bind(this);
         // this.showModal = this.showModal.bind(this);
        
     }
@@ -40,7 +42,6 @@ export default class UserList extends Component {
     componentDidMount() {
         // this.loadUser();
         this.loadUserData()
-        this.loadProfileData()
         console.log("sini")
         console.log(this.state.merge)
         console.log(this.state.roles)
@@ -51,6 +52,7 @@ export default class UserList extends Component {
             const { data } = await axios.get("/api/user");
             this.setState({ user: data.data });
             console.log(this.state.user)
+            this.loadProfileData()
 
         } catch (error) {
             alert("Oops terjadi masalah pada server");
@@ -180,10 +182,10 @@ export default class UserList extends Component {
         return (
             <Dasbor>
                 <Container py={4} px={8} id={classes["container"]}>
-                    <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
+                    <Typography fontFamily="Mulish" fontWeight={900} fontSize={28} id={classes["title"]}>
                         Kelola User
                     </Typography>
-                    <table className="table table-borderless">
+                    <table className="table table-borderless" >
                         <thead>
                         <tr className="d-flex" id={classes["tabelHeader"]}>
                             <th className="col-1">No</th>
@@ -214,7 +216,7 @@ export default class UserList extends Component {
                     </table>
                     <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
                         <ModalHeader className={classes.modalHeader} >
-                            <h5 className="modal-title" id="exampleModalLongTitle">Update Role</h5>
+                            <h5 className={classes.modalTitle} id="exampleModalLongTitle">Update Role</h5>
                             <h4 type="button" className={classes.close}  onClick={this.hideModal}>
                                 <span aria-hidden="true">&times;</span>
                             </h4>
@@ -234,11 +236,12 @@ export default class UserList extends Component {
                                         ))} 
                                 </Form.Select>
                             </Form.Group>
+                            <p className={classes.warning}>Dengan merubah role, pengguna akan memiliki akses yang berbeda di sistem</p>
                         </ModalBody>
                         <ModalFooter className={classes.modalFooter}>
                             <button type="button" className="btn btn-primary" onClick={this.hideModal}
-                                    id={classes["cancle"]}>Batal</button>
-                            <button type="button" className="btn btn-primary" id={classes["accept"]}
+                                     id={classes["cancle"]}>Batal</button>
+                            <button type="button" className="btn btn-primary"  id={classes["submit"]}
                             onClick={this.submitData}>Ya</button>
                         </ModalFooter>
 

@@ -51,21 +51,22 @@ def save_user_profile(instance, **kwargs):
 def save_user_attributes(user, attributes):
     user.save()
     profile = user.profile
-    profile.role = attributes['peran_user']
     profile.npm = attributes['npm']
-    if profile.role == 'mahasiswa':
-        user.email = f'{user.username}@ui.ac.id'
-
     full_name = attributes['nama']
     i = full_name.rfind(' ')
     user.first_name, user.last_name = full_name[:i], full_name[i + 1:]
-
     org_code = attributes['kd_org']
     record = ORG_CODE[LANG][org_code]
     profile.org_code = org_code
     profile.faculty = record['faculty']
     profile.full_name = full_name
     profile.study_program = record['study_program']
+    if profile.study_program == 'Kesejahteraan Sosial':
+        profile.role = attributes['peran_user']
+    elif org_code == '03.06.09.01':
+        profile.role = 'dosen'
+    else:
+        profile.role = 'sivitas UI'
     profile.educational_program = record['educational_program']
     profile.save()
     user.save()

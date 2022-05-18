@@ -60,6 +60,8 @@ export default class Detail extends (Component, App) {
             filePDF:"",
             role:"",
             userPenandaBuku:[],
+            userPengunggahId:"",
+            profileId:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
         this.handleToken = this.handleToken.bind(this);
@@ -86,7 +88,8 @@ export default class Detail extends (Component, App) {
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
             tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci,
-            userPenandaBuku:data.userPenandaBuku}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            userPenandaBuku:data.userPenandaBuku,
+            userPengunggahId:data.userPengunggah.id}) //tglDisetuji jgn lupa diganti tglVerfikasi
             this.setState({id:item})
            
         }catch(error){
@@ -320,7 +323,8 @@ export default class Detail extends (Component, App) {
                 const response = await AuthenticationDataService.profile(token);
                 console.log(response);
                 console.log(response.data.role);
-                this.setState({role:response.data.role});
+                this.setState({role:response.data.role,
+                                profileId:response.data.id});
             }
 
         } catch {
@@ -406,7 +410,7 @@ export default class Detail extends (Component, App) {
                 </Accordion>
 
                 <br/>
-
+                {(this.state.role == "staf" || (this.state.role == "mahasiswa") && this.state.userPengunggahId == this.state.profileId) ?
                 <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
                     <AccordionItem className="accordion-item">
                         <AccordionHeader className="accordion-header" >
@@ -429,8 +433,9 @@ export default class Detail extends (Component, App) {
                             </AccordionBody>
                         </div>
                     </AccordionItem>
-
                 </Accordion>
+                    : <br/>
+                }
 
                 <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
                     <ModalHeader className={classes.modalHeader} >
