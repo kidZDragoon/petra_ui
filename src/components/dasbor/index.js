@@ -3,9 +3,11 @@ import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import AuthenticationDataService from "../../services/authentication.service";
 import MissingPage from '../missing-page';
+import BarLoader from "react-spinners/BarLoader";
 
 const Dasbor = (props) => {
-    const [authorized, setAuthorized] = useState(false)
+    const [authorized, setAuthorized] = useState(false);
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         loadUser();
@@ -21,27 +23,50 @@ const Dasbor = (props) => {
         if(response.data.role === 'staf'){
             setAuthorized(true);
         };
+        setIsLoading(false);
     }
 
     return (
-        <Box>
-             {authorized ? 
+        <Box
+            sx={{
+                height: '80vh',
+        }}>
+            {isLoading ?
                 <Box
                     sx={{
                         display: 'flex',
-                        width: '100%',
-                        p:0,
-                        m:0,
-                        justifyContent: 'flex-start',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100%',
+                        p: 1,
+                        m: 1,
+                        bgcolor: 'background.paper',
+                        borderRadius: 1,
                     }}
                 >
-                    <Sidebar></Sidebar>
-                    <Box sx={{ flexGrow: 1 }}>
-                        {props.children}
-                    </Box>
-                </Box> 
+                    <BarLoader color="#d26903" loading={isLoading} css="" size={100} />               
+                </Box>
+                
             :  
-                <MissingPage></MissingPage>}
+                <div>
+                    {authorized ? 
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '100%',
+                                p:0,
+                                m:0,
+                                justifyContent: 'flex-start',
+                            }}
+                        >
+                            <Sidebar></Sidebar>
+                            <Box sx={{ flexGrow: 1 }}>
+                                {props.children}
+                            </Box>
+                        </Box> 
+                    :  
+                        <MissingPage></MissingPage>}
+                </div>}
         </Box>
     );
 

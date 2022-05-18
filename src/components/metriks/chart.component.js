@@ -46,6 +46,9 @@ const BarChart = ({title, sourceData}) => {
       scales: {
         y: {
             grace: '5%',
+            ticks: {
+              precision: 0,
+          }
         }
       },
     };
@@ -129,6 +132,9 @@ export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
     scales: {
       y: {
           grace: '5%',
+          ticks: {
+            precision: 0,
+        }
       }
     },
   };

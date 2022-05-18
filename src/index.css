@@ -142,6 +142,10 @@ code {
   color: #333333;
 }
 
+.text-black {
+  color: #ffffff;
+}
+
 .text-disabled {
   color: #808080;
 }
