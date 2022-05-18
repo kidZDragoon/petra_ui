@@ -103,16 +103,19 @@ code {
 
 .btn-orange {
   background-color: #d26930;
-  border: 0;
+  border-color: #d26930;
   border-radius: 8px;
   color: #fff;
 }
 
-.btn-orange-outline {
-  border-color: #d26930;
+.btn-orange-secondary {
+  background-color: #D269301f;
   color: #d26930;
-  border: 1;
-  outline-color: #d26930;
+}
+
+.btn-orange-secondary:hover {
+  background-color: #d26930;
+  color: #fff;
 }
 
 .btn-success-outline {

@@ -49,9 +49,9 @@ const MetriksPengunjung = () => {
                     borderRadius: 1,
                     }}
                 >
-                    <Button mx={4} className="rounded-pill btn-orange" variant="outline-secondary" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
-                    <Button mx={4} className="rounded-pill btn-orange-outline" variant="outline-secondary" href="#/metriks/unduhan">Metriks Unduhan</Button>
-                    <Button mx={4} className="rounded-pill btn-orange-outline"  variant="outline-secondary" href="#/metriks/unggahan">Metriks Unggahan</Button>
+                    <Button mx={4} className="rounded-pill btn-orange" variant="outlined" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
+                    <Button mx={4} className="rounded-pill btn-orange-secondary" variant="outlined" href="#/metriks/unduhan">Metriks Unduhan</Button>
+                    <Button mx={4} className="rounded-pill btn-orange-secondary"  variant="outlined" href="#/metriks/unggahan">Metriks Unggahan</Button>
                 </Box>
                 <p className="text-section-header px-0">
                     Statistik Pengunjung Karya Ilmiah
