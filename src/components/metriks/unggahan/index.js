@@ -17,6 +17,7 @@ import {
     Stack,
     Box,
   } from "@mui/material";
+import Button from 'react-bootstrap/Button';
 import BarChart from "../chart.component";
 import CustomButton from "../../custom-button"
 
