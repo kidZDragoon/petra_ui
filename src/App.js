@@ -25,6 +25,7 @@ class App extends React.Component {
             full_name: "",
             email: "",
             loggedIn: false,
+            role:"",
         }
     }
 
@@ -133,50 +134,63 @@ class App extends React.Component {
     }
 
     render() {
-        console.log('is login: ', this.state.loggedIn)
         return (
             <div>
                 <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
                     <Container>
                         <Navbar.Brand>
                             <Link to={"/"} className="nav-link">
-                            <img
-                                src={logo}
-                                width="90"
-                                height="45"
-                                className="d-inline-block align-top"
-                                alt="React Bootstrap logo"
-                            />
+                                <img
+                                    src={logo}
+                                    width="90"
+                                    height="45"
+                                    className="d-inline-block align-top"
+                                    alt="React Bootstrap logo" />
                             </Link>
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
-                                {this.state.role === "staf" ?
-                                <Nav className="me-auto"> 
-                                <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
-                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
-                                </Nav>
-                                :                            
+                            {this.state.role === "staf" ?
                                 <Nav className="me-auto">
+                                    <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
+                                    <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                    <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                                </Nav>
+                                :
+                               <></>}
+                            {this.state.role === "" ?
+                                <Nav className="me-auto">
+                                    <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                                </Nav>
+                                :
+                               <></>}
+                            {this.state.role === "mahasiswa" ?
+                            <Nav className="me-auto">
                                 <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
                                 <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
                                 <Nav.Link href="#/Search">Pencarian</Nav.Link>
-                                </Nav>
-                                }
+                            </Nav>
+                            :
+                            <></>}
+                             {this.state.role === "dosen" || this.state.role === "sivitas UI"?
+                            <Nav className="me-auto">
+                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                            </Nav>
+                            :
+                            <></>}
 
-                                <Nav>
-                                    {this.state.loggedIn?
+                               
+
+                            <Nav>
+                                {this.state.loggedIn ?
                                     <NavDropdown title={"Halo, " + this.state.full_name} id="logout">
                                         <NavDropdown.Item onClick={this.logout}>
                                             <LogoutIcon fontSize="small" /> Keluar
                                         </NavDropdown.Item>
                                     </NavDropdown>
-                                    : <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>
-                                    }
-                                </Nav>
-                                
-
+                                    : <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>}
+                            </Nav>
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>

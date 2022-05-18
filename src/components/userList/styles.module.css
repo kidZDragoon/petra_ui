@@ -18,7 +18,7 @@
     color: #F8F8F8;
 }
 #container{
-    width: 70%;
+    width: 90%;
 }
 
 .link {
@@ -27,4 +27,55 @@
   
 .link:hover {
 color: #d26903;
+}
+
+.modal{
+    height: 500px;
+    margin-top: 150px;
+}
+.modalHeader{
+    height: 60px;
+    padding-left: 30px;
+    font-weight: bolder;
+}
+.modalBody{
+    height: fit-content;
+    width: 450px;
+    margin: 0px 20px 0px 20px;
+}
+.modalFooter{
+    margin-right: 27px;
+}
+.warning{
+    font-size: 14px;
+    color: #2b2b2b;
+    margin-top: 5px;
+}
+#submit{
+    margin-right: 18px;
+    color: #FFFFFF;
+    font-weight: 620;
+    margin-bottom: 20px;
+    border: 2px solid;
+    border-radius: 5px;
+    width: 130px;
+    background-color: #d26903;
+}
+#cancle{
+    margin-right: 18px;
+    color: #d26903;
+    font-weight: 620;
+    margin-bottom: 20px;
+    border: 2px solid;
+    border-radius: 5px;
+    width: 130px;
+    background-color: #FFFFFF;
+    /*background-color: #F8F8F8;*/
+}
+.modalTitle{
+    font-weight: bold;
+}
+#title{
+    margin-top: 20px;
+    margin-bottom: 10px;
 }

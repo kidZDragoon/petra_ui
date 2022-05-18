@@ -96,7 +96,7 @@ export default class ListPengumuman extends Component {
             <div>
                 {this.state.isStaf?
                 <Dasbor>
-                    <Box py={2} px={8}
+                    <Container py={4} px={8}
                         sx={{
                             width: '80%',
                         }}
@@ -114,16 +114,18 @@ export default class ListPengumuman extends Component {
                         </div>
                        
                         {this.state.listPengumuman.map((pengumuman) => (
-                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDisunting} 
                             pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                             isStaf={this.state.isStaf}/>
                         ))}
-                       
-                    </Box>
+                        <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                        id={classes["pagination"]}/>
+                    </Container>
+                    
                 </Dasbor>:
                 <Container py={4} px={8}>
                 <div class="d-flex justify-content-between" id={classes["heading"]}>
-                <div class="p-2"> <h3 className={classes.judulPengumuman}>List Pengumuman</h3></div>        
+                <div class="p-2"> <h3 className={classes.judulPengumuman}>Berita</h3></div>        
                 </div>
                 
                 {this.state.listPengumuman.map((pengumuman) => (
@@ -131,11 +133,11 @@ export default class ListPengumuman extends Component {
                     pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                     isStaf={this.state.isStaf}/>
                 ))}
+                 <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                id={classes["pagination"]}/>
              </Container>
  
                 }
-                <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
-                id={classes["pagination"]}/>
             </div>
         )
     }

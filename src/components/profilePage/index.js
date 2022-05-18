@@ -13,7 +13,8 @@ import { Form } from "react-bootstrap";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import CardKaril from "../card/card-karil.component";
-import profile_header2 from '../../profile_header2.svg';  
+import profile_header from '../../profile_header.svg';  
+import hands_phone from '../../hands_phone.svg';  
 import SuccessModalWithHide from "../modals/success-modal-with-hide";
 
 const ProfilePage = () => {
@@ -23,7 +24,7 @@ const ProfilePage = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [message, setMessage] = useState("");
   const [currentURL, setcurrentURL] = useState("");
-  const [roles, setRoles] = useState(["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI"]);
+  const [roles, setRoles] = useState(["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI", "Dosen"]);
   
   useEffect(() => {
     fetchProfile();
@@ -112,12 +113,12 @@ const submitData = (event) => {
     <Dasbor className={classes.mainContent}>
         <Box>
             <img
-            src={profile_header2}
+            src={profile_header}
             width="100%"
             className="100%"
             alt="Profile header"/>
 
-            <Box py={2} px={8}>
+            <Box py={4} px={8}>
                 {user.profile && user.role && user.karyaIlmiah ?
                     <Box>
                         <Box
@@ -154,13 +155,34 @@ const submitData = (event) => {
                             <p className="text-bold-title px-0">
                                 Daftar Unggahan
                             </p> 
-
-                            {user.karyaIlmiah.map((karil, idx) => 
-                                <Box my={3} key={idx}>
-                                <CardKaril 
-                                    data={karil}/>
+                            
+                            {user.karyaIlmiah.length === 0 ?
+                                <Box 
+                                    sx={{
+                                        width: '100%',
+                                        height: '20vh',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: 'rgba(248, 248, 248, 1)',
+                                        borderRadius: '16px',
+                                    }}
+                                >
+                                    <p class="text-large">{user.profile.full_name} belum memiliki karya ilmiah</p>
+                                    
                                 </Box>
-                            )}
+                            : 
+                                <Box>
+                                    {user.karyaIlmiah.map((karil, idx) => 
+                                    <Box my={3} key={idx}>
+                                    <CardKaril 
+                                        data={karil}/>
+                                    </Box>
+                                    )}
+                                </Box>
+                            }
+                            
                         </Box>
 
                         {/* UPDATE ROLE MODAL */}
