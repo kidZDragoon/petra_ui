@@ -39,7 +39,7 @@ const SearchList = () => {
 
   useEffect(() => {
     fetchKaril();
-    console.log("searchPath ", searchPath)
+    hitungPenemuan();
   },[keyword, year, karilChecked])
 
   const getKarilQuery = () => {
@@ -65,6 +65,15 @@ const SearchList = () => {
       });
   }
     
+  const hitungPenemuan = () => {
+    let newList = []
+    console.log("liskaril", listKaril.length)
+    listKaril.map((item)=>
+    item.status == 1 ? newList.push(item) : null);
+    setFoundKaril(newList)
+    console.log("penemuan", foundKaril.length)
+  }
+
   const handleKarilTypeChange = (event) => {
     setKarilChecked({
       ...karilChecked,
@@ -72,9 +81,8 @@ const SearchList = () => {
     });
   };
 
-  listKaril.map((item)=>
-    item.status == 1 ? foundKaril.push(item) : null
-  );
+  // listKaril.map((item)=>
+  //   item.status == 1 ? foundKaril.includes(item) ? null : foundKaril.push(item) : null);
 
   return (
     <Box py={8} px={12} height={'100vh'}>
@@ -143,7 +151,7 @@ const SearchList = () => {
               />
             </Box>
             <Box>
-              <Typography>Ditemukan {foundKaril.length} Karya Ilmiah</Typography>
+              <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
               {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
               {listKaril.map((karil, idx) => 
                 <Box my={3} key={idx}>

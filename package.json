@@ -1,5 +1,5 @@
 {
-  "proxy-sada": "http://localhost:8000",
+  "proxy-local": "http://localhost:8000",
   "proxy": "https://propensi-a03-staging.herokuapp.com",
   "proxy-production": "https://propensi-a03.herokuapp.com",
   "version": "0.1.0",
