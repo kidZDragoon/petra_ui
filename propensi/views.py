@@ -39,7 +39,6 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-
     # originURL = "http://localhost:8000/"
     originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
@@ -338,7 +337,7 @@ class KaryaIlmiahUpdateView(UpdateAPIView):
 
 class VerificatorView(APIView):
     def get(self, request):
-        data = Profile.objects.filter(role="verifikator")
+        data = Profile.objects.filter(role="dosen")
         serializer = VerificatorSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
@@ -724,10 +723,11 @@ class ProfilePageView(APIView):
         print(nama_lengkap)
         role = ""
         if(profile.role == "mahasiswa"):
-            role = profile.role + " " + profile.study_program + " " + profile.faculty
-        else:
-            role = profile.role
 
+            role = profile.role.upper()[0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
+        else:
+            role = profile.role.upper()[0] + profile.role[1:]
+        
         print(role)
         user = User.objects.get(id=profile.user_id)
         email = user.email

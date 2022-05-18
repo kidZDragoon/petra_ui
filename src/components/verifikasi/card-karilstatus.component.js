@@ -1,4 +1,5 @@
 import React, {Component, useState} from "react";
+import {Link} from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
@@ -85,7 +86,8 @@ const CardKarilStatus = ({data}) => {
                 <Stack direction="horizontal" gap={3} className="mb-3">
                     <Stack>
                         <Card.Subtitle className="mb-2">{data.jenis}</Card.Subtitle>
-                        <Card.Title>{data.judul}</Card.Title>
+                        {/* <Card.Title>{data.judul}</Card.Title> */}
+                        <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
                         <Card.Text className="mt-1 mb-1 text-muted">{data.author}</Card.Text>
                         <button id={classes["features"]} onClick={showModal}>
                           <BoxArrowDown/> &nbsp;Unduh PDF

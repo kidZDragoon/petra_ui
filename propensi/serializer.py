@@ -61,7 +61,7 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
                   "userPengunggah"]
 
     dosenPembimbing = DosenPembimbingField(
-        queryset=Profile.objects.filter(role='verifikator'))
+        queryset=Profile.objects.filter(role='dosen'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):
@@ -102,7 +102,7 @@ class KaryaIlmiahEditUploadSerializer(serializers.ModelSerializer):
                   "userPengunggah"]
 
     dosenPembimbing = DosenPembimbingField(
-        queryset=Profile.objects.filter(role='verifikator'))
+        queryset=Profile.objects.filter(role='dosen'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):

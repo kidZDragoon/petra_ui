@@ -24,8 +24,7 @@ const ProfilePage = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [message, setMessage] = useState("");
   const [currentURL, setcurrentURL] = useState("");
-  const [roles, setRoles] = useState(["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI", "Dosen"]);
-  
+
   useEffect(() => {
     fetchProfile();
   },[])
@@ -90,7 +89,6 @@ const submitData = (event) => {
     formData.append('faculty',user.profile.faculty);
     formData.append('study_program', user.profile.study_program);
     formData.append('educational_program', user.profile.educational_program);
-    console.log(formData)
 
     const res = axios.put(
             "/api/profile/" + user.profile.id + "/",
@@ -203,9 +201,10 @@ const submitData = (event) => {
                                     <Form.Label className="text-large">Role</Form.Label>
                                         <Form.Select name="selected_role" aria-label="role"
                                             value={selectedRole} onChange={handleChangeField} >
-                                            {roles.map((role) => (
-                                                <option value={role}>{role}</option>
-                                            ))} 
+                                                <option value='mahasiswa'>Mahasiswa</option>
+                                                <option value='dosen'>Dosen</option>
+                                                <option value='sivitas UI'>Sivitas UI</option>
+                                                <option value='staf'>Staf Dept. Kesejahteraan Sosial UI</option>
                                     </Form.Select>
                                 </Form.Group>
                             </ModalBody>
@@ -218,16 +217,6 @@ const submitData = (event) => {
                         </Modal>
 
                          {/* SUCCESS MODAL */}
-                        {/* <SuccessModalWithButton show={successModal}
-                                title="Role berhasil diubah!"
-                                content={message}
-                                buttonText="Lihat daftar user"
-                                link={currentURL}
-                                notLink={true}
-                                action={hideSuccessModal}
-                                >
-                        </SuccessModalWithButton> */}
-
                         <SuccessModalWithHide show={successModal}
                                 hide={hideSuccessModal}
                                 title="Role berhasil diubah!"

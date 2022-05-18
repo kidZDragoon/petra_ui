@@ -12,6 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import "./index.css"
 
 
 class App extends React.Component {
@@ -136,7 +137,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+                <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="">
                     <Container>
                         <Navbar.Brand>
                             <Link to={"/"} className="nav-link">
@@ -152,30 +153,30 @@ class App extends React.Component {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             {this.state.role === "staf" ?
                                 <Nav className="me-auto">
+                                    <Nav.Link href="#/Search">Cari</Nav.Link>
                                     <Nav.Link href="#/metriks/pengunjung">Dasbor</Nav.Link>
                                     <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                    <Nav.Link href="#/Search">Pencarian</Nav.Link>
                                 </Nav>
                                 :
                                <></>}
                             {this.state.role === "" ?
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                                    <Nav.Link href="#/Search">Cari</Nav.Link>
                                 </Nav>
                                 :
                                <></>}
                             {this.state.role === "mahasiswa" ?
                             <Nav className="me-auto">
+                                <Nav.Link href="#/Search">Cari</Nav.Link>
                                 <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
                                 <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
                             </Nav>
                             :
                             <></>}
                              {this.state.role === "dosen" || this.state.role === "sivitas UI"?
                             <Nav className="me-auto">
+                                <Nav.Link href="#/Search">Cari</Nav.Link>
                                 <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
-                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
                             </Nav>
                             :
                             <></>}
