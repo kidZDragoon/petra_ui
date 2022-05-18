@@ -18,6 +18,12 @@ code {
   padding-bottom: 120px;
 }
 
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
 .list {
   text-align: left;
   max-width: 750px;

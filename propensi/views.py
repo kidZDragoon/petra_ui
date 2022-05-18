@@ -337,7 +337,7 @@ class KaryaIlmiahUpdateView(UpdateAPIView):
 
 class VerificatorView(APIView):
     def get(self, request):
-        data = Profile.objects.filter(role="verifikator")
+        data = Profile.objects.filter(role="dosen")
         serializer = VerificatorSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
