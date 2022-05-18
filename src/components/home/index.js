@@ -68,7 +68,7 @@ export default class Home extends Component {
                                     <Box my={5}>
                                         <TextField
                                             className={classes.search_bar}
-                                            label="Cari Karya Ilmiah Berdasarkan Judul, Penulis, atau Kata Kunci"
+                                            label="Cari Karya Ilmiah"
                                             fullWidth
                                             value={this.state.keyword}
                                             onChange={(event) => this.setState({ keyword: event.target.value })}

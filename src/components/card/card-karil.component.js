@@ -17,6 +17,7 @@ import TagVerifikasi from "../modals/tag-verifikasi";
 import { MoreHoriz } from "@mui/icons-material";
 import authenticationService from "../../services/authentication.service";
 import AuthenticationDataService from "../../services/authentication.service";
+import loginHandler from "../../App"
 
 var fileDownload = require('js-file-download');
 
@@ -27,6 +28,7 @@ const CardKaril = ({data}) => {
   const [successModalUnduh, setSuccessModalUnduh] = useState(false);
   const [successModalDelete, setSuccessModalDelete] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -96,6 +98,15 @@ const CardKaril = ({data}) => {
 
   const hideSuccessUnduh = () => {
     setSuccessModalUnduh(false)
+  };
+
+  const handleToken = async() =>{
+    await loginHandler()
+    let token = localStorage.getItem("ssoui")
+    token = JSON.parse(token)
+    console.log(token)
+    setUser(token)
+    console.log("user ", user)
   };
 
   const favoriteControl = () => {
@@ -188,6 +199,8 @@ const CardKaril = ({data}) => {
         console.log("Load user error!");
     }
 
+  
+
 
     try {
         let token = localStorage.getItem("ssoui");
@@ -233,9 +246,14 @@ const CardKaril = ({data}) => {
                 <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
                 <Card.Text>{data.author}</Card.Text>
-                <button id={classes["features"]} onClick={showModal}>
-                  <BoxArrowDown/> &nbsp;Unduh PDF
-                </button>
+                {user === null ? 
+                  <button id={classes["features"]} onClick={handleToken}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                  </button>
+                : <button id={classes["features"]} onClick={showModal}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                  </button>
+                }
               </Stack>
             </Grid>
           : <Grid item xs={10}>
