@@ -363,7 +363,7 @@ class CariKaril(ListAPIView):
     serializer_class = KarilSeriliazer
     filterset_class = KarilFilterYearAndType
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['judul', 'author', 'kataKunci', 'dosenPembimbing']
+    search_fields = ['judul', 'author', 'kataKunci', ]
 
 
 class HasilKaril(RetrieveAPIView):
@@ -709,7 +709,9 @@ class KaryaIlmiahSaya(APIView):
     def get(self, request, userId, *args, **kwargs):
         data = KaryaIlmiah.objects.filter(userPengunggah=userId)
         serializer = KaryaIlmiahSeriliazer(data, many=True)
+
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
 
 class ProfilePageView(APIView):
     def get(self, request, userId):
@@ -719,7 +721,7 @@ class ProfilePageView(APIView):
         print(profile)
         nama_lengkap = profile.full_name
         print(nama_lengkap)
-        role=""
+        role = ""
         if(profile.role == "mahasiswa"):
 
             role = profile.role.upper()[0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
@@ -731,7 +733,8 @@ class ProfilePageView(APIView):
         email = user.email
 
         karya_ilmiah = KaryaIlmiah.objects.filter(userPengunggah=userId)
-        karya_ilmiah_serialized = KaryaIlmiahSeriliazer(karya_ilmiah, many=True).data
+        karya_ilmiah_serialized = KaryaIlmiahSeriliazer(
+            karya_ilmiah, many=True).data
 
         data = {
             'profile': profile_serialized.data,
@@ -741,4 +744,3 @@ class ProfilePageView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
-       
