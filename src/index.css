@@ -108,6 +108,17 @@ code {
   color: #fff;
 }
 
+.btn-no-outline {
+  background-color: #FFFFFF;
+  color: #d26930;
+  border: 0;
+}
+
+.btn-no-outline:hover {
+  background-color: #d26930;
+  color: #fff;
+}
+
 .btn-orange-secondary {
   background-color: #D269301f;
   color: #d26930;
@@ -290,4 +301,8 @@ code {
 
 .react-datepicker-wrapper {
   width: 100%;
+}
+
+.content-box {
+  margin-top: 50px;
 }

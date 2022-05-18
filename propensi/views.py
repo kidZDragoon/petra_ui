@@ -363,7 +363,7 @@ class CariKaril(ListAPIView):
     serializer_class = KarilSeriliazer
     filterset_class = KarilFilterYearAndType
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['judul', 'author', 'kataKunci']
+    search_fields = ['judul', 'author', 'kataKunci', 'dosenPembimbing']
 
 
 class HasilKaril(RetrieveAPIView):
