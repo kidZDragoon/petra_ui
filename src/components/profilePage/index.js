@@ -203,9 +203,10 @@ const submitData = (event) => {
                                     <Form.Label className="text-large">Role</Form.Label>
                                         <Form.Select name="selected_role" aria-label="role"
                                             value={selectedRole} onChange={handleChangeField} >
-                                            {roles.map((role) => (
-                                                <option value={role}>{role}</option>
-                                            ))} 
+                                            <option value='mahasiswa'>Mahasiswa</option>
+                                            <option value='dosen'>Dosen</option>
+                                            <option value='sivitas UI'>Sivitas UI</option>
+                                            <option value='staf'>Staf Dept. Kesejahteraan Sosial UI</option>
                                     </Form.Select>
                                 </Form.Group>
                             </ModalBody>

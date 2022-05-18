@@ -40,12 +40,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 def login(request):
     print('tesss')
-    # originURL = "http://localhost:8000/"
-    originURL = "https://propensi-a03-staging.herokuapp.com/"
+    originURL = "http://localhost:8000/"
+    # originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    # serverURL = "http://localhost:8000/login/"
-    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    serverURL = "http://localhost:8000/login/"
+    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://opensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -722,9 +722,10 @@ class ProfilePageView(APIView):
         print(nama_lengkap)
         role=""
         if(profile.role == "mahasiswa"):
-            role = profile.role + " " + profile.study_program + " " + profile.faculty
+
+            role = profile.role.upper()[0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
         else:
-            role = profile.role
+            role = profile.role.upper()[0] + profile.role[1:]
         
         print(role)
         user = User.objects.get(id=profile.user_id)
