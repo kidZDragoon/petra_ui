@@ -31,7 +31,7 @@
     color: #D26930;
 }
 
-.SidebarList .row #active {
+.SidebarList #active {
     background-color: #D269301f;
     color: #D26930;
 }

@@ -105,6 +105,14 @@ code {
   background-color: #d26930;
   border: 0;
   border-radius: 8px;
+  color: #fff;
+}
+
+.btn-orange-outline {
+  border-color: #d26930;
+  color: #d26930;
+  border: 1;
+  outline-color: #d26930;
 }
 
 .btn-success-outline {
