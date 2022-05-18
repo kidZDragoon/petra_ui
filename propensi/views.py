@@ -46,7 +46,7 @@ def login(request):
 
     # serverURL = "http://localhost:8000/login/"
     serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
-    # serverURL = "https://propensi-a03.herokuapp.com/login/"
+    # serverURL = "https://opensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     # http = urllib3.PoolManager()
