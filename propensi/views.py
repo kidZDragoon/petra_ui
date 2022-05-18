@@ -39,6 +39,7 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
+    print('tesss')
     # originURL = "http://localhost:8000/"
     originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
