@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import classes from "./styles.module.css";
 import CardPengumuman from "../cardPengumuman";
-import { Container } from "react-bootstrap";
+// import { Container } from "@mui/material/Container";
 import axios from "axios";
 import logo_text from '../../logo_text.svg';
 import { Link } from "react-router-dom";
@@ -9,11 +9,12 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Box, Container } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import Home1 from '../../Home1.svg'
 import Home2 from '../../Home2.svg'
 import Grid from '@mui/material/Grid';
+import '../../index.css';
 
 export default class Home extends Component {
     constructor(props) {
@@ -65,7 +66,7 @@ export default class Home extends Component {
                                         id={classes["logo_text"]} />
                                     <h2 className={classes.jargon}>Jelajahi karya ilmiah tentang<br/>kesejahteraan sosial.</h2>
 
-                                    <Box my={5}>
+                                    <Box my={5} sx={{width: '90%'}}>
                                         <TextField
                                             className={classes.search_bar}
                                             label="Cari Karya Ilmiah"
@@ -93,12 +94,12 @@ export default class Home extends Component {
 
                 <Grid container spacing={2}>
                     <Grid item xs={12} lg={9} zIndex={2}>
-                        <Container>
+                        <Container ml={8} pl={8}>
                             <div className={classes.section_pengumuman}>
                                 <div className={classes.pengumuman}>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="p-2"><h3 className={classes.judulPengumuman}>Berita Terbaru</h3></div>
-                                        <div class="p-2"><Link to="/list-pengumuman" className={classes.link}>
+                                        <div class="p-2"><Link to="/list-pengumuman" className={[classes.link, "text-bold-large"].join(" ")}>
                                             lihat semua</Link></div>
                                     </div>
                                     {this.state.listPengumuman.slice(0,3).map((pengumuman) => (
