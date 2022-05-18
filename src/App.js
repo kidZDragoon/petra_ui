@@ -52,7 +52,7 @@ class App extends React.Component {
     }
 
     popUpLogin() {
-        //  const serviceURL = "http://localhost:8000/login/"
+         // const serviceURL = "http://localhost:8000/login/"
         const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
@@ -171,8 +171,6 @@ class App extends React.Component {
                                     </NavDropdown>
                                     : <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>}
                             </Nav>
-
-
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
