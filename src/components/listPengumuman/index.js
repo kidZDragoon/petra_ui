@@ -110,7 +110,7 @@ export default class ListPengumuman extends Component {
                         </div>
                        
                         {this.state.listPengumuman.map((pengumuman) => (
-                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDisunting} 
                             pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                             isStaf={this.state.isStaf}/>
                         ))}
