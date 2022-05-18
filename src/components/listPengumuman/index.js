@@ -7,7 +7,7 @@ import AuthenticationDataService from "../../services/authentication.service";
 import { Link } from "react-router-dom";
 import {PlusLg} from "react-bootstrap-icons";
 import Dasbor from "../dasbor";
-import { Container } from "@mui/material"
+import { Container, Box } from "@mui/material"
 import { Pagination } from "@material-ui/lab";
 
 export default class ListPengumuman extends Component {
@@ -96,16 +96,20 @@ export default class ListPengumuman extends Component {
             <div>
                 {this.state.isStaf?
                 <Dasbor>
-                    <Container py={4} px={8}>
+                    <Box py={2} px={8}
+                        sx={{
+                            width: '80%',
+                        }}
+                    >
                         <div class="d-flex justify-content-between" id={classes["heading"]}>
-                        <div class="p-2"> <h3 className={classes.judulPengumuman} id="judul">Kelola Pengumuman</h3></div>
-                        <div class="p-2" >
-                            <Link to="/form-pengumuman" className={classes.link}>
-                                <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
-                                    <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
-                                </Button>
-                            </Link>
-                        </div>
+                            <div class="p-2"> <h3 className={classes.judulPengumuman} id="judul">Kelola Pengumuman</h3></div>
+                            <div class="p-2" >
+                                <Link to="/form-pengumuman" className={classes.link}>
+                                    <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
+                                        <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
+                                    </Button>
+                                </Link>
+                            </div>
                 
                         </div>
                        
@@ -115,7 +119,7 @@ export default class ListPengumuman extends Component {
                             isStaf={this.state.isStaf}/>
                         ))}
                        
-                    </Container>
+                    </Box>
                 </Dasbor>:
                 <Container py={4} px={8}>
                 <div class="d-flex justify-content-between" id={classes["heading"]}>

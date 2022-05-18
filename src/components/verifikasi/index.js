@@ -10,6 +10,9 @@ import CardNotVerified from "./card-notverified.component";
 import CardKarilStatus from "./card-karilstatus.component";
 import Dasbor from "../dasbor";
 import axios from "axios";
+import { ClassNames } from "@emotion/react";
+import classes from './styles.module.css';
+import CustomButton from "../custom-button";
 
 // export default class DaftarVerifikasi extends Component{
 //     constructor(props) {
@@ -116,11 +119,18 @@ const DaftarVerifikasi = () => {
     
 
     return(
-        <Dasbor>
-            <Container className="pt-4 mt-4">
-                <h3 className="text-section-header px-0"><span class="pull-right"><LibraryBooksIcon className="pl-0 mx-4" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
-
-                <Box>
+        <Dasbor className={classes.mainContent}>
+            <Box py={8} px={8}>
+                
+                <Stack direction="horizontal" gap={3}>
+                    <span className="pull-right">
+                        <LibraryBooksIcon fontSize="large"></LibraryBooksIcon>
+                    </span>
+                   
+                    <h3 className="text-section-header px-0 my-0">Permintaan Verifikasi Karya Ilmiah</h3>
+                </Stack>
+                
+                <Box mb={8}>
                 {listToVerify.map((toVerify, i) =>
                     <Box my={3} key={i} >
                         <CardNotVerified className="p-0" data={toVerify}/>
@@ -128,24 +138,30 @@ const DaftarVerifikasi = () => {
                 )}
                 </Box>
 
-                <h3 className="text-section-header px-0"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large" className="pl-0 mx-4"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
+                <Stack direction="horizontal" gap={3}>
+                    <span className="pull-right">
+                        <CheckCircleOutlineRoundedIcon fontSize="large"></CheckCircleOutlineRoundedIcon>
+                    </span>
+                   
+                    <h3 className="text-section-header px-0 my-0">Daftar Karya Ilmiah Terverifikasi</h3>
+                </Stack>
                 
                 <div>
                     <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
                         {isSemua === false ? (
-                            <Button className="rounded-pill" variant="outline-primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                            <CustomButton variant="tab-inactive" action={semuaTagControl}>Lihat Semua</CustomButton>
                         ):
-                            <Button className="rounded-pill" variant="primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                            <CustomButton variant="tab-active" action={semuaTagControl}>Lihat Semua</CustomButton>
                         }
                         {isDiterima === false ? (
-                            <Button className="rounded-pill" variant="outline-primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                            <CustomButton variant="tab-inactive" action={diterimaTagControl}>Sudah diverifikasi</CustomButton>
                         ):
-                            <Button className="rounded-pill" variant="primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                            <CustomButton variant="tab-active" action={diterimaTagControl}>Sudah diverifikasi</CustomButton>
                         }
                         {isDitolak === false ? (
-                            <Button className="rounded-pill" variant="outline-primary" onClick={ditolakTagControl}>Verifikasi ditolak</Button>
+                            <CustomButton variant="tab-inactive" action={ditolakTagControl}>Verifikasi ditolak</CustomButton>
                         ):
-                            <Button className="rounded-pill" variant="primary">Verifikasi ditolak</Button>
+                            <CustomButton variant="tab-active">Verifikasi ditolak</CustomButton>
                         }
                         <a href="" className="ms-auto text-orange">Lihat Semua</a>
                     </Stack>
@@ -195,7 +211,7 @@ const DaftarVerifikasi = () => {
                 )}
                 </Box> */}
 
-            </Container>
+            </Box>
         </Dasbor>
     )
 }

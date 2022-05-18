@@ -23,7 +23,7 @@ const ProfilePage = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [message, setMessage] = useState("");
   const [currentURL, setcurrentURL] = useState("");
-  const [roles, setRoles] = useState(["verifikator", "mahasiswa", "sivitas UI", "staf"]);
+  const [roles, setRoles] = useState(["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI"]);
   
   useEffect(() => {
     fetchProfile();
@@ -53,17 +53,6 @@ const handleChangeField = (event) =>{
 
 const showModal = () =>{
     setIsOpen(true);
-    // console.log(usr.full_name)
-    // console.log(usr.role)
-    // // const { name, value } = event.target;
-    // this.setState({selected_name:usr.full_name.toString(), isOpen:true, selected_role:usr.role,
-    //     selected_id:usr.id, selected_user:usr.user, selected_org_code:usr.org_code, selected_npm:usr.npm,
-    //     selected_faculty:usr.faculty, selected_study_program:usr.study_program, selected_educational_program:usr.educational_program});
-    // console.log(this.state.selected_name)
-    // console.log(this.state.selected_role)
-    // console.log(this.state.selected_study_program)
-    // console.log(this.state.selected_org_code)
-    // console.log(this.state.selected_user)
 };
 
 const hideModal = () => {

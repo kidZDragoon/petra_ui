@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./styles.module.css";
 
-const Button = (props) => {
+const CustomButton = (props) => {
     const{ action, children, variant, spacing } = props;
     return (
         <button 
@@ -11,4 +11,4 @@ const Button = (props) => {
     );
 }
 
-export default Button;
+export default CustomButton;

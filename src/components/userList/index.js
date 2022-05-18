@@ -6,7 +6,7 @@ import { Form } from "react-bootstrap";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import Dasbor from "../dasbor";
-import {Container, Typography} from "@mui/material"
+import {Container, Typography, Box} from "@mui/material"
 
 export default class UserList extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ export default class UserList extends Component {
            user:[],
            profile:[],
            merge:[],
-           roles:["verifikator", "mahasiswa", "sivitas UI", "staf"],
+           roles:["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI"],
            selected_role:"",
            selected_name:"",
            selected_id:"",
@@ -180,7 +180,7 @@ export default class UserList extends Component {
     render (){
         return (
             <Dasbor>
-                <Container py={4} px={8} id={classes["container"]}>
+                <Container my={8} px={8} id={classes["container"]}>
                     <Typography fontFamily="Mulish" fontWeight={900} fontSize={28}>
                         Kelola User
                     </Typography>
