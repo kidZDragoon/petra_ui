@@ -61,6 +61,9 @@ const MetriksUnduhan = () => {
             },
             y: {
                 grace: '5%',
+                ticks: {
+                    precision: 0,
+                }
             }
         },
         plugins: {

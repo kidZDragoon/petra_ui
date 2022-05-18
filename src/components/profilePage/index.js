@@ -14,6 +14,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import CardKaril from "../card/card-karil.component";
 import profile_header2 from '../../profile_header2.svg';  
+import SuccessModalWithHide from "../modals/success-modal-with-hide";
 
 const ProfilePage = () => {
   const [user, setUser] = useState([]);
@@ -72,7 +73,7 @@ const hideModal = () => {
 const showSuccessModal = () => {
     setSuccessModal(true);
     setIsOpen(true);
-    let message = `Role dari akun dengan nama ${user.profile.full_name} berhasil diubah menjadi ${user.profile.role}`;
+    let message = `Role dari akun dengan nama ${user.profile.full_name} berhasil diubah menjadi ${selectedRole}`;
     setMessage(message);
 };
 
@@ -102,7 +103,7 @@ const submitData = (event) => {
     console.log(formData)
 
     const res = axios.put(
-            "/api/profile/" + user.profile.id,
+            "/api/profile/" + user.profile.id + "/",
             formData,
             { headers: {
                 'content-type': 'multipart/form-data'
@@ -152,10 +153,12 @@ const submitData = (event) => {
                                 </p> 
                             </Box>
 
-                            <button  name="selected_name" value={user.profile.full_name}
-                                class="features" onClick={() => showModal(user.profile)}>Update Role
-                            </button>
+                            <Box>
+                                <button 
+                                    className={[classes.features, "mt-2"].join(' ')}  onClick={() => showModal(user.profile)}>Update Role
+                                </button>
 
+                            </Box>
                         </Box>
                     
                         <Box pt={4}>
@@ -204,7 +207,7 @@ const submitData = (event) => {
                         </Modal>
 
                          {/* SUCCESS MODAL */}
-                        <SuccessModalWithButton show={successModal}
+                        {/* <SuccessModalWithButton show={successModal}
                                 title="Role berhasil diubah!"
                                 content={message}
                                 buttonText="Lihat daftar user"
@@ -212,7 +215,15 @@ const submitData = (event) => {
                                 notLink={true}
                                 action={hideSuccessModal}
                                 >
-                        </SuccessModalWithButton>
+                        </SuccessModalWithButton> */}
+
+                        <SuccessModalWithHide show={successModal}
+                                hide={hideSuccessModal}
+                                title="Role berhasil diubah!"
+                                content={message}
+                                buttonText="Lihat daftar user"
+                                >
+                        </SuccessModalWithHide>
 
                     </Box>
     
