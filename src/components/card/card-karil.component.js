@@ -226,7 +226,7 @@ const CardKaril = ({data}) => {
     <Card className={classes.cardkaril}>
       <Card.Body>
         <Grid container spacing={2}>
-          {window.location.hash === "#/kelola-karil" ?
+          {window.location.hash === "#/kelola-karil" || window.location.hash.startsWith("#/kelola-user") ?
             <Grid item xs={8}>
               <Stack>
                 <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
@@ -251,7 +251,7 @@ const CardKaril = ({data}) => {
             </Grid>
           }
 
-          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
+          {role.role === "staf" && (window.location.hash === "#/kelola-karil" || window.location.hash.startsWith("#/kelola-user")) ?
             <Grid item xs={4}>
               <div className="d-flex">
                 <div className="mx-3">

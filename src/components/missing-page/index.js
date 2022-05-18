@@ -6,7 +6,7 @@ import {
     Stack,
     Box,
   } from "@mui/material";
-import Button from '../button'
+import CustomButton from '../custom-button'
 
 const MissingPage = () => {
 
@@ -31,9 +31,9 @@ const MissingPage = () => {
                     alt="Missing Page"/>
                 <p className="text-section-header text-center">Halaman yang Anda cari <br></br>tidak ditemukan</p>
                 
-                <Button spacing="mt-3" variant="primary" href="/">
+                <CustomButton spacing="mt-3" variant="primary" href="/">
                     <p className="text-bold-large text-institutional-white m-0 p-0">Kembali ke beranda</p>
-                 </Button>
+                 </CustomButton>
             </Stack>
         </Box>
 

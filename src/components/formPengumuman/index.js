@@ -9,7 +9,8 @@ import AuthenticationDataService from "../../services/authentication.service";
 import { Link, Navigate } from "react-router-dom"
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
 import SuccessModalWithButton from "../modals/success-modal-with-button";
-
+import Dasbor from "../dasbor";
+import {Box} from "@mui/material"
 
 
 export default class FormPengumuman extends Component {
@@ -196,62 +197,63 @@ export default class FormPengumuman extends Component {
 
     render (){
         return (
-            <div className="container">
-                {this.state.role === "staf"?
-                <div>
-                    <h2>Form Pengumuman</h2>
-                <ConfirmationPopUp action={this.submitData}
-                        show={this.state.confirmationPopUp}
-                        hide={this.hideConfirmation}
-                        title="Apakah Anda yakin ingin mempublikasi pengumuman ini?"
-                        content="Pastikan semua data yang dimasukkan sudah benar.">
-                </ConfirmationPopUp>
-                <SuccessModalWithButton show={this.state.successModal}
-                                        title="Pengumuman berhasil dipublikasi"
-                                        content={this.state.message}
-                                        buttonText="Lihat daftar pengumuman"
-                                        link="/list-pengumuman" >
-                </SuccessModalWithButton>
-                 <Form>
-                    <Stack gap={4}>
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Judul</Form.Label>
-                            <Form.Control type="text" name="judul" placeholder="Judul Pengumuman"
-                            value={this.state.judul} onChange={this.handleChangeField} maxLength="500" />
-                            <span className="text-error text-small">
-                                {this.state.errors["judul"]}
-                            </span>
-                        </Form.Group>
+            <Dasbor>
+                <Box py={4} px={8} sx={{ width: '80%',}}>
+                    {this.state.role === "staf"?
+                    <div>
+                        <h2>Form Pengumuman</h2>
+                    <ConfirmationPopUp action={this.submitData}
+                            show={this.state.confirmationPopUp}
+                            hide={this.hideConfirmation}
+                            title="Apakah Anda yakin ingin mempublikasi pengumuman ini?"
+                            content="Pastikan semua data yang dimasukkan sudah benar.">
+                    </ConfirmationPopUp>
+                    <SuccessModalWithButton show={this.state.successModal}
+                                            title="Pengumuman berhasil dipublikasi"
+                                            content={this.state.message}
+                                            buttonText="Lihat daftar pengumuman"
+                                            link="/list-pengumuman" >
+                    </SuccessModalWithButton>
+                    <Form>
+                        <Stack gap={4}>
+                            <Form.Group className="">
+                                <Form.Label className="text-large">Judul</Form.Label>
+                                <Form.Control type="text" name="judul" placeholder="Judul Pengumuman"
+                                value={this.state.judul} onChange={this.handleChangeField} maxLength="500" />
+                                <span className="text-error text-small">
+                                    {this.state.errors["judul"]}
+                                </span>
+                            </Form.Group>
 
-                        
-                        <Form.Group className="">
-                            <Form.Label className="text-large">Pesan</Form.Label>
-                            <Form.Control name="pesan" as="textarea" rows={8} placeholder="Pesan Pengumuman"
-                             value={this.state.pesan} onChange={this.handleChangeField} maxLength="5000"/>
-                             <span className="text-error text-small">
-                                {this.state.errors["pesan"]}
-                            </span>
-                        </Form.Group>
-                        <ButtonGroup >
-                            <button className={classes.button} id={classes["solid"]} onClick={this.handleValidation}>
-                                <p className="text-bold-large text-institutional-white m-0 p-0">Simpan</p>
-                            </button>
-                            <Link to="/list-pengumuman" className="button">
-                                <button  className={classes.button} id={classes["outline"]}>
-                                    <p className="text-bold-large text-institutional m-0 p-0">Batal</p>
+                            
+                            <Form.Group className="">
+                                <Form.Label className="text-large">Pesan</Form.Label>
+                                <Form.Control name="pesan" as="textarea" rows={8} placeholder="Pesan Pengumuman"
+                                value={this.state.pesan} onChange={this.handleChangeField} maxLength="5000"/>
+                                <span className="text-error text-small">
+                                    {this.state.errors["pesan"]}
+                                </span>
+                            </Form.Group>
+                            <ButtonGroup >
+                                <button className={classes.button} id={classes["solid"]} onClick={this.handleValidation}>
+                                    <p className="text-bold-large text-institutional-white m-0 p-0">Simpan</p>
                                 </button>
-                            </Link>
-                        </ButtonGroup>
-                        
-                        
-                        
-                    </Stack>
-                </Form>
-                </div>:<div></div>
-                }
-                
-            
-            </div>
+                                <Link to="/list-pengumuman" className="button">
+                                    <button  className={classes.button} id={classes["outline"]}>
+                                        <p className="text-bold-large text-institutional m-0 p-0">Batal</p>
+                                    </button>
+                                </Link>
+                            </ButtonGroup>
+                            
+                            
+                            
+                        </Stack>
+                    </Form>
+                    </div>:<div></div>
+                    }
+                    
+                </Box>
+            </Dasbor>
         )
     }
 }

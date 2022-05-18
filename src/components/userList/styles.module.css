@@ -20,6 +20,15 @@
 #container{
     width: 90%;
 }
+
+.link {
+    color: black;
+}
+  
+.link:hover {
+color: #d26903;
+}
+
 .modal{
     height: 500px;
     margin-top: 150px;

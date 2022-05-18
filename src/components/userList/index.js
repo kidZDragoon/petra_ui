@@ -1,11 +1,12 @@
 import React, {Component} from "react";
+import {Link} from "react-router-dom";
 import classes from "./styles.module.css";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import Dasbor from "../dasbor";
-import {Container, Typography} from "@mui/material"
+import {Container, Typography, Box} from "@mui/material"
 
 export default class UserList extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class UserList extends Component {
            user:[],
            profile:[],
            merge:[],
-           roles:["dosen", "mahasiswa", "sivitas UI", "staf"],
+           roles:["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI", "Dosen"],
            selected_role:"",
            selected_name:"",
            selected_id:"",
@@ -199,7 +200,7 @@ export default class UserList extends Component {
                         {this.state.merge.map((usr, index) => (
                             <tr className="d-flex">
                             <td className="col-1">{index += 1}</td>
-                            <td className="col-3">{usr.full_name}</td> 
+                            <td className="col-3"><Link to={`/kelola-user/${usr.id}`} className="link">{usr.full_name}</Link></td> 
                             <td className="col-3">{usr.email}</td>
                             <td className="col-3">{usr.role}</td>
                         
