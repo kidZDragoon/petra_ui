@@ -183,7 +183,7 @@ const ViewAllPage = () => {
                 )}
                 </Box> */}
 
-            </Box>
+            </Container>
         </Dasbor>
     )
 }
