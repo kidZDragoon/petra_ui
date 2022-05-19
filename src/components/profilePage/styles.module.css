@@ -1,0 +1,20 @@
+.mainContent {
+    background: rgba(252, 252, 252, 1) !important;
+}
+
+.features{
+    /* margin-right: 18px; */
+    padding: 8px 16px 8px 16px;
+    color: #d26903;
+    font-weight: 620;
+    /* margin-bottom: 20px; */
+    border: 2px solid;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    /*background-color: #F8F8F8;*/
+}
+
+.features:hover{
+    background-color: #d26903;
+    color: #F8F8F8;
+}

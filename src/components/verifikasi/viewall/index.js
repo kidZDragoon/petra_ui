@@ -11,6 +11,9 @@ import CardKarilStatus from "../card-karilstatus.component";
 import Dasbor from "../../dasbor";
 import axios from "axios";
 import hands_phone from '../../../hands_phone.svg'; 
+import { ClassNames } from "@emotion/react";
+import classes from './styles.module.css';
+import CustomButton from "../custom-button";
 
 const ViewAllPage = () => {
     const [listToVerify, setListToVerify] = useState([]);
@@ -105,19 +108,19 @@ const ViewAllPage = () => {
                 <div>
                     <Stack direction="horizontal" gap={3} className="my-4">
                         {isSemua === false ? (
-                            <Button className="rounded-pill" variant="outline-primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                            <CustomButton variant="tab-inactive" action={semuaTagControl}>Lihat Semua</CustomButton>
                         ):
-                            <Button className="rounded-pill" variant="primary" onClick={semuaTagControl}>Lihat Semua</Button>
+                            <CustomButton variant="tab-active" action={semuaTagControl}>Lihat Semua</CustomButton>
                         }
                         {isDiterima === false ? (
-                            <Button className="rounded-pill" variant="outline-primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                            <CustomButton variant="tab-inactive" action={diterimaTagControl}>Sudah diverifikasi</CustomButton>
                         ):
-                            <Button className="rounded-pill" variant="primary" onClick={diterimaTagControl}>Sudah diverifikasi</Button>
+                            <CustomButton variant="tab-active" action={diterimaTagControl}>Sudah diverifikasi</CustomButton>
                         }
                         {isDitolak === false ? (
-                            <Button className="rounded-pill" variant="outline-primary" onClick={ditolakTagControl}>Verifikasi ditolak</Button>
+                            <CustomButton variant="tab-inactive" action={ditolakTagControl}>Verifikasi ditolak</CustomButton>
                         ):
-                            <Button className="rounded-pill" variant="primary">Verifikasi ditolak</Button>
+                            <CustomButton variant="tab-active">Verifikasi ditolak</CustomButton>
                         }
                     </Stack>
                 </div>
@@ -180,7 +183,7 @@ const ViewAllPage = () => {
                 )}
                 </Box> */}
 
-            </Container>
+            </Box>
         </Dasbor>
     )
 }

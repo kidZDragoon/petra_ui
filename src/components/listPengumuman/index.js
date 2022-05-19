@@ -7,7 +7,7 @@ import AuthenticationDataService from "../../services/authentication.service";
 import { Link } from "react-router-dom";
 import {PlusLg} from "react-bootstrap-icons";
 import Dasbor from "../dasbor";
-import { Container } from "@mui/material"
+import { Container, Box } from "@mui/material"
 import { Pagination } from "@material-ui/lab";
 
 export default class ListPengumuman extends Component {
@@ -96,26 +96,32 @@ export default class ListPengumuman extends Component {
             <div>
                 {this.state.isStaf?
                 <Dasbor>
-                    <Container py={4} px={8}>
+                    <Container py={4} px={8}
+                        sx={{
+                            width: '80%',
+                        }}
+                    >
                         <div class="d-flex justify-content-between" id={classes["heading"]}>
-                        <div class="p-2"> <h3 className={classes.judulPengumuman} id="judul">Kelola Pengumuman</h3></div>
-                        <div class="p-2" >
-                            <Link to="/form-pengumuman" className={classes.link}>
-                                <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
-                                    <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
-                                </Button>
-                            </Link>
-                        </div>
+                            <div class="p-2"> <h3 className={classes.judulPengumuman} id="judul">Kelola Pengumuman</h3></div>
+                            <div class="p-2" >
+                                <Link to="/form-pengumuman" className={classes.link}>
+                                    <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
+                                        <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
+                                    </Button>
+                                </Link>
+                            </div>
                 
                         </div>
                        
                         {this.state.listPengumuman.map((pengumuman) => (
-                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat} 
+                            <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDisunting} 
                             pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                             isStaf={this.state.isStaf}/>
                         ))}
-                       
+                        <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                        id={classes["pagination"]}/>
                     </Container>
+                    
                 </Dasbor>:
                 <Container py={4} px={8}>
                 <div class="d-flex justify-content-between" id={classes["heading"]}>
@@ -127,11 +133,11 @@ export default class ListPengumuman extends Component {
                     pesan={pengumuman.isiPengumuman} id={pengumuman.id} deleteHandler={this.loadPengumumanListData}
                     isStaf={this.state.isStaf}/>
                 ))}
+                 <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
+                id={classes["pagination"]}/>
              </Container>
  
                 }
-                <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
-                id={classes["pagination"]}/>
             </div>
         )
     }

@@ -49,10 +49,10 @@ export default class Home extends Component {
         return(
             <>
                 <Grid container spacing={2}>
-                    <Grid item xs={3}>
+                    <Grid item lg={3} sx={{display: {xs: "none", lg: "block"}}}>
                         <img src={Home1} alt="gambar1" />
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xs={12} lg={9} zIndex={2}>
                         <Container>
                             <div className={classes.section}>
                                 <div className={classes.home}>
@@ -85,25 +85,23 @@ export default class Home extends Component {
                                                 ),
                                             }} />
                                     </Box>
-
                                 </div>
-
                             </div>
                         </Container>
                     </Grid>
                 </Grid>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={9}>
+                    <Grid item xs={12} lg={9} zIndex={2}>
                         <Container>
                             <div className={classes.section_pengumuman}>
                                 <div className={classes.pengumuman}>
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between align-items-center">
                                         <div class="p-2"><h3 className={classes.judulPengumuman}>Berita Terbaru</h3></div>
                                         <div class="p-2"><Link to="/list-pengumuman" className={classes.link}>
-                                            lihat semua berita</Link></div>
+                                            lihat semua</Link></div>
                                     </div>
-                                    {this.state.listPengumuman.map((pengumuman) => (
+                                    {this.state.listPengumuman.slice(0,3).map((pengumuman) => (
                                         <CardPengumuman judul={pengumuman.judul} tglDibuat={pengumuman.tglDibuat}
                                             pesan={pengumuman.isiPengumuman} id={pengumuman.id} isStaf={false} />
                                     ))}
@@ -112,9 +110,12 @@ export default class Home extends Component {
                             </div>
                         </Container>
                     </Grid>
-                    <Grid item xs={3} display="flex" justifyContent="flex-end">
+                    {/* <Grid item xs={3} display="flex" justifyContent="flex-end">
                         <img src={Home2} alt="gambar2" />
-                    </Grid>
+                    </Grid> */}
+                    <Box sx={{position: 'absolute', right: 0}}>
+                        <img src={Home2} alt="gambar2" />
+                    </Box>
                 </Grid>
                 
             </>

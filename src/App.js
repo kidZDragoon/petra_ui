@@ -25,6 +25,7 @@ class App extends React.Component {
             full_name: "",
             email: "",
             loggedIn: false,
+            role:"",
         }
     }
 
@@ -156,11 +157,30 @@ class App extends React.Component {
                                     <Nav.Link href="#/Search">Pencarian</Nav.Link>
                                 </Nav>
                                 :
+                               <></>}
+                            {this.state.role === "" ?
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
-                                    <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
                                     <Nav.Link href="#/Search">Pencarian</Nav.Link>
-                                </Nav>}
+                                </Nav>
+                                :
+                               <></>}
+                            {this.state.role === "mahasiswa" ?
+                            <Nav className="me-auto">
+                                <Nav.Link href="#/karya-ilmiah-saya">Karya Ilmiah Saya</Nav.Link>
+                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                            </Nav>
+                            :
+                            <></>}
+                             {this.state.role === "dosen" || this.state.role === "sivitas UI"?
+                            <Nav className="me-auto">
+                                <Nav.Link href="#/karya-ilmiah-favorit">Karya Ilmiah Favorit</Nav.Link>
+                                <Nav.Link href="#/Search">Pencarian</Nav.Link>
+                            </Nav>
+                            :
+                            <></>}
+
+                               
 
                             <Nav>
                                 {this.state.loggedIn ?
@@ -171,8 +191,6 @@ class App extends React.Component {
                                     </NavDropdown>
                                     : <Nav.Link id="login" onClick={this.loginHandler}>Masuk</Nav.Link>}
                             </Nav>
-
-
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>

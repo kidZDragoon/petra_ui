@@ -16,9 +16,9 @@ import {
 import {
     Stack,
     Box,
-    Button
   } from "@mui/material";
 import BarChart from "../chart.component";
+import CustomButton from "../../custom-button"
 
 
 
@@ -53,20 +53,17 @@ const MetriksUnggahan = () => {
     return (
         <Dasbor className={classes.mainContent}>
             <Box py={8} px={8}>
-                <Box
-                    sx={{
-                    width: '60%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    p: 1,
-                    mb:4,
-                    borderRadius: 1,
-                    }}
-                >
-                    <Button mx={4} variant="outlined" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
-                    <Button mx={4} variant="outlined" href="#/metriks/unduhan">Metriks Unduhan</Button>
-                    <Button mx={4} variant="outlined" href="#/metriks/unggahan">Metriks Unggahan</Button>
-                </Box>
+                <Stack direction="row" gap={4} mb={4}>
+                    <a href="#/metriks/pengunjung">
+                        <CustomButton mx={4} variant="tab-inactive">Metriks Pengunjung</CustomButton>
+                    </a>
+                    <a className="text-bold-large" href="#/metriks/unduhan">
+                        <CustomButton mx={4} variant="tab-inactive">Metriks Unduhan</CustomButton>
+                    </a>
+                    <a className="text-bold-large" href="#/metriks/unggahan">
+                        <CustomButton mx={4} variant="tab-active">Metriks Unggahan</CustomButton>
+                    </a>
+                </Stack>
 
                 <p className="text-section-header px-0">
                     Statistik Unggahan Karya Ilmiah

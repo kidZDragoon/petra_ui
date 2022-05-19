@@ -126,7 +126,7 @@ export default class DetailPengumuman extends Component{
                 <Grid container spacing={2}>
                     <Grid item xs={10}>
                         <div className="d-flex flex-row" id={classes["title"]}>
-                            <Link to={this.state.link} className="pl-0 mx-4 text-orange">
+                            <Link to="/list-pengumuman" className="pl-0 mx-4 text-orange">
                                     <ChevronLeftIcon fontSize="large"></ChevronLeftIcon>
                             </Link>
                             <p className="text-section-header px-2">

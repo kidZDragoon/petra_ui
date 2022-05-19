@@ -36,6 +36,7 @@ const SearchList = () => {
     nonskripsi: false,
   });
   const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchKaril();
@@ -63,6 +64,7 @@ const SearchList = () => {
       .catch((error) => {
         console.log(error);
       });
+    setIsLoading(false);
   }
     
   const hitungPenemuan = () => {

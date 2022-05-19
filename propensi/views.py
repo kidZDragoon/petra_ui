@@ -39,13 +39,14 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
+    print('tesss')
     # originURL = "http://localhost:8000/"
     originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
     # serverURL = "http://localhost:8000/login/"
     serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
-    # serverURL = "https://propensi-a03.herokuapp.com/login/"
+    # serverURL = "https://opensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     # http = urllib3.PoolManager()
@@ -709,5 +710,35 @@ class KaryaIlmiahSaya(APIView):
     def get(self, request, userId, *args, **kwargs):
         data = KaryaIlmiah.objects.filter(userPengunggah=userId)
         serializer = KaryaIlmiahSeriliazer(data, many=True)
-
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+class ProfilePageView(APIView):
+    def get(self, request, userId):
+        print("masuk")
+        profile = Profile.objects.get(id=userId)
+        profile_serialized = ProfileSerializer(profile)
+        print(profile)
+        nama_lengkap = profile.full_name
+        print(nama_lengkap)
+        role=""
+        if(profile.role == "mahasiswa"):
+            role = profile.role + " " + profile.study_program + " " + profile.faculty
+        else:
+            role = profile.role
+        
+        print(role)
+        user = User.objects.get(id=profile.user_id)
+        email = user.email
+
+        karya_ilmiah = KaryaIlmiah.objects.filter(userPengunggah=userId)
+        karya_ilmiah_serialized = KaryaIlmiahSeriliazer(karya_ilmiah, many=True).data
+
+        data = {
+            'profile': profile_serialized.data,
+            'role': role,
+            'email': email,
+            'karyaIlmiah': karya_ilmiah_serialized
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+       
