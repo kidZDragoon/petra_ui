@@ -13,7 +13,7 @@ import axios from "axios";
 import hands_phone from '../../../hands_phone.svg'; 
 import { ClassNames } from "@emotion/react";
 import classes from './styles.module.css';
-import CustomButton from "../custom-button";
+import CustomButton from "../../custom-button";
 
 const ViewAllPage = () => {
     const [listToVerify, setListToVerify] = useState([]);
