@@ -17,6 +17,7 @@ import axios from "axios";
 import fileDownload from "js-file-download";
 import {Heart,HeartFill} from "react-bootstrap-icons";
 import CardPengumuman from "../cardPengumuman";
+import hands_phone from "../../hands_phone.svg"
 
 export default class Bookmark extends Component {
     constructor(props) {
@@ -59,13 +60,39 @@ export default class Bookmark extends Component {
                     <span className="mx-2">Karya Ilmiah Favorit</span>
                 </h3>
                 <br/>
+                {this.state.listBookmark.length === 0 ?
+                    <Box py={8} px={8} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        }}
+                        minHeight='70vh'>
 
-                {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
-                {this.state.listBookmark.map((karil, idx) =>
-                    <Box my={3} key={idx}>
-                        <CardKaril data={karil}/>
+                        <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        }}>
+                            <img
+                                src={hands_phone}
+                                width="426"
+                                height="282"
+                                className=""
+                                alt="Missing Page"/>
+                            <p className="text-section-header text-center">Anda belum memiliki karya <br></br> ilmiah favorit</p>
+                        </Box>
                     </Box>
-                )}
+                :
+                    <Container>
+                    {this.state.listBookmark.map((karil, idx) =>
+                        <Box my={3} key={idx}>
+                            <CardKaril data={karil}/>
+                        </Box>
+                    )}
+                    </Container>
+                }
+                
             </Container>
         )
     }

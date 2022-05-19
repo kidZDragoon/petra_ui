@@ -14,3 +14,11 @@
 .mainContent {
     background: rgba(252, 252, 252, 1) !important;
 }
+
+.link {
+    color: black;
+  }
+  
+.link:hover {
+color: #d26903;
+}

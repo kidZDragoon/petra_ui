@@ -18,6 +18,12 @@ code {
   padding-bottom: 120px;
 }
 
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
 .list {
   text-align: left;
   max-width: 750px;
@@ -103,8 +109,30 @@ code {
 
 .btn-orange {
   background-color: #d26930;
-  border: 0;
+  border-color: #d26930;
   border-radius: 8px;
+  color: #fff;
+}
+
+.btn-no-outline {
+  background-color: #FFFFFF;
+  color: #d26930;
+  border: 0;
+}
+
+.btn-no-outline:hover {
+  background-color: #d26930;
+  color: #fff;
+}
+
+.btn-orange-secondary {
+  background-color: #D269301f;
+  color: #d26930;
+}
+
+.btn-orange-secondary:hover {
+  background-color: #d26930;
+  color: #fff;
 }
 
 .btn-success-outline {
@@ -283,4 +311,8 @@ code {
 
 .react-datepicker-wrapper {
   width: 100%;
+}
+
+.content-box {
+  margin-top: 50px;
 }

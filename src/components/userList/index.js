@@ -15,7 +15,13 @@ export default class UserList extends Component {
            user:[],
            profile:[],
            merge:[],
-           roles:["Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", "Sivitas UI", "Staf Dept. Kesejahteraan Sosial FISIP UI", "Dosen"],
+           roles:
+            { 
+                'mahasiswa': "Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", 
+                'sivitas ui': "Sivitas UI", 
+                'staf' : "Staf Dept. Kesejahteraan Sosial FISIP UI", 
+                'dosen' : "Dosen"}
+           ,
            selected_role:"",
            selected_name:"",
            selected_id:"",
@@ -232,9 +238,10 @@ export default class UserList extends Component {
                                 <Form.Label className="text-large">Role</Form.Label>
                                     <Form.Select name="selected_role" aria-label="role"
                                         value={this.state.selected_role} onChange={this.handleChangeField} >
-                                        {this.state.roles.map((role) => (
-                                            <option value={role}>{role}</option>
-                                        ))} 
+                                         <option value='mahasiswa'>Mahasiswa</option>
+                                         <option value='dosen'>Dosen</option>
+                                         <option value='sivitas UI'>Sivitas UI</option>
+                                         <option value='staf'>Staf Dept. Kesejahteraan Sosial UI</option>
                                 </Form.Select>
                             </Form.Group>
                             <p className={classes.warning}>Dengan merubah role, pengguna akan memiliki akses yang berbeda di sistem</p>
