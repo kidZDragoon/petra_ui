@@ -99,7 +99,7 @@ const KelolaKaril = () => {
   return (
     <Dasbor>
       {role.role === "staf" ?
-        <Box py={8} px={8} height={'100vh'}>
+        <Box py={6} px={8} height={'100vh'}>
           <Grid container spacing={8}>
             <Grid item lg={9}>
               <Box>

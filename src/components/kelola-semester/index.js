@@ -21,6 +21,7 @@ const KelolaSemester = () => {
     const [successModal, setSuccessModal] = useState(false);
     const [formModal, setFormModal] = useState(false);
     const [loadPage, setLoadPage] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         getSemesterData();
@@ -30,15 +31,11 @@ const KelolaSemester = () => {
         axios.get(`api/get-semester-data`)
         .then(response => {
             setListSemester(response.data.data);
-            console.log("SEM DATA")
-            console.log(response.data.data);
+            setIsLoading(false);
         })
         .catch((error) => {
-            console.log(error);
             alert("Oops terjadi masalah pada server");
         });
-
-        
     }
 
     const handleChangeField = (event) =>  {
@@ -60,48 +57,61 @@ const KelolaSemester = () => {
     const hideSuccessModal = () => {
         setSuccessModal(false);
         setSemesterInput("");
+        setErrorMessage("");
         setLoadPage(true);
     };
 
     const submitData = (event) =>  {
         event.preventDefault();
         if(semesterInput === ""){
-            setErrorMessage = "Mohon isi semester"
+            setErrorMessage("Mohon isi semester");
+        } else if (!(semesterInput.toLowerCase().startsWith("semester ganjil") || semesterInput.toLowerCase().startsWith("semester genap"))) {
+            setErrorMessage("Pastikan format penulisan semester sesuai contoh di atas");
+        } else if (semesterInput.trim().split(/\s+/)[2].length != 9){
+            setErrorMessage("Pastikan format penulisan semester sesuai contoh di atas");
+        } 
+        else {
+            let hasVal = false;
+           
+            for (let key in listSemester) { 
+                if (listSemester[key].semester === semesterInput) { 
+                    hasVal = true; 
+                    break; 
+                }
+            }
+
+            if(hasVal){
+                setErrorMessage("Semester sudah ada di database");
+
+            } else {
+                try {
+                    let formData = new FormData();
+                    formData.append('semester', semesterInput);
+        
+                    const res = axios.post(
+                            "/api/get-semester-data/",
+                            formData,
+                            { headers: {
+                                'content-type': 'multipart/form-data'
+                            }
+                            }
+                        )
+
+                    hideFormModal()
+                    showSuccessModal()
+                    setSuccessMessage(`Semester  + ${semesterInput} berhasil ditambahkan`);    
+                }
+                    
+                catch (error) {
+                    alert("Terjadi error di server. Mohon tunggu beberapa saat.");
+                }
+            }
         }
-        try {
-            let formData = new FormData();
-            formData.append('semester', semesterInput);
-            console.log(formData)
-
-            const res = axios.post(
-                    "/api/get-semester-data/",
-                    formData,
-                    { headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                    }
-                )
-
-            console.log("update success")
-
-            hideFormModal()
-            console.log("hide success")
-            showSuccessModal()
-            console.log("sucess success")
-            setSuccessMessage(`Semester  + ${semesterInput} berhasil ditambahkan`);
-                
-        }
-            
-        catch (error) {
-            alert("Terjadi error di server. Mohon tunggu beberapa saat.");
-        }
-
     }
-
 
     return (
         <Dasbor>
-            <Box py={8} px={8} id={classes["container"]}>
+            <Box py={6} px={8} id={classes["container"]}>
 
                 <Box sx={{
                     display: 'flex',
@@ -135,7 +145,7 @@ const KelolaSemester = () => {
 
                         <tbody>
                             {listSemester.map((smt, index) => (
-                                <tr className="d-flex">
+                                <tr className="d-flex" key={index}>
                                     <td className="col-1">{index += 1}</td>
                                     <td className="col-3">{smt.semester}</td>
                                 </tr>
@@ -147,14 +157,14 @@ const KelolaSemester = () => {
                 </Box>
 
                  {/* TAMBAH SEMESTER MODAL */}
-                 <Modal className="modal" show={formModal} onHide={hideFormModal}>
-                    <ModalHeader className="modalHeader">
-                        <h5 className="modal-title" id="exampleModalLongTitle">Tambah Semester</h5>
-                        <h4 type="button" className="close" onClick={hideFormModal}>
+                 <Modal className={classes.modal}  show={formModal} onHide={hideFormModal}>
+                    <ModalHeader className={classes.modalHeader}>
+                        <h5 className={classes.modalTitle} id="exampleModalLongTitle">Tambah Semester</h5>
+                        <h4 type="button" className={classes.close} onClick={hideFormModal}>
                             <span aria-hidden="true">&times;</span>
                         </h4>
                     </ModalHeader>
-                    <ModalBody className="modalBody">
+                    <ModalBody className={classes.modalBody}>
                         <Form.Group className="" id="input-semester">
                             <Form.Label className="text-large">Judul semester</Form.Label>
                             <p className="text-charcoal text-small">
@@ -167,10 +177,10 @@ const KelolaSemester = () => {
                             </span>
                         </Form.Group>
                     </ModalBody>
-                    <ModalFooter className="modalFooter">
+                    <ModalFooter className={classes.modalFooter}>
                         <button type="button" className="btn btn-primary cancel" onClick={hideFormModal}
-                                id="cancel">Batal</button>
-                        <button type="button" className="btn btn-primary accept" id="accept"
+                                id={classes["cancle"]}>Batal</button>
+                        <button type="button" className="btn btn-primary accept" id={classes["submit"]}
                         onClick={submitData}>Tambah</button>
                     </ModalFooter>
                 </Modal>

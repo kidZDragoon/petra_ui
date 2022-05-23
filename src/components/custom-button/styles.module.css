@@ -83,7 +83,8 @@
     padding: 8px 16px 8px 16px;
     color: #d26903;
     font-weight: 620;
-    border: 2px solid;
+    border: 0;
+    box-shadow: 0px 0px 0px 2px #d26903 inset;
     border-radius: 8px;
     background-color: #FFFFFF;
 }

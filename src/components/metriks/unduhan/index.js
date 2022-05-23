@@ -83,7 +83,7 @@ const MetriksUnduhan = () => {
 
     return (
         <Dasbor className={classes.mainContent}>
-            <Box py={8} px={8}>
+            <Box py={6} px={8}>
                 <Stack direction="row" gap={4} mb={4}>
                     <a href="#/metriks/pengunjung">
                         <CustomButton mx={4} variant="tab-inactive">Metriks Pengunjung</CustomButton>

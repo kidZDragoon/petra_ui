@@ -7,6 +7,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import Dasbor from "../dasbor";
 import {Container, Typography, Box} from "@mui/material"
+import CustomButton from "../custom-button";
 
 export default class UserList extends Component {
     constructor(props) {
@@ -234,14 +235,14 @@ export default class UserList extends Component {
                                 <Form.Control type="text" name="selected_name" value={this.state.selected_name}
                                 disabled/>
                             </Form.Group>
-                            <Form.Group className="">
+                            <Form.Group className="mt-2">
                                 <Form.Label className="text-large">Role</Form.Label>
                                     <Form.Select name="selected_role" aria-label="role"
                                         value={this.state.selected_role} onChange={this.handleChangeField} >
                                          <option value='mahasiswa'>Mahasiswa</option>
                                          <option value='dosen'>Dosen</option>
                                          <option value='sivitas UI'>Sivitas UI</option>
-                                         <option value='staf'>Staf Dept. Kesejahteraan Sosial UI</option>
+                                         <option value='staf'>Staf</option>
                                 </Form.Select>
                             </Form.Group>
                             <p className={classes.warning}>Dengan merubah role, pengguna akan memiliki akses yang berbeda di sistem</p>

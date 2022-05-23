@@ -346,12 +346,10 @@ class SemesterView(APIView):
     def get(self, request):
         data = Semester.objects.all().order_by('semester')
         serializer = SemesterSerializer(data, many=True)
-        print(serializer.data)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         serializer = SemesterSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -717,7 +715,7 @@ class PengumumanUpdateDeleteView(APIView):
 class KaryaIlmiahSaya(APIView):
 
     def get(self, request, userId, *args, **kwargs):
-        data = KaryaIlmiah.objects.filter(userPengunggah=userId)
+        data = KaryaIlmiah.objects.filter(userPengunggah=userId).order_by('-pk')
         serializer = KaryaIlmiahSeriliazer(data, many=True)
 
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)

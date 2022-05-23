@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AuthenticationDataService from "../../services/authentication.service";
 import MissingPage from '../missing-page';
 import BarLoader from "react-spinners/BarLoader";
+import classes from'./styles.module.css';
 
 const Dasbor = (props) => {
     const [authorized, setAuthorized] = useState(false);
@@ -60,7 +61,7 @@ const Dasbor = (props) => {
                             }}
                         >
                             <Sidebar></Sidebar>
-                            <Box sx={{ flexGrow: 1 }}>
+                            <Box className={classes.dasborContent} sx={{ flexGrow: 1 }}>
                                 {props.children}
                             </Box>
                         </Box> 
