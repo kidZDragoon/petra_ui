@@ -16,7 +16,7 @@ const Sidebar = () => {
                 <ul className={classes.SidebarList}>
                         {sidebarData.map((val, key)=> {
                             return (
-                                <Box id={classes["box"]}>
+                                <Box id={classes["box"]} key={val.title}>
                                     <Link to={val.link} style={{textDecoration:"none", color:"black"}}>
                                             <li 
                                                 key={key}

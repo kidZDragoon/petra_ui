@@ -188,7 +188,7 @@ export default class UserList extends Component {
     render (){
         return (
             <Dasbor>
-                <Container py={4} px={8} id={classes["container"]}>
+                <Box py={4} px={8} id={classes["container"]}>
                     <Typography fontFamily="Mulish" fontWeight={900} fontSize={28} id={classes["title"]}>
                         Kelola User
                     </Typography>
@@ -265,7 +265,7 @@ export default class UserList extends Component {
                             >
                     </SuccessModalWithButton>
                 
-                </Container>
+                </Box>
             </Dasbor>
         )
     }

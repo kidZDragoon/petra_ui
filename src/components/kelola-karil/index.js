@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button'
 import AddIcon from '@mui/icons-material/Add';
 import AuthenticationDataService from "../../services/authentication.service.js";
 import Dasbor from "../dasbor";
+import CustomButton from "../custom-button";
 
 
 import {
@@ -113,9 +114,9 @@ const KelolaKaril = () => {
                     </Typography>
 
                   <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
-                    <Button className="btn-orange">
+                    <CustomButton variant="primary">
                       <AddIcon/>&nbsp;Tambah Karya Ilmiah
-                    </Button>
+                    </CustomButton>
                   </Link>
 
                 </Box>

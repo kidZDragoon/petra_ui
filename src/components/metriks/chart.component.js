@@ -168,7 +168,7 @@ export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
               onChange={handleTahunChange}
             >
               {listTahun.map(t => (
-                    <MenuItem value={t}>
+                    <MenuItem value={t} key={t}>
                         {t}
                     </MenuItem>
               ))}

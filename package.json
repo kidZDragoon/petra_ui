@@ -1,6 +1,6 @@
 {
-  "proxy-dev": "http://localhost:8000",
-  "proxy": "https://propensi-a03-staging.herokuapp.com",
+  "proxy": "http://127.0.0.1:8000",
+  "proxy-s": "https://propensi-a03-staging.herokuapp.com",
   "proxy-production": "https://propensi-a03.herokuapp.com",
   "version": "0.1.0",
   "private": true,

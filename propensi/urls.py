@@ -48,6 +48,8 @@ urlpatterns = [
      path('pengumuman/<int:pk>/', PengumumanUpdateDeleteView.as_view(),
           name='PengumumanUpdateDeleteView'),
      path('karya-ilmiah-saya/get-all/<int:userId>/', KaryaIlmiahSaya.as_view(), name='karyaIlmiahSaya'),
-     path('kelola-user/<int:userId>/', ProfilePageView.as_view(), name='profilePageView')
+     path('kelola-user/<int:userId>/', ProfilePageView.as_view(), name='profilePageView'),
+     path('kelola-semester/', ProfilePageView.as_view(), name='profilePageView')
+
 
 ]

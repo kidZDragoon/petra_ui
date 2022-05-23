@@ -39,12 +39,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    # originURL = "http://localhost:8000/"
-    originURL = "https://propensi-a03-staging.herokuapp.com/"
+    originURL = "http://localhost:8000/"
+    # originURL = "https://propensi-a03-staging.herokuapp.com/"
     # originURL = "https://propensi-a03.herokuapp.com/"
 
-    # serverURL = "http://localhost:8000/login/"
-    serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    serverURL = "http://localhost:8000/login/"
+    # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
     # serverURL = "https://opensi-a03.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
@@ -344,9 +344,19 @@ class VerificatorView(APIView):
 
 class SemesterView(APIView):
     def get(self, request):
-        data = Semester.objects.all()
+        data = Semester.objects.all().order_by('semester')
         serializer = SemesterSerializer(data, many=True)
+        print(serializer.data)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = SemesterSerializer(data=request.data)
+        print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

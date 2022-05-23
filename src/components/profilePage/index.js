@@ -221,7 +221,7 @@ const submitData = (event) => {
                                 hide={hideSuccessModal}
                                 title="Role berhasil diubah!"
                                 content={message}
-                                buttonText="Lihat daftar user"
+                                buttonText="OK"
                                 >
                         </SuccessModalWithHide>
 

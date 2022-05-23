@@ -23,6 +23,7 @@ import Home from './components/home'
 import Bookmark from './components/bookmark'
 import MissingPage from './components/missing-page';
 import ProfilePage from './components/profilePage';
+import KelolaSemester from './components/kelola-semester';
 
 ReactDOM.render(
     <HashRouter>
@@ -51,6 +52,7 @@ ReactDOM.render(
             <Route path="/404" element={<MissingPage/>}/>
             <Route path="/" element={<Home/>}/>
             <Route path="/karya-ilmiah-favorit" element={<Bookmark/>} />
+            <Route path="/kelola-semester" element={<KelolaSemester/>} />
         </Routes>
     </HashRouter>,
 
