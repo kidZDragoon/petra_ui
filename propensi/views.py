@@ -732,10 +732,11 @@ class ProfilePageView(APIView):
         role = ""
         if(profile.role == "mahasiswa"):
 
-            role = profile.role.upper()[0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
+            role = profile.role.upper()[
+                0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
         else:
             role = profile.role.upper()[0] + profile.role[1:]
-        
+
         print(role)
         user = User.objects.get(id=profile.user_id)
         email = user.email
@@ -752,3 +753,15 @@ class ProfilePageView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+
+class CariProfile(ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['full_name',]
+
+class CariUser(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['first_name','last_name']

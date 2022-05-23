@@ -12,6 +12,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CloseIcon from '@mui/icons-material/Close';
+import { Pagination } from "@material-ui/lab";
 
 import {
   Checkbox,
@@ -45,10 +46,13 @@ const SearchList = () => {
   });
   const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [listKarilBaru, setListKarilBaru] = useState([]);
+
 
   useEffect(() => {
     fetchKaril();
-    hitungPenemuan();
   },[keyword, year, karilChecked])
 
   const getKarilQuery = () => {
@@ -64,24 +68,26 @@ const SearchList = () => {
   const fetchKaril = async () => {
     let karilType = getKarilQuery();
     let url = `/api/search/?search=${keyword}&tahun=${(year ? year.getFullYear() : "")}&jenis=${karilType}`
-    let newList = []
+    var totalPages = 0;
     axios.get(url)
       .then(response => {
-        setListKaril(response.data);
+        setFoundKaril((response.data).filter((item)=> item.status == 1));
+        setListKarilBaru(((response.data).filter((item)=> item.status == 1)).slice(0,5));
+
+        if(response.data.length/5 - Math.round(response.data.length/5) > 0){
+            totalPages = Math.round(response.data.length/5) + 1;
+            setTotalPage(totalPages);
+        }else{
+            totalPages = Math.round(response.data.length/5)
+            setTotalPage(totalPages);
+        }
+
+
       })
       .catch((error) => {
         console.log(error);
       });
     setIsLoading(false);
-  }
-    
-  const hitungPenemuan = () => {
-    let newList = []
-    console.log("liskaril", listKaril.length)
-    listKaril.map((item)=>
-    item.status == 1 ? newList.push(item) : null);
-    setFoundKaril(newList)
-    console.log("penemuan", foundKaril.length)
   }
 
   const handleKarilTypeChange = (event) => {
@@ -99,8 +105,13 @@ const SearchList = () => {
     setIsShow(false);
   }
 
-  // listKaril.map((item)=>
-  //   item.status == 1 ? foundKaril.includes(item) ? null : foundKaril.push(item) : null);
+  const handleChangePage = (event, value) => {
+    var karil = foundKaril;
+    karil = karil.slice((5*value)-5,5*value);
+    setListKarilBaru(karil)
+    console.log("karil: ", listKarilBaru.length)
+    document.getElementById("judul").scrollIntoView();
+  }
 
   return (
     <Container>
@@ -170,8 +181,8 @@ const SearchList = () => {
                 </Button>
               </Box>
               <Box>
-                <Typography>Ditemukan {listKaril.length} Karya Ilmiah</Typography>
-                {listKaril.map((karil, idx) => <Box my={3} key={idx}>
+                <Typography>Ditemukan {foundKaril.length} Karya Ilmiah</Typography>
+                {listKarilBaru.map((karil, idx) => <Box my={3} key={idx}>
                   {karil.status == 1
                     ? <CardKaril
                       data={karil} />
@@ -182,6 +193,8 @@ const SearchList = () => {
             </Box>
           </Grid>
         </Grid>
+        <Pagination onChange={handleChangePage} count={totalPage} size="large" class="d-flex justify-content-center"
+        id="pagination"/>
       </Container>
 
     <Modal className="modal" show={isShow} onHide={hideFilter}>

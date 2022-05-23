@@ -3,7 +3,7 @@ from .views import UserView, ProfileView, KaryaIlmiahView, KaryaIlmiahUploadView
     DaftarVerifikasiView, CariKaril, DownloadPDF, CreateDaftarUnduhanView, GetDaftarUnduhanView, MetriksUnggahanView, \
     MetriksPengunjung, TahunMetriksPengunjung, MetriksUnduhanView, TahunMetriksUnduhan, MetriksTop3Unduhan, \
     DeleteKarilView, KaryaIlmiahUpdateUploadView, KaryaIlmiahUpdateView, PengumumanView, KaryaIlmiahSaya, PengumumanUpdateDeleteView, \
-    KaryaIlmiahStatusView, AddBookmarkView, BookmarkListView, DeleteBookmarkView, CheckBookmarkStatusView, ProfilePageView
+    KaryaIlmiahStatusView, AddBookmarkView, BookmarkListView, DeleteBookmarkView, CheckBookmarkStatusView, ProfilePageView, CariUser, CariProfile
 
 
 urlpatterns = [
@@ -49,7 +49,8 @@ urlpatterns = [
           name='PengumumanUpdateDeleteView'),
      path('karya-ilmiah-saya/get-all/<int:userId>/', KaryaIlmiahSaya.as_view(), name='karyaIlmiahSaya'),
      path('kelola-user/<int:userId>/', ProfilePageView.as_view(), name='profilePageView'),
-     path('kelola-semester/', ProfilePageView.as_view(), name='profilePageView')
-
+     path('kelola-semester/', ProfilePageView.as_view(), name='profilePageView'),
+     path('search-profile/', CariProfile.as_view(), name='cariProfie'),
+     path('search-user/', CariUser.as_view(), name='cariUser'),
 
 ]

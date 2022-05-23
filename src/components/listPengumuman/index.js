@@ -47,8 +47,8 @@ export default class ListPengumuman extends Component {
             }
             this.setState({ totalPengumuman: data.data.reverse(), isDelete: false, totalPage:total_page,
                 listPengumuman: data.data.slice(0,5)});
-            console.log(this.state.totalPengumuman)
-            console.log(this.state.listPengumuman)
+            console.log("total: ", this.state.totalPengumuman)
+            console.log("list: " ,this.state.listPengumuman)
             console.log(this.state.totalPage)
 
         } catch (error) {
