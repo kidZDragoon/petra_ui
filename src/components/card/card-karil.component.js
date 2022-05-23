@@ -6,7 +6,7 @@ import classes from "./styles.module.css";
 import {Link, useNavigate} from "react-router-dom";
 import {browserHistory} from 'react-router'
 import axios from "axios";
-import { Container, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import { Container, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import Stack from 'react-bootstrap/Stack';
 import {FaEdit} from "react-icons/fa";
 import {RiDeleteBin6Fill} from "react-icons/ri";
@@ -17,7 +17,6 @@ import TagVerifikasi from "../modals/tag-verifikasi";
 import { MoreHoriz } from "@mui/icons-material";
 import authenticationService from "../../services/authentication.service";
 import AuthenticationDataService from "../../services/authentication.service";
-import loginHandler from "../../App"
 
 var fileDownload = require('js-file-download');
 
@@ -50,7 +49,7 @@ const CardKaril = ({data}) => {
 
   const handlePDFDownload = () => {
     console.log("masuk pdf ")
-    setIsOpen(false)
+    // setIsOpen(false)
 
     try {
         let token = localStorage.getItem("ssoui");
@@ -90,6 +89,7 @@ const CardKaril = ({data}) => {
   };
 
   const showModal = () => {
+    console.log("mau donglot")
     setIsOpen(true);
   };
   const hideModal = () => {
@@ -101,13 +101,45 @@ const CardKaril = ({data}) => {
   };
 
   const handleToken = async() =>{
-    await loginHandler()
+    await loginHandler();
     let token = localStorage.getItem("ssoui")
     token = JSON.parse(token)
-    console.log(token)
-    setUser(token)
-    console.log("user ", user)
   };
+
+  const loginHandler = async() => {
+    const data = await popUpLogin()
+    localStorage.setItem("ssoui", JSON.stringify(data))
+  }
+
+  const popUpLogin = () =>{
+    // const serviceURL = "http://localhost:8000/login/"
+    const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
+
+    const SSOWindow = window.open(
+        new URL(
+            `https://sso.ui.ac.id/cas2/login?service=${encodeURIComponent(serviceURL)}`
+        ).toString(),
+        "SSO UI Login",
+        "left=50, top=50, width=480, height=480"
+    )
+
+    return new Promise(function (resolve) {
+        window.addEventListener(
+        "message", (e) => {
+                if (SSOWindow) {
+                    SSOWindow.close()
+                }
+                const data = e.data
+                resolve(data)
+                window.location.reload()
+            },
+            {
+                once: true
+            }
+        )
+    })
+  }
 
   const favoriteControl = () => {
         if (isFavorite) {
@@ -193,6 +225,7 @@ const CardKaril = ({data}) => {
         if (token !== null){
             const response = await authenticationService.profile(token);
             setRole({role:response.data.role});
+            setUser("user in")            
         }
 
     } catch {
@@ -246,14 +279,9 @@ const CardKaril = ({data}) => {
                 <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
                 <Card.Text>{data.author}</Card.Text>
-                {user === null ? 
-                  <button id={classes["features"]} onClick={handleToken}>
+                <button id={classes["features"]} onClick={showModal}>
                     <BoxArrowDown/> &nbsp;Unduh PDF
-                  </button>
-                : <button id={classes["features"]} onClick={showModal}>
-                    <BoxArrowDown/> &nbsp;Unduh PDF
-                  </button>
-                }
+                </button>
               </Stack>
             </Grid>
           : <Grid item xs={10}>
@@ -262,9 +290,14 @@ const CardKaril = ({data}) => {
                 <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
                 <Card.Text>{data.author}</Card.Text>
-                <button id={classes["features"]} onClick={showModal}>
-                  <BoxArrowDown/> &nbsp;Unduh PDF
-                </button>
+                {user === null ? 
+                  <button id={classes["features"]} onClick={handleToken}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                  </button>
+                : <button id={classes["features"]} onClick={showModal}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                  </button>
+                }
               </Stack>
             </Grid>
           }

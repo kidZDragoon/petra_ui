@@ -724,10 +724,11 @@ class ProfilePageView(APIView):
         role = ""
         if(profile.role == "mahasiswa"):
 
-            role = profile.role.upper()[0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
+            role = profile.role.upper()[
+                0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
         else:
             role = profile.role.upper()[0] + profile.role[1:]
-        
+
         print(role)
         user = User.objects.get(id=profile.user_id)
         email = user.email
