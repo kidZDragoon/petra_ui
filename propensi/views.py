@@ -745,3 +745,15 @@ class ProfilePageView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+
+class CariProfile(ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['full_name',]
+
+class CariUser(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['first_name','last_name']
