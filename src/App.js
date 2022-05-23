@@ -54,8 +54,8 @@ class App extends React.Component {
     }
 
     popUpLogin() {
-        // const serviceURL = "http://localhost:8000/login/"
-        const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+        const serviceURL = "http://localhost:8000/login/"
+        // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
         // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
 
         const SSOWindow = window.open(
@@ -137,7 +137,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="">
+                <Navbar collapseOnSelect expand="lg" bg="light" variant="light" fixed="top">
                     <Container>
                         <Navbar.Brand>
                             <Link to={"/"} className="nav-link">

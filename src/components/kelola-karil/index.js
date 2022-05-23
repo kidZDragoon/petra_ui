@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button'
 import AddIcon from '@mui/icons-material/Add';
 import AuthenticationDataService from "../../services/authentication.service.js";
 import Dasbor from "../dasbor";
+import CustomButton from "../custom-button";
 
 
 import {
@@ -98,7 +99,7 @@ const KelolaKaril = () => {
   return (
     <Dasbor>
       {role.role === "staf" ?
-        <Box py={8} px={8} height={'100vh'}>
+        <Box py={6} px={8} height={'100vh'}>
           <Grid container spacing={8}>
             <Grid item lg={9}>
               <Box>
@@ -113,9 +114,9 @@ const KelolaKaril = () => {
                     </Typography>
 
                   <Link to="/karya-ilmiah-saya/upload" style={{textDecoration:"none"}}>
-                    <Button className="btn-orange">
+                    <CustomButton variant="primary">
                       <AddIcon/>&nbsp;Tambah Karya Ilmiah
-                    </Button>
+                    </CustomButton>
                   </Link>
 
                 </Box>
