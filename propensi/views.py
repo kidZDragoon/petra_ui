@@ -39,13 +39,13 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    originURL = "http://localhost:8000/"
+    # originURL = "http://localhost:8000/"
     # originURL = "https://propensi-a03-staging.herokuapp.com/"
-    # originURL = "https://propensi-a03.herokuapp.com/"
+    originURL = "https://petra-ui.herokuapp.com/"
 
-    serverURL = "http://localhost:8000/login/"
+    # serverURL = "http://localhost:8000/login/"
     # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
-    # serverURL = "https://opensi-a03.herokuapp.com/login/"
+    serverURL = "https://petra-ui.herokuapp.com/login/"
 
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     # http = urllib3.PoolManager()
@@ -717,7 +717,8 @@ class PengumumanUpdateDeleteView(APIView):
 class KaryaIlmiahSaya(APIView):
 
     def get(self, request, userId, *args, **kwargs):
-        data = KaryaIlmiah.objects.filter(userPengunggah=userId).order_by('-pk')
+        data = KaryaIlmiah.objects.filter(
+            userPengunggah=userId).order_by('-pk')
         serializer = KaryaIlmiahSeriliazer(data, many=True)
 
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
@@ -756,14 +757,16 @@ class ProfilePageView(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+
 class CariProfile(ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['full_name',]
+    search_fields = ['full_name', ]
+
 
 class CariUser(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['first_name','last_name']
+    search_fields = ['first_name', 'last_name']

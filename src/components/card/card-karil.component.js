@@ -49,7 +49,7 @@ const CardKaril = ({data}) => {
 
   const handlePDFDownload = () => {
     console.log("masuk pdf ")
-    // setIsOpen(false)
+    setIsOpen(false)
 
     try {
         let token = localStorage.getItem("ssoui");
@@ -89,7 +89,6 @@ const CardKaril = ({data}) => {
   };
 
   const showModal = () => {
-    console.log("mau donglot")
     setIsOpen(true);
   };
   const hideModal = () => {
@@ -113,8 +112,8 @@ const CardKaril = ({data}) => {
 
   const popUpLogin = () =>{
     // const serviceURL = "http://localhost:8000/login/"
-    const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
-    // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
+    // const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    const serviceURL = "https://petra-ui.herokuapp.com/login/"
 
     const SSOWindow = window.open(
         new URL(

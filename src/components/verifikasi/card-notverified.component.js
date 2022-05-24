@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import SuccessModalWithHide from "../modals/success-modal-with-hide";
 import axios from "axios";
+import classes from "./styles.module.css";
 
 const CardNotVerified = ({data}) => {
 
@@ -108,7 +109,7 @@ const CardNotVerified = ({data}) => {
 
     return (
         <div>
-            <Card>
+            <Card className={classes.cardkaril}>
                 <Card.Body>
                     <Card.Subtitle className="mb-2">{data.jenis}</Card.Subtitle>
                     <Card.Title>{data.judul}</Card.Title>
