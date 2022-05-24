@@ -715,7 +715,8 @@ class PengumumanUpdateDeleteView(APIView):
 class KaryaIlmiahSaya(APIView):
 
     def get(self, request, userId, *args, **kwargs):
-        data = KaryaIlmiah.objects.filter(userPengunggah=userId).order_by('-pk')
+        data = KaryaIlmiah.objects.filter(
+            userPengunggah=userId).order_by('-pk')
         serializer = KaryaIlmiahSeriliazer(data, many=True)
 
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
@@ -754,14 +755,16 @@ class ProfilePageView(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+
 class CariProfile(ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['full_name',]
+    search_fields = ['full_name', ]
+
 
 class CariUser(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['first_name','last_name']
+    search_fields = ['first_name', 'last_name']
