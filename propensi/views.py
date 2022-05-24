@@ -41,7 +41,7 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 def login(request):
     # originURL = "http://localhost:8000/"
     # originURL = "https://propensi-a03-staging.herokuapp.com/"
-    originURL = "https://petra-ui.herokuapp.com"
+    originURL = "https://petra-ui.herokuapp.com/"
 
     # serverURL = "http://localhost:8000/login/"
     # serverURL = "https://propensi-a03-staging.herokuapp.com/login/"
