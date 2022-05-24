@@ -158,19 +158,19 @@ const DaftarVerifikasi = () => {
                 <div>
                     <Stack direction="horizontal" gap={3} className="my-4">
                         {isSemua === false ? (
-                            <CustomButton className="rounded-pill" variant="outline-primary" onClick={semuaTagControl}>Lihat Semua</CustomButton>
+                            <CustomButton variant="tab-inactive" action={semuaTagControl}>Lihat Semua</CustomButton>
                         ):
-                            <CustomButton className="rounded-pill" variant="primary" onClick={semuaTagControl}>Lihat Semua</CustomButton>
+                            <CustomButton variant="tab-active" action={semuaTagControl}>Lihat Semua</CustomButton>
                         }
                         {isDiterima === false ? (
-                            <CustomButton className="rounded-pill" variant="outline-primary" onClick={diterimaTagControl}>Sudah diverifikasi</CustomButton>
+                            <CustomButton variant="tab-inactive" action={diterimaTagControl}>Sudah diverifikasi</CustomButton>
                         ):
-                            <CustomButton className="rounded-pill" variant="primary" onClick={diterimaTagControl}>Sudah diverifikasi</CustomButton>
+                            <CustomButton variant="tab-active" action={diterimaTagControl}>Sudah diverifikasi</CustomButton>
                         }
                         {isDitolak === false ? (
-                            <CustomButton className="rounded-pill" variant="outline-primary" onClick={ditolakTagControl}>Verifikasi ditolak</CustomButton>
+                            <CustomButton variant="tab-inactive" action={ditolakTagControl}>Verifikasi ditolak</CustomButton>
                         ):
-                            <CustomButton className="rounded-pill" variant="primary">Verifikasi ditolak</CustomButton>
+                            <CustomButton variant="tab-active">Verifikasi ditolak</CustomButton>
                         }
                         <a href="#/DaftarVerifikasi/lihat-semua" className="ms-auto text-orange">Lihat Semua</a>
                     </Stack>
