@@ -6,7 +6,7 @@ import classes from "./styles.module.css";
 import {Link, useNavigate} from "react-router-dom";
 import {browserHistory} from 'react-router'
 import axios from "axios";
-import { Container, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import { Container, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import Stack from 'react-bootstrap/Stack';
 import {FaEdit} from "react-icons/fa";
 import {RiDeleteBin6Fill} from "react-icons/ri";
@@ -27,6 +27,7 @@ const CardKaril = ({data}) => {
   const [successModalUnduh, setSuccessModalUnduh] = useState(false);
   const [successModalDelete, setSuccessModalDelete] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const CardKaril = ({data}) => {
 
   const handlePDFDownload = () => {
     console.log("masuk pdf ")
-    setIsOpen(false)
+    // setIsOpen(false)
 
     try {
         let token = localStorage.getItem("ssoui");
@@ -88,6 +89,7 @@ const CardKaril = ({data}) => {
   };
 
   const showModal = () => {
+    console.log("mau donglot")
     setIsOpen(true);
   };
   const hideModal = () => {
@@ -97,6 +99,47 @@ const CardKaril = ({data}) => {
   const hideSuccessUnduh = () => {
     setSuccessModalUnduh(false)
   };
+
+  const handleToken = async() =>{
+    await loginHandler();
+    let token = localStorage.getItem("ssoui")
+    token = JSON.parse(token)
+  };
+
+  const loginHandler = async() => {
+    const data = await popUpLogin()
+    localStorage.setItem("ssoui", JSON.stringify(data))
+  }
+
+  const popUpLogin = () =>{
+    // const serviceURL = "http://localhost:8000/login/"
+    const serviceURL = "https://propensi-a03-staging.herokuapp.com/login/"
+    // const serviceURL = "https://propensi-a03.herokuapp.com/login/"
+
+    const SSOWindow = window.open(
+        new URL(
+            `https://sso.ui.ac.id/cas2/login?service=${encodeURIComponent(serviceURL)}`
+        ).toString(),
+        "SSO UI Login",
+        "left=50, top=50, width=480, height=480"
+    )
+
+    return new Promise(function (resolve) {
+        window.addEventListener(
+        "message", (e) => {
+                if (SSOWindow) {
+                    SSOWindow.close()
+                }
+                const data = e.data
+                resolve(data)
+                window.location.reload()
+            },
+            {
+                once: true
+            }
+        )
+    })
+  }
 
   const favoriteControl = () => {
         if (isFavorite) {
@@ -182,11 +225,14 @@ const CardKaril = ({data}) => {
         if (token !== null){
             const response = await authenticationService.profile(token);
             setRole({role:response.data.role});
+            setUser("user in")            
         }
 
     } catch {
         console.log("Load user error!");
     }
+
+  
 
 
     try {
@@ -226,7 +272,7 @@ const CardKaril = ({data}) => {
     <Card className={classes.cardkaril}>
       <Card.Body>
         <Grid container spacing={2}>
-          {window.location.hash === "#/kelola-karil" ?
+          {window.location.hash === "#/kelola-karil" || window.location.hash.startsWith("#/kelola-user") ?
             <Grid item xs={8}>
               <Stack>
                 <Card.Subtitle className="mb-2 text-muted">{data.jenis}</Card.Subtitle>
@@ -234,7 +280,7 @@ const CardKaril = ({data}) => {
                 <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
                 <Card.Text>{data.author}</Card.Text>
                 <button id={classes["features"]} onClick={showModal}>
-                  <BoxArrowDown/> &nbsp;Unduh PDF
+                    <BoxArrowDown/> &nbsp;Unduh PDF
                 </button>
               </Stack>
             </Grid>
@@ -244,14 +290,19 @@ const CardKaril = ({data}) => {
                 <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{data.tglDisetujui}</Card.Subtitle>
                 <Card.Text>{data.author}</Card.Text>
-                <button id={classes["features"]} onClick={showModal}>
-                  <BoxArrowDown/> &nbsp;Unduh PDF
-                </button>
+                {user === null ? 
+                  <button id={classes["features"]} onClick={handleToken}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                  </button>
+                : <button id={classes["features"]} onClick={showModal}>
+                    <BoxArrowDown/> &nbsp;Unduh PDF
+                  </button>
+                }
               </Stack>
             </Grid>
           }
 
-          {role.role === "staf" && window.location.hash === "#/kelola-karil" ?
+          {role.role === "staf" && (window.location.hash === "#/kelola-karil" || window.location.hash.startsWith("#/kelola-user")) ?
             <Grid item xs={4}>
               <div className="d-flex">
                 <div className="mx-3">

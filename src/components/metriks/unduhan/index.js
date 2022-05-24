@@ -17,12 +17,14 @@ import { Bar } from 'react-chartjs-2';
 import {
     Stack,
     Box,
-    Button,
   } from "@mui/material";
+import Button from 'react-bootstrap/Button';
 import { BarChartSelectYear } from "../chart.component";
+import CustomButton from "../../custom-button";
 
 const MetriksUnduhan = () => {
     const [dataMetriks, setDataMetriks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     ChartJS.register(
         CategoryScale,
@@ -43,6 +45,7 @@ const MetriksUnduhan = () => {
         .then(response => {
             console.log("response ", response);
             setDataMetriks(response.data);
+            setIsLoading(false);
         })
         .catch((error) => {
             console.log(error);
@@ -61,6 +64,9 @@ const MetriksUnduhan = () => {
             },
             y: {
                 grace: '5%',
+                ticks: {
+                    precision: 0,
+                }
             }
         },
         plugins: {
@@ -77,21 +83,19 @@ const MetriksUnduhan = () => {
 
     return (
         <Dasbor className={classes.mainContent}>
-            <Box py={8} px={8}>
-                <Box
-                    sx={{
-                    width: '60%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    p: 1,
-                    mb:4,
-                    borderRadius: 1,
-                    }}
-                >
-                    <Button mx={4} variant="outlined" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
-                    <Button mx={4} variant="outlined" href="#/metriks/unduhan">Metriks Unduhan</Button>
-                    <Button mx={4} variant="outlined" href="#/metriks/unggahan">Metriks Unggahan</Button>
-                </Box>
+            <Box py={6} px={8}>
+                <Stack direction="row" gap={4} mb={4}>
+                    <a href="#/metriks/pengunjung">
+                        <CustomButton mx={4} variant="tab-inactive">Metriks Pengunjung</CustomButton>
+                    </a>
+                    <a className="text-bold-large" href="#/metriks/unduhan">
+                        <CustomButton mx={4} variant="tab-active">Metriks Unduhan</CustomButton>
+                    </a>
+                    <a className="text-bold-large" href="#/metriks/unggahan">
+                        <CustomButton mx={4} variant="tab-inactive">Metriks Unggahan</CustomButton>
+                    </a>
+                </Stack>
+
                 <p className="text-section-header px-0">
                     Statistik Unduhan Karya Ilmiah
                 </p>
@@ -105,7 +109,7 @@ const MetriksUnduhan = () => {
                     {dataMetriks.dataTop3 && dataMetriks.dataTop3.labels && dataMetriks.dataTop3.chartData ? 
                         <Box py={4} pl={4} pr={12} className={classes.metricsCard}>
                             <p className="text-bold-title px-0">
-                                Top 3 Karya Ilmiah Paling Banyak Diunduh
+                                Tiga karya ilmiah yang paling banyak diunduh
                             </p>
                 
                             <Bar width={100}
@@ -125,10 +129,9 @@ const MetriksUnduhan = () => {
                         </Box> 
                         : ''
                     }
-
-
                 </Stack>
             </Box>
+            
         </Dasbor>
         
     );               

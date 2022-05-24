@@ -1,0 +1,101 @@
+.primary {
+    padding: 8px 16px 8px 16px;
+    color:#FFFFFF;
+    background-color: #d26930;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
+    border: 0;
+    border-radius: 8px;
+
+    /* text */
+    font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0em;
+}
+
+.primary:hover {
+    padding: 8px 16px 8px 16px;
+    color: #FFFFFF;
+    font-weight: 620;
+    border: 0;
+    border-radius: 8px;
+    background-color: #c06000;
+
+    /* text */
+    font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0em;
+}
+
+.tab-active {
+    padding: 8px 24px 8px 24px;
+    color: #d26903;
+    border: 0;
+    border-radius: 40px;
+    background-color: rgba(210, 105, 48, 0.1);
+
+    /* text */
+    font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0em;
+}
+
+.tab-inactive {
+    /* padding: 16px 16px 16px 16px;
+    color: rgba(128, 128, 128, 1);
+    ;
+    border: 0;
+    background-color: transparent; */
+
+    /* text */
+    /* font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0em; */
+
+    padding: 8px 24px 8px 24px;
+    color: #d26903;
+    border: 0;
+    box-shadow: 0px 0px 0px 1px #d26903 inset;
+    border-radius: 40px;
+    background-color: transparent;
+
+    /* text */
+    font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0em;
+}
+
+.secondary {
+    padding: 8px 16px 8px 16px;
+    color: #d26903;
+    font-weight: 620;
+    border: 0;
+    box-shadow: 0px 0px 0px 2px #d26903 inset;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+}
+
+.secondary:hover {
+    padding: 8px 16px 8px 16px;
+    color: #d26903;
+    font-weight: 620;
+    border: 2px solid;
+    border-radius: 8px;
+    background-color: rgba(210, 105, 48, 0.1);
+    ;
+}
+

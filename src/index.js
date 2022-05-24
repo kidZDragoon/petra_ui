@@ -4,7 +4,8 @@ import {HashRouter, Route, Routes} from "react-router-dom";
 import App from "./App";
 import Detail from "./components/detail";
 import KaryaIlmiahSaya from './components/karya-ilmiah-saya';
-import DaftarVerifikasi from './components/verifikasi';
+import DaftarVerifikasi from './components/verifikasi/verifpage';
+import ViewAllPage from './components/verifikasi/viewall'
 import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SeachList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
@@ -22,6 +23,8 @@ import DetailPengumuman from './components/detailPengumuman'
 import Home from './components/home'
 import Bookmark from './components/bookmark'
 import MissingPage from './components/missing-page';
+import ProfilePage from './components/profilePage';
+import KelolaSemester from './components/kelola-semester';
 
 ReactDOM.render(
     <HashRouter>
@@ -29,8 +32,10 @@ ReactDOM.render(
         <Routes>
             <Route path="/KaryaIlmiah/:id" element={<Detail />}/>
             <Route path='/DaftarVerifikasi' element={<DaftarVerifikasi/>}/>
+            <Route path='/DaftarVerifikasi/lihat-semua' element={<ViewAllPage/>}/>
             <Route path="/karya-ilmiah-saya/upload" element={<UploadKaryaIlmiah/>} />
             <Route path="/Search" element={<SeachList/>}/>
+            <Route path="/Search/:keyword" element={<SeachList/>}/>
             <Route path="/AdvancedSearch" element={<AdvancedSearch/>}/>
             <Route path="/karya-ilmiah-saya" element={<KaryaIlmiahSaya/>} />
             <Route path="/metriks/unggahan" element={<MetriksUnggahan/>} />
@@ -41,6 +46,7 @@ ReactDOM.render(
             <Route path="/kelola-karil" element={<KelolaKaril/>}/>
             <Route path="/list-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/kelola-user" element={<UserList/>}/>
+            <Route path="/kelola-user/:id" element={<ProfilePage />}/>
             <Route path="/form-pengumuman" element={<FormPengumuman/>}/>
             <Route path="/kelola-pengumuman" element={<ListPengumuman/>}/>
             <Route path="/update-pengumuman/:id" element={<UpdatePengumuman/>}/>
@@ -48,6 +54,7 @@ ReactDOM.render(
             <Route path="/404" element={<MissingPage/>}/>
             <Route path="/" element={<Home/>}/>
             <Route path="/karya-ilmiah-favorit" element={<Bookmark/>} />
+            <Route path="/kelola-semester" element={<KelolaSemester/>} />
         </Routes>
     </HashRouter>,
 

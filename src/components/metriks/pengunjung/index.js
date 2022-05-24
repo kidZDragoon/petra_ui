@@ -16,13 +16,19 @@ import {
 import {
     Stack,
     Box,
-    Button,
+    Typography,
+    // Button,
   } from "@mui/material";
+import Button from 'react-bootstrap/Button';
 import { BarChartSelectYear, BarChart } from "../chart.component";
-
-
+import CustomButton from "../../custom-button";
 
 const MetriksPengunjung = () => {
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    }
 
     ChartJS.register(
         CategoryScale,
@@ -38,21 +44,20 @@ const MetriksPengunjung = () => {
 
     return (
         <Dasbor className={classes.mainContent}>
-            <Box py={8} px={8}>
-                <Box
-                    sx={{
-                    width: '60%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    p: 1,
-                    mb:4,
-                    borderRadius: 1,
-                    }}
-                >
-                    <Button mx={4} variant="outlined" href="#/metriks/pengunjung">Metriks Pengunjung</Button>
-                    <Button mx={4} variant="outlined" href="#/metriks/unduhan">Metriks Unduhan</Button>
-                    <Button mx={4} variant="outlined" href="#/metriks/unggahan">Metriks Unggahan</Button>
-                </Box>
+            <Box py={6} px={8}>
+
+                <Stack direction="row" gap={4} mb={4}>
+                    <a href="#/metriks/pengunjung">
+                        <CustomButton mx={4} variant="tab-active">Metriks Pengunjung</CustomButton>
+                    </a>
+                    <a className="text-bold-large" href="#/metriks/unduhan">
+                        <CustomButton mx={4} variant="tab-inactive">Metriks Unduhan</CustomButton>
+                    </a>
+                    <a className="text-bold-large" href="#/metriks/unggahan">
+                        <CustomButton mx={4} variant="tab-inactive">Metriks Unggahan</CustomButton>
+                    </a>
+                </Stack>
+
                 <p className="text-section-header px-0">
                     Statistik Pengunjung Karya Ilmiah
                 </p>

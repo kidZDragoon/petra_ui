@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import Container from 'react-bootstrap/Container'
+import Container from '@mui/material/Container'
 import '../../index.css';
 import Card from "react-bootstrap/Card";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import classes from "../detail/styles.module.css";
+import classes from "./styles.module.css";
 import Box from "@mui/material/Box";
 import {BoxArrowDown} from "react-bootstrap-icons";
 import Stack from 'react-bootstrap/Stack';
@@ -16,6 +16,8 @@ import AuthenticationDataService from "../../services/authentication.service";
 import axios from "axios";
 import fileDownload from "js-file-download";
 import {Heart,HeartFill} from "react-bootstrap-icons";
+import CardPengumuman from "../cardPengumuman";
+import hands_phone from "../../hands_phone.svg"
 
 export default class Bookmark extends Component {
     constructor(props) {
@@ -52,19 +54,49 @@ export default class Bookmark extends Component {
 
     render() {
         return(
-            <Container id={classes["containerID"]}>
-                <h3 className="text-section-header px-0">
-                    <FavoriteIcon></FavoriteIcon>
-                    <span className="mx-2">Karya Ilmiah Favorit</span>
-                </h3>
-                <br/>
+            <Container py={8} className="main-container list row">
 
-                {/* kasi kondisi kalau di slain staf tampilin hanya status 1, kalau di staf status semua */}
-                {this.state.listBookmark.map((karil, idx) =>
-                    <Box my={3} key={idx}>
-                        <CardKaril data={karil}/>
+                <Stack direction="horizontal" gap={3}>
+                    <span className="pull-right">
+                        <FavoriteIcon fontSize="large"></FavoriteIcon>
+                    </span>
+                
+                    <h3 className="text-section-header px-0 my-0">Karya Ilmiah Favorit</h3>
+                </Stack>
+                
+                {this.state.listBookmark.length === 0 ?
+                    <Box py={8} px={8} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        }}
+                        minHeight='70vh'>
+
+                        <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        }}>
+                            <img
+                                src={hands_phone}
+                                width="426"
+                                height="282"
+                                className=""
+                                alt="Missing Page"/>
+                            <p className="text-section-header text-center">Anda belum memiliki karya <br></br> ilmiah favorit</p>
+                        </Box>
                     </Box>
-                )}
+                :
+                    <Container>
+                    {this.state.listBookmark.map((karil, idx) =>
+                        <Box my={3} key={idx}>
+                            <CardKaril data={karil}/>
+                        </Box>
+                    )}
+                    </Container>
+                }
+                
             </Container>
         )
     }

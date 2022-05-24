@@ -5,6 +5,7 @@
     font-weight: bold;
     display: flex;
     flex-direction: column;
+    position: fixed;
     }
 
 .SidebarList {
@@ -31,7 +32,7 @@
     color: #D26930;
 }
 
-.SidebarList .row #active {
+.SidebarList #active {
     background-color: #D269301f;
     color: #D26930;
 }

@@ -1,6 +1,6 @@
 {
-  "proxy-ss": "http://localhost:8000",
-  "proxy-aaa": "https://propensi-a03-staging.herokuapp.com",
+  "proxy-development": "http://localhost:8000",
+  "proxy-staging": "https://propensi-a03-staging.herokuapp.com",
   "proxy": "https://petra-ui.herokuapp.com",
   "version": "0.1.0",
   "private": true,
@@ -11,6 +11,7 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fontsource/mulish": "^4.5.5",
+    "@material-ui/core": "^4.12.4",
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.2",
@@ -38,6 +39,8 @@
     "react-minimal-side-navigation": "^1.9.2",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
+    "react-spinner": "^0.2.7",
+    "react-spinners": "^0.12.0",
     "styled-components": "^5.3.5",
     "urllib3": "^0.0.1",
     "web-vitals": "^2.1.4"

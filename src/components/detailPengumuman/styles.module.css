@@ -1,10 +1,8 @@
 .pesan{
+    margin-top: 10px;
     white-space: pre-line
 }
-.title{
-    margin-top: 30px;
-    font-weight: bolder
-}
+
 .date{
     font-weight: 300;
     margin: -1px;
@@ -19,4 +17,56 @@
 .area{
     padding-left: 105px;
     margin: -10px;
+}
+#containerID{
+    width: 70%;
+    padding-right: 100px;
+}
+#title{
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+.emptyarea{
+    height: 200px;
+}
+#actionbutton {
+    padding-right: 0%;
+    margin-right: 0%;
+}
+
+#editbutton {
+    color: black;
+    font-weight: 620;
+    padding: 2px;
+    border: 0;
+    background-color: #ffffff;
+    align-self: flex-start;
+    margin: 20px;
+    margin-right: 10px;
+}
+
+#editbutton:hover {
+    color: #d26903;
+}
+
+#deletebutton {
+    color: #A74C46;
+    font-weight: 620;
+    padding: 2px;
+    border: 0;
+    margin: 20px;
+    background-color: #ffffff;
+    align-self: flex-start;
+    margin-left: 10px;
+}
+#deletebutton:hover {
+    color: #d26903;
+}
+.pengumumanstaf{
+    margin-left: 20px;
+}
+@media (max-width:900px){
+    #containerID {
+     width: 100%;
+    }
 }

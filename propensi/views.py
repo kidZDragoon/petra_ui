@@ -39,7 +39,6 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 
 def login(request):
-    print('tesss')
     # originURL = "http://localhost:8000/"
     # originURL = "https://propensi-a03-staging.herokuapp.com/"
     originURL = "https://petra-ui.herokuapp.com/"
@@ -223,6 +222,7 @@ class AddBookmarkView(APIView):
     pada kolom "userPenandaBuku".
     Pake PUT dengan pk utk id karil, dan idProfile dalam request datanya
     """
+
     def put(self, request, pk):
         print(request.data)
         profile = Profile.objects.get(id=request.data['idProfile'])
@@ -239,8 +239,10 @@ class BookmarkListView(APIView):
     """
     Mendapatkan list Bookmark. Butuh ID profilenya, dikirim melalui POST
     """
+
     def post(self, request):
-        karil = Profile.objects.get(id=request.data['idProfile']).karyailmiah_set.all()
+        karil = Profile.objects.get(
+            id=request.data['idProfile']).karyailmiah_set.all()
         print(karil)
         karil_serializer = KaryaIlmiahSeriliazer(karil, many=True)
         print(karil_serializer.data)
@@ -271,7 +273,7 @@ class CheckBookmarkStatusView(APIView):
         return Response({"bookmarked": "false"}, status=status.HTTP_200_OK)
 
 
-class KaryaIlmiahView(RetrieveAPIView): #auto pk
+class KaryaIlmiahView(RetrieveAPIView):  # auto pk
     queryset = KaryaIlmiah.objects.all()
     serializer_class = KaryaIlmiahSeriliazer
 
@@ -319,6 +321,8 @@ class KaryaIlmiahUpdateUploadView(APIView):
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update without upload karil
+
+
 class KaryaIlmiahUpdateView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
         print("file sama")
@@ -333,16 +337,24 @@ class KaryaIlmiahUpdateView(UpdateAPIView):
 
 class VerificatorView(APIView):
     def get(self, request):
-        data = Profile.objects.filter(role="verifikator")
+        data = Profile.objects.filter(role="dosen")
         serializer = VerificatorSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
 
 class SemesterView(APIView):
     def get(self, request):
-        data = Semester.objects.all()
+        data = Semester.objects.all().order_by('semester')
         serializer = SemesterSerializer(data, many=True)
         return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = SemesterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -359,7 +371,7 @@ class CariKaril(ListAPIView):
     serializer_class = KarilSeriliazer
     filterset_class = KarilFilterYearAndType
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ['judul', 'author', 'kataKunci']
+    search_fields = ['judul', 'author', 'kataKunci', ]
 
 
 class HasilKaril(RetrieveAPIView):
@@ -384,6 +396,7 @@ class DaftarVerifikasiView(ListAPIView):
     serializer_class = KarilSeriliazer
     filter_backends = (DjangoFilterBackend, )
     filterset_fields = ('status', 'status')
+
 
 class KaryaIlmiahStatusView(UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
@@ -700,10 +713,58 @@ class PengumumanUpdateDeleteView(APIView):
 
 
 class KaryaIlmiahSaya(APIView):
- 
-   def get(self, request, userId, *args, **kwargs):
-        data = KaryaIlmiah.objects.filter(userPengunggah=userId)
+
+    def get(self, request, userId, *args, **kwargs):
+        data = KaryaIlmiah.objects.filter(
+            userPengunggah=userId).order_by('-pk')
         serializer = KaryaIlmiahSeriliazer(data, many=True)
- 
+
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
+
+class ProfilePageView(APIView):
+    def get(self, request, userId):
+        print("masuk")
+        profile = Profile.objects.get(id=userId)
+        profile_serialized = ProfileSerializer(profile)
+        print(profile)
+        nama_lengkap = profile.full_name
+        print(nama_lengkap)
+        role = ""
+        if(profile.role == "mahasiswa"):
+
+            role = profile.role.upper()[
+                0] + profile.role[1:] + " " + profile.study_program + " Fakultas " + profile.faculty
+        else:
+            role = profile.role.upper()[0] + profile.role[1:]
+
+        print(role)
+        user = User.objects.get(id=profile.user_id)
+        email = user.email
+
+        karya_ilmiah = KaryaIlmiah.objects.filter(userPengunggah=userId)
+        karya_ilmiah_serialized = KaryaIlmiahSeriliazer(
+            karya_ilmiah, many=True).data
+
+        data = {
+            'profile': profile_serialized.data,
+            'role': role,
+            'email': email,
+            'karyaIlmiah': karya_ilmiah_serialized
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class CariProfile(ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['full_name', ]
+
+
+class CariUser(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['first_name', 'last_name']

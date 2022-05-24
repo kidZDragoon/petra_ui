@@ -60,6 +60,8 @@ export default class Detail extends (Component, App) {
             filePDF:"",
             role:"",
             userPenandaBuku:[],
+            userPengunggahId:"",
+            profileId:"",
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
         this.handleToken = this.handleToken.bind(this);
@@ -86,7 +88,8 @@ export default class Detail extends (Component, App) {
             this.setState({karyaIlmiah: data, judul: data.judul, abstrak: data.abstrak,
             authors: data.author, jenis: data.jenis, kategori: data.listKategori, fileURI: data.fileURI ,
             tglVerifikasi:data.tglDisetujui, kataKunci:listkataKunci,
-            userPenandaBuku:data.userPenandaBuku}) //tglDisetuji jgn lupa diganti tglVerfikasi
+            userPenandaBuku:data.userPenandaBuku,
+            userPengunggahId:data.userPengunggah.id}) //tglDisetuji jgn lupa diganti tglVerfikasi
             this.setState({id:item})
            
         }catch(error){
@@ -320,7 +323,8 @@ export default class Detail extends (Component, App) {
                 const response = await AuthenticationDataService.profile(token);
                 console.log(response);
                 console.log(response.data.role);
-                this.setState({role:response.data.role});
+                this.setState({role:response.data.role,
+                                profileId:response.data.id});
             }
 
         } catch {
@@ -357,33 +361,39 @@ export default class Detail extends (Component, App) {
                     </Grid>
                 </Grid>
 
-                <div className="d-flex py-2">
+                <div className="row">
                     {this.state.user == null ? 
-                    <button id={classes["features"]} onClick={this.handleToken}>
+                    <button id={classes["features"]} onClick={this.handleToken} className="col">
                     <BoxArrowDown/> &nbsp;Unduh PDF
                     </button>: 
-                     <button id={classes["features"]} onClick={this.showModal}>
+                     <button id={classes["features"]} onClick={this.showModal} className="col">
                      <BoxArrowDown/> &nbsp;Unduh PDF
                     </button> 
                     }
-                    <button id={classes["features"]} onClick={this.showCite}>
+                    <button id={classes["features"]} onClick={this.showCite} className="col">
                         <Files/>&nbsp;Dapatkan Sitasi
                     </button>
-                    {this.state.isFavorite === false ? (
-                        <button id={classes["features"]} onClick={this.favoriteControl}>
-                            <Heart/> &nbsp;Tambahkan ke favorit
-                        </button>
-                    ):
-                        <button id={classes["features"]} onClick={this.favoriteControl}>
-                            <HeartFill/> &nbsp;Karya Ilmiah sudah ada dalam daftar favorit!
-                        </button>
+                    {this.state.user !== null ?
+                    <>
+                         {this.state.isFavorite === false ? (
+                            <button id={classes["features"]} onClick={this.favoriteControl} className="col">
+                                <Heart/> &nbsp;Tambahkan ke favorit
+                            </button>
+                        ):
+                            <button id={classes["features"]} onClick={this.favoriteControl} className="col">
+                                <HeartFill/> &nbsp;Karya Ilmiah sudah ada dalam daftar favorit!
+                            </button>
+                        }
+                    </> :
+                    <></>
                     }
+                   
 
                 </div>
 
                 
 
-                <Accordion className="accordion" id="accordionPanelsStayOpenExample">
+                <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
                     <AccordionItem className="accordion-item">
                         <AccordionHeader className="accordion-header" >
                             Abstrak
@@ -400,8 +410,8 @@ export default class Detail extends (Component, App) {
                 </Accordion>
 
                 <br/>
-
-                <Accordion className="accordion" id="accordionPanelsStayOpenExample">
+                {(this.state.role == "staf" || (this.state.role == "mahasiswa") && this.state.userPengunggahId == this.state.profileId) ?
+                <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
                     <AccordionItem className="accordion-item">
                         <AccordionHeader className="accordion-header" >
                             Daftar Pengunduh
@@ -423,8 +433,9 @@ export default class Detail extends (Component, App) {
                             </AccordionBody>
                         </div>
                     </AccordionItem>
-
                 </Accordion>
+                    : <br/>
+                }
 
                 <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
                     <ModalHeader className={classes.modalHeader} >
