@@ -647,14 +647,16 @@ class MetriksTop3Unduhan(APIView):
 
 class TahunMetriksUnduhan(APIView):
     def get(self, request):
-        tahun = []
+        list_tahun = []
 
         for i in DaftarUnduhan.objects.all():
+            tahun_split = i.tglUnduh.split('/')
+            tahun = tahun_split[2][:4]
 
-            if i.tglUnduh[5:9] not in tahun:
-                tahun.append(i.tglUnduh[5:9])
+            if tahun not in list_tahun:
+                list_tahun.append(tahun)
 
-        return Response({"status": "success", "data": tahun}, status=status.HTTP_200_OK)
+        return Response({"status": "success", "data": list_tahun}, status=status.HTTP_200_OK)
 
 
 class PengumumanView(APIView):

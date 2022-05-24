@@ -81,14 +81,14 @@ const MetriksUnggahan = () => {
                     {/* SEMESTER */}
                     {dataMetriks.dataSemester && dataMetriks.dataSemester.labels && dataMetriks.dataSemester.chartData ? 
                         <BarChart sourceData={dataMetriks.dataSemester}
-                                title="Unggahan karya ilmiah berdasarkan jenis"></BarChart>
+                                title="Unggahan karya ilmiah berdasarkan semester"></BarChart>
                         : ''
                     }
                     
                     {/* JENIS */}
                     {dataMetriks.dataJenis && dataMetriks.dataJenis.labels && dataMetriks.dataJenis.chartData ? 
                         <BarChart sourceData={dataMetriks.dataJenis}
-                                    title="Unggahan karya ilmiah berdasarkan semester"></BarChart>
+                                    title="Unggahan karya ilmiah berdasarkan jenis"></BarChart>
                         : ''
                     }
 

@@ -149,8 +149,8 @@ export default class DetailPengumuman extends Component{
                     </Grid>
                 </Grid>
                 <div className={classes.area}>
-                    <p className={classes.date}>tgl dibuat : {this.state.tglDibuat}</p>
-                    <p className={classes.date}>tgl disunting : {this.state.tglDisunting}</p>
+                    <p className={classes.date}>Tanggal dibuat: {this.state.tglDibuat}</p>
+                    <p className={classes.date}>Tanggal disunting: {this.state.tglDisunting}</p>
                     <div className={classes.line}></div>
                     <p className={classes.pesan}>{this.state.pesan}</p>
                     
