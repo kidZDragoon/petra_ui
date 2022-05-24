@@ -91,6 +91,7 @@ export default class EditKaryaIlmiah extends Component {
                 dosenPembimbing: data.dosenPembimbing.id, 
                 filePDF: data.filePDF,
                 filePDFcompare: data.filePDF,
+                userPengunggah: data.userPengunggah.id,
                 id:item,
             })
             // this.fileInput.current.value = data.filePDF
@@ -133,7 +134,6 @@ export default class EditKaryaIlmiah extends Component {
             console.log(token);
             const response = await AuthenticationDataService.profile(token);
             console.log(response);
-            this.setState({userPengunggah: response.data.id});
             console.log("user pengunggah");
             console.log(response.data.id);
 
@@ -226,12 +226,6 @@ export default class EditKaryaIlmiah extends Component {
             errors["filePDF"] = "Mohon cantumkan file PDF karya ilmiah";
         }
 
-        //Check
-        if (this.state.check == false) {
-            isValid = false;
-            errors["check"] = "Mohon lengkapi kotak persetujuan";
-        }
-
         this.setState({ formIsValid: isValid });
         this.setState({ errors: errors });
 
@@ -312,22 +306,7 @@ export default class EditKaryaIlmiah extends Component {
                     }
                     }
                 )
-            }
-                                            
-            //Reset state jadi kosong lagi
-            // this.setState({
-            //     author: "",
-            //     npm: "",
-            //     judul: "",
-            //     tglDisetujui: null,
-            //     semesterDisetujui: "",
-            //     jenis: "",
-            //     abstrak: "",
-            //     kataKunci: "",
-            //     dosenPembimbing: "",
-            //     userPengunggah: "",
-            //     filePDF: null
-            // })
+            }                   
 
             this.showSuccessModal();
 
@@ -514,17 +493,6 @@ export default class EditKaryaIlmiah extends Component {
                                     </InputGroup>
                                     }
                                 </div>
-                                
-
-                                <Form.Group className="">
-                                    <Form.Check type="checkbox" className="text-large" value={this.state.check} onChange={this.handleChangeField}
-                                    label="Pastikan semua data yang Anda isi sudah benar. 
-                                    Karya ilmiah yang Anda unggah akan harus diverifikasi oleh dosen pembimbing Anda 
-                                    terlebih dahulu sebelum ditampilkan untuk umum."/>
-                                    <span className="text-error text-small">
-                                        {this.state.errors["check"]}
-                                    </span>
-                                </Form.Group>
                                 
                                 <Button className="primary-btn mt-5" onClick={this.handleValidation}>
                                     <p className="text-bold-large text-institutional-white m-0 p-0">Unggah</p>

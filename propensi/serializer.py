@@ -141,7 +141,7 @@ class KaryaIlmiahEditSerializer(serializers.ModelSerializer):
                   "userPengunggah"]
 
     dosenPembimbing = DosenPembimbingField(
-        queryset=Profile.objects.filter(role='verifikator'))
+        queryset=Profile.objects.filter(role='dosen'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):
@@ -207,13 +207,13 @@ class KaryaIlmiahStatusSerializer(serializers.ModelSerializer):
         model = KaryaIlmiah
         fields = ["status"]
 
-
     def create(self, validated_data):
         status = validated_data['status']
         karyaIlmiah = KaryaIlmiah(status=status)
 
         karyaIlmiah.save()
         return karyaIlmiah
+
 
 class PengumumanSeriliazer(serializers.ModelSerializer):
     class Meta:
