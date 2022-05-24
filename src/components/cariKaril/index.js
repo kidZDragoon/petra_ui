@@ -33,7 +33,6 @@ import { Search } from "@mui/icons-material";
 const SearchList = () => {
   const searchPath = window.location.href.split("/Search/")[1]
   const searchKey = searchPath ? decodeURIComponent(searchPath) : ""
-  const [listKaril, setListKaril] = useState([]);
   const [isShow, setIsShow] = useState(false);
   const [keyword, setKeyword] = useState(searchKey);
   const [year, setYear] = useState(null);
@@ -46,7 +45,6 @@ const SearchList = () => {
   });
   const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [listKarilBaru, setListKarilBaru] = useState([]);
 
