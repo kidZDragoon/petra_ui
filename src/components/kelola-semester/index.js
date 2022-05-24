@@ -65,7 +65,7 @@ const KelolaSemester = () => {
         event.preventDefault();
         if(semesterInput === ""){
             setErrorMessage("Mohon isi semester");
-        } else if (!(semesterInput.toLowerCase().startsWith("semester ganjil") || semesterInput.toLowerCase().startsWith("semester genap"))) {
+        } else if (!(semesterInput.toLowerCase().startsWith("semester gasal") || semesterInput.toLowerCase().startsWith("semester genap"))) {
             setErrorMessage("Pastikan format penulisan semester sesuai contoh di atas");
         } else if (semesterInput.trim().split(/\s+/)[2].length != 9){
             setErrorMessage("Pastikan format penulisan semester sesuai contoh di atas");
@@ -168,7 +168,7 @@ const KelolaSemester = () => {
                         <Form.Group className="" id="input-semester">
                             <Form.Label className="text-large">Judul semester</Form.Label>
                             <p className="text-charcoal text-small">
-                                    Contoh: Semester Genap 2021/2022
+                                    Contoh: Semester Genap 2021/2022 atau Semester Gasal 2021/2022
                             </p>
                             <Form.Control type="text" name="author" placeholder="Semester"
                             value={semesterInput} onChange={handleChangeField}/>
