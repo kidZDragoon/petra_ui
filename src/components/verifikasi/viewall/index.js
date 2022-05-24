@@ -3,37 +3,19 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import Container from 'react-bootstrap/Container'
-import CardNotVerified from "./card-notverified.component";
-import CardKarilStatus from "./card-karilstatus.component";
-import Dasbor from "../dasbor";
+import CardKarilStatus from "../card-karilstatus.component";
+import Dasbor from "../../dasbor";
 import axios from "axios";
+import hands_phone from '../../../hands_phone.svg'; 
 import { ClassNames } from "@emotion/react";
-import classes from './styles.module.css';
-import CustomButton from "../custom-button";
+import classes from '../styles.module.css';
+import CustomButton from "../../custom-button";
 
-// export default class DaftarVerifikasi extends Component{
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             isSemua: true,
-//             isDiterima: false,
-//             isDitolak: false,
-//             isVerifikasi: false,
-//             isTolakVerifikasi: false,
-//             isVerified: false,
-//             isDeclined: false,
-//             listNotVerified: [],
-//             jenis: "",
-//             judul: "",
-//             tglVerifikasi:Date,
-//             authors: "",
-//             status: "",
-//         };
-//     }
-const DaftarVerifikasi = () => {
+const ViewAllPage = () => {
     const [listToVerify, setListToVerify] = useState([]);
     const [listVerified, setListVerified] = useState([]);
     const [listDeclined, setListDeclined] = useState([]);
@@ -119,35 +101,12 @@ const DaftarVerifikasi = () => {
     
 
     return(
-        <Dasbor className={classes.mainContent}>
-            <Box py={8} px={8}>
-                
-                <Stack direction="horizontal" gap={3}>
-                    <span className="pull-right">
-                        <LibraryBooksIcon fontSize="large"></LibraryBooksIcon>
-                    </span>
-                   
-                    <h3 className="text-section-header px-0 my-0">Permintaan Verifikasi Karya Ilmiah</h3>
-                </Stack>
-                
-                <Box mb={8}>
-                {listToVerify.map((toVerify, i) =>
-                    <Box my={3} key={i} >
-                        <CardNotVerified className="p-0" data={toVerify}/>
-                    </Box>
-                )}
-                </Box>
-
-                <Stack direction="horizontal" gap={3}>
-                    <span className="pull-right">
-                        <CheckCircleOutlineRoundedIcon fontSize="large"></CheckCircleOutlineRoundedIcon>
-                    </span>
-                   
-                    <h3 className="text-section-header px-0 my-0">Daftar Karya Ilmiah Terverifikasi</h3>
-                </Stack>
+        <Dasbor>
+            <Container>
+                <h3 className="text-section-header px-0 mt-5"><span class="pull-right"><CheckCircleOutlineRoundedIcon fontSize="large" className="pl-0 mx-4"></CheckCircleOutlineRoundedIcon></span>Daftar Karya Ilmiah Terverifikasi</h3>
                 
                 <div>
-                    <Stack direction="horizontal" gap={3} className="mb-3 mt-3">
+                    <Stack direction="horizontal" gap={3} className="my-4">
                         {isSemua === false ? (
                             <CustomButton variant="tab-inactive" action={semuaTagControl}>Lihat Semua</CustomButton>
                         ):
@@ -163,45 +122,58 @@ const DaftarVerifikasi = () => {
                         ):
                             <CustomButton variant="tab-active">Verifikasi ditolak</CustomButton>
                         }
-                        <a href="" className="ms-auto text-orange">Lihat Semua</a>
                     </Stack>
                 </div>
 
-                <div>
-                    {isSemua === false ? (
-                        null
-                    ):
-                        <Box>
-                        {statusConfirmed.map((c, i) =>
-                            <Box my={3} key={i}>
-                                <CardKarilStatus data={c}/>
+                {statusConfirmed.length === 0 ? (
+                    <div className="text-center m-5">
+                        <Container className="text-center">
+                            <img
+                                src={hands_phone}
+                                width="213"
+                                height="141"
+                                className=""
+                                alt="Hands Phone"/>
+                            <h5><b>Belum ada karya ilmiah untuk terverifikasi</b></h5>
+                        </Container>
+                    </div>
+                ):
+                    <div>
+                        {isSemua === false ? (
+                            null
+                        ):
+                            <Box>
+                                {statusConfirmed.map((c, i) =>
+                                    <Box my={3} key={i}>
+                                        <CardKarilStatus data={c}/>
+                                    </Box>
+                                )}
                             </Box>
-                        )}
-                        </Box>
-                    }
-                    {isDiterima === false ? (
-                        null 
-                    ):
-                        <Box>
-                        {listVerified.map((c, i) =>
-                            <Box my={3} key={i}>
-                                <CardKarilStatus data={c}/>
+                        }
+                        {isDiterima === false ? (
+                            null 
+                        ):
+                            <Box>
+                                {listVerified.map((c, i) =>
+                                    <Box my={3} key={i}>
+                                        <CardKarilStatus data={c}/>
+                                    </Box>
+                                )}
+                            </Box>  
+                        }
+                        {isDitolak === false ? (
+                            null
+                        ):
+                            <Box>
+                                {listDeclined.map((c, i) =>
+                                    <Box my={3} key={i}>
+                                        <CardKarilStatus data={c}/>
+                                    </Box>
+                                )}
                             </Box>
-                        )}
-                        </Box>  
-                    }
-                    {isDitolak === false ? (
-                        null
-                    ):
-                        <Box>
-                            {listDeclined.map((c, i) =>
-                                <Box my={3} key={i}>
-                                    <CardKarilStatus data={c}/>
-                                </Box>
-                            )}
-                        </Box>
-                    }
-                </div>
+                        }   
+                    </div>
+                }
 
                 {/* <Box>
                 {statusConfirmed.map((c, i) =>
@@ -211,12 +183,12 @@ const DaftarVerifikasi = () => {
                 )}
                 </Box> */}
 
-            </Box>
+            </Container>
         </Dasbor>
     )
 }
 
-export default DaftarVerifikasi;
+export default ViewAllPage;
 
     // semuaTagControl = () => {
     //     this.setState({isSemua: true});

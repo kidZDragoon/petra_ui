@@ -26,7 +26,7 @@ const SuccessModalWithHide = (props) => {
                     </Col>
                     <Col sm={10}>
                         <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">{title}</h5>
-                        <div class="modalBody mb-2 text-normal">
+                        <div className="modalBody mb-2 text-normal">
                             <p>{content}</p>
                         </div>
                     </Col>

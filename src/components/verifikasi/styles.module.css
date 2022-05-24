@@ -1,3 +1,16 @@
+.cardkaril {
+    border-radius: 16px;
+}
+
+.unduh {
+    color: #d26930;
+  }
+
+#pagination{
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
 .mainContent {
     background: rgba(252, 252, 252, 1) !important;
 }

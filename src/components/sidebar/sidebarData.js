@@ -10,6 +10,7 @@ import DirectionsRunOutlinedIcon from '@mui/icons-material/DirectionsRunOutlined
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
+import TodayIcon from '@mui/icons-material/Today';
 
 export const sidebarData =[
     {
@@ -55,5 +56,10 @@ export const sidebarData =[
         title: "Kelola Pengumuman",
         icon: <ChatIcon/>,
         link: "/kelola-pengumuman"
+    },
+    {
+        title: "Kelola Semester",
+        icon: <TodayIcon/>,
+        link: "/kelola-semester"
     }
-]
+];

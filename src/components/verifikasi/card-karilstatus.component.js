@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container'
 import AuthenticationDataService from "../../services/authentication.service";
 import axios from "axios";
 import fileDownload from "js-file-download";
-import classes from "../card/styles.module.css";
+import classes from "./styles.module.css";
 import {BoxArrowDown} from "react-bootstrap-icons";
 import ConfirmationPopUp from "../modals/confirmation-pop-up";
 import SuccessModalWithHide from "../modals/success-modal-with-hide";
@@ -81,7 +81,7 @@ const CardKarilStatus = ({data}) => {
 
         return (
             <div>
-            <Card status={status}>
+            <Card className={classes.cardkaril} status={status}>
                 <Card.Body>
                 <Stack direction="horizontal" gap={3} className="mb-3">
                     <Stack>
@@ -89,9 +89,9 @@ const CardKarilStatus = ({data}) => {
                         {/* <Card.Title>{data.judul}</Card.Title> */}
                         <Card.Title><Link to={`/KaryaIlmiah/${data.id}`} className="link">{data.judul}</Link></Card.Title>
                         <Card.Text className="mt-1 mb-1 text-muted">{data.author}</Card.Text>
-                        <button id={classes["features"]} onClick={showModal}>
+                        <a className={classes.unduh} id={classes["features"]} onClick={showModal}>
                           <BoxArrowDown/> &nbsp;Unduh PDF
-                        </button>
+                        </a>
                     </Stack>
                 {verifiedTag}
                 </Stack>

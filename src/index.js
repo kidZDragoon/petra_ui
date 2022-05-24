@@ -4,7 +4,8 @@ import {HashRouter, Route, Routes} from "react-router-dom";
 import App from "./App";
 import Detail from "./components/detail";
 import KaryaIlmiahSaya from './components/karya-ilmiah-saya';
-import DaftarVerifikasi from './components/verifikasi';
+import DaftarVerifikasi from './components/verifikasi/verifpage';
+import ViewAllPage from './components/verifikasi/viewall'
 import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SeachList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
@@ -23,6 +24,7 @@ import Home from './components/home'
 import Bookmark from './components/bookmark'
 import MissingPage from './components/missing-page';
 import ProfilePage from './components/profilePage';
+import KelolaSemester from './components/kelola-semester';
 
 ReactDOM.render(
     <HashRouter>
@@ -30,6 +32,7 @@ ReactDOM.render(
         <Routes>
             <Route path="/KaryaIlmiah/:id" element={<Detail />}/>
             <Route path='/DaftarVerifikasi' element={<DaftarVerifikasi/>}/>
+            <Route path='/DaftarVerifikasi/lihat-semua' element={<ViewAllPage/>}/>
             <Route path="/karya-ilmiah-saya/upload" element={<UploadKaryaIlmiah/>} />
             <Route path="/Search" element={<SeachList/>}/>
             <Route path="/Search/:keyword" element={<SeachList/>}/>
@@ -51,6 +54,7 @@ ReactDOM.render(
             <Route path="/404" element={<MissingPage/>}/>
             <Route path="/" element={<Home/>}/>
             <Route path="/karya-ilmiah-favorit" element={<Bookmark/>} />
+            <Route path="/kelola-semester" element={<KelolaSemester/>} />
         </Routes>
     </HashRouter>,
 

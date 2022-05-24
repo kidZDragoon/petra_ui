@@ -137,7 +137,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="">
+                <Navbar collapseOnSelect expand="lg" bg="light" variant="light" fixed="top">
                     <Container>
                         <Navbar.Brand>
                             <Link to={"/"} className="nav-link">

@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import Container from 'react-bootstrap/Container'
+import Container from '@mui/material/Container'
 import '../../index.css';
 import Card from "react-bootstrap/Card";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import classes from "../detail/styles.module.css";
+import classes from "./styles.module.css";
 import Box from "@mui/material/Box";
 import {BoxArrowDown} from "react-bootstrap-icons";
 import Stack from 'react-bootstrap/Stack';
@@ -54,12 +54,16 @@ export default class Bookmark extends Component {
 
     render() {
         return(
-            <Container id={classes["containerID"]}>
-                <h3 className="text-section-header px-0">
-                    <FavoriteIcon></FavoriteIcon>
-                    <span className="mx-2">Karya Ilmiah Favorit</span>
-                </h3>
-                <br/>
+            <Container py={8} className="main-container list row">
+
+                <Stack direction="horizontal" gap={3}>
+                    <span className="pull-right">
+                        <FavoriteIcon fontSize="large"></FavoriteIcon>
+                    </span>
+                
+                    <h3 className="text-section-header px-0 my-0">Karya Ilmiah Favorit</h3>
+                </Stack>
+                
                 {this.state.listBookmark.length === 0 ?
                     <Box py={8} px={8} sx={{
                         display: 'flex',

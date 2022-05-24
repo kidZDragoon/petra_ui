@@ -6,6 +6,7 @@ import { Form } from "react-bootstrap";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'react-bootstrap'
 import SuccessModalWithButton from "../modals/success-modal-with-button";
 import Dasbor from "../dasbor";
+import CustomButton from "../custom-button";
 import {Container, Typography, Box,  InputAdornment, TextField} from "@mui/material"
 import { Search } from "@mui/icons-material";
 
@@ -213,7 +214,7 @@ export default class UserList extends Component {
     render (){
         return (
             <Dasbor>
-                <Container py={4} px={8} id={classes["container"]}>
+                <Box py={4} px={8} id={classes["container"]}>
                     <Typography fontFamily="Mulish" fontWeight={900} fontSize={28} id={classes["title"]}>
                         Kelola User
                     </Typography>
@@ -275,14 +276,14 @@ export default class UserList extends Component {
                                 <Form.Control type="text" name="selected_name" value={this.state.selected_name}
                                 disabled/>
                             </Form.Group>
-                            <Form.Group className="">
+                            <Form.Group className="mt-2">
                                 <Form.Label className="text-large">Role</Form.Label>
                                     <Form.Select name="selected_role" aria-label="role"
                                         value={this.state.selected_role} onChange={this.handleChangeField} >
                                          <option value='mahasiswa'>Mahasiswa</option>
                                          <option value='dosen'>Dosen</option>
                                          <option value='sivitas UI'>Sivitas UI</option>
-                                         <option value='staf'>Staf Dept. Kesejahteraan Sosial UI</option>
+                                         <option value='staf'>Staf</option>
                                 </Form.Select>
                             </Form.Group>
                             <p className={classes.warning}>Dengan merubah role, pengguna akan memiliki akses yang berbeda di sistem</p>
@@ -306,7 +307,7 @@ export default class UserList extends Component {
                             >
                     </SuccessModalWithButton>
                 
-                </Container>
+                </Box>
             </Dasbor>
         )
     }
