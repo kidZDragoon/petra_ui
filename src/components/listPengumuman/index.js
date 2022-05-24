@@ -9,6 +9,7 @@ import {PlusLg} from "react-bootstrap-icons";
 import Dasbor from "../dasbor";
 import { Container, Box } from "@mui/material"
 import { Pagination } from "@material-ui/lab";
+import CustomButton from "../custom-button";
 
 export default class ListPengumuman extends Component {
     constructor(props) {
@@ -46,8 +47,8 @@ export default class ListPengumuman extends Component {
             }
             this.setState({ totalPengumuman: data.data.reverse(), isDelete: false, totalPage:total_page,
                 listPengumuman: data.data.slice(0,5)});
-            console.log(this.state.totalPengumuman)
-            console.log(this.state.listPengumuman)
+            console.log("total: ", this.state.totalPengumuman)
+            console.log("list: " ,this.state.listPengumuman)
             console.log(this.state.totalPage)
 
         } catch (error) {
@@ -96,18 +97,18 @@ export default class ListPengumuman extends Component {
             <div>
                 {this.state.isStaf?
                 <Dasbor>
-                    <Container py={4} px={8}
+                    <Box py={2} px={8}
                         sx={{
-                            width: '80%',
+                            width: '90%',
                         }}
                     >
-                        <div class="d-flex justify-content-between" id={classes["heading"]}>
+                        <div class="d-flex justify-content-between align-items-center" id={classes["heading"]}>
                             <div class="p-2"> <h3 className={classes.judulPengumuman} id="judul">Kelola Pengumuman</h3></div>
                             <div class="p-2" >
                                 <Link to="/form-pengumuman" className={classes.link}>
-                                    <Button className="btn btn-full-width btn-orange text-bold-large"  id={classes["button"]}> 
+                                    <CustomButton variant="primary"> 
                                         <span ><PlusLg/> &nbsp;Tambah Pengumuman</span>
-                                    </Button>
+                                    </CustomButton>
                                 </Link>
                             </div>
                 
@@ -120,7 +121,7 @@ export default class ListPengumuman extends Component {
                         ))}
                         <Pagination onChange={this.handleChangePage} count={this.state.totalPage} size="large" class="d-flex justify-content-center"
                         id={classes["pagination"]}/>
-                    </Container>
+                    </Box>
                     
                 </Dasbor>:
                 <Container py={4} px={8}>

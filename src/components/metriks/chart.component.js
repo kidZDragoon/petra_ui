@@ -130,6 +130,12 @@ export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
     maintainAspectRatio: false
     },
     scales: {
+      x: {
+        ticks: {
+            maxRotation: 90,
+            minRotation: 90
+        }
+      },
       y: {
           grace: '5%',
           ticks: {
@@ -168,7 +174,7 @@ export const BarChartSelectYear = ({title, sourceDataURL, yearDataURL}) => {
               onChange={handleTahunChange}
             >
               {listTahun.map(t => (
-                    <MenuItem value={t}>
+                    <MenuItem value={t} key={t}>
                         {t}
                     </MenuItem>
               ))}

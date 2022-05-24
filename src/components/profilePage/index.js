@@ -184,34 +184,35 @@ const submitData = (event) => {
                         </Box>
 
                         {/* UPDATE ROLE MODAL */}
-                        <Modal className="modal" show={isOpen} onHide={hideModal}>
-                            <ModalHeader className="modalHeader">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Update Role</h5>
-                                <h4 type="button" className="close" onClick={hideModal}>
+                        <Modal className={classes.modal}  show={isOpen} onHide={hideModal}>
+                            <ModalHeader className={classes.modalHeader}>
+                                <h5 className={classes.modalTitle} id="exampleModalLongTitle">Update Role</h5>
+                                <h4 type="button" className={classes.close} onClick={hideModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </h4>
                             </ModalHeader>
-                            <ModalBody className="modalBody">
+                            <ModalBody className={classes.modalBody}>
                                 <Form.Group className="">
                                     <Form.Label className="text-large">Nama</Form.Label>
                                     <Form.Control type="text" name="selected_name" value={user.profile.full_name}
                                     disabled/>
                                 </Form.Group>
-                                <Form.Group className="">
+                                <Form.Group className="mt-2">
                                     <Form.Label className="text-large">Role</Form.Label>
                                         <Form.Select name="selected_role" aria-label="role"
                                             value={selectedRole} onChange={handleChangeField} >
                                                 <option value='mahasiswa'>Mahasiswa</option>
                                                 <option value='dosen'>Dosen</option>
                                                 <option value='sivitas UI'>Sivitas UI</option>
-                                                <option value='staf'>Staf Dept. Kesejahteraan Sosial UI</option>
+                                                <option value='staf'>Staf</option>
                                     </Form.Select>
                                 </Form.Group>
+                                <p className={classes.warning}>Dengan merubah role, pengguna akan memiliki akses yang berbeda di sistem</p>
                             </ModalBody>
-                            <ModalFooter className="modalFooter">
+                            <ModalFooter className={classes.modalFooter}>
                                 <button type="button" className="btn btn-primary cancel" onClick={hideModal}
-                                        id="cancel">Batal</button>
-                                <button type="button" className="btn btn-primary accept" id="accept"
+                                        id={classes["cancle"]}>Batal</button>
+                                <button type="button" className="btn btn-primary accept" id={classes["submit"]}
                                 onClick={submitData}>Ya</button>
                             </ModalFooter>
                         </Modal>
@@ -221,7 +222,7 @@ const submitData = (event) => {
                                 hide={hideSuccessModal}
                                 title="Role berhasil diubah!"
                                 content={message}
-                                buttonText="Lihat daftar user"
+                                buttonText="OK"
                                 >
                         </SuccessModalWithHide>
 
