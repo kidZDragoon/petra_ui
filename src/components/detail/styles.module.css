@@ -20,24 +20,17 @@
     margin-top: 10px;
 }
 #features{
-    margin-right: 30px;
-    margin-left: 10px;
+    padding: 8px 16px 8px 16px;
     text-align: left;
     color: #d26903;
     font-weight: 700;
-    margin-bottom: 10px;
     border: 0;
-    width: 220px;
-    height: 50px;
-    min-width: 220px;
-    max-width: 220px;
-    display: inline-block;
     background-color: #FFFFFF;
     /*background-color: #F8F8F8;*/
 }
 #features:hover{
-    background-color: #d26903;
-    color: #F8F8F8;
+    background-color: rgba(210, 105, 48, 0.1);
+    border-radius: 10px;
 }
 .line{
     height: 1.5px;
@@ -90,9 +83,7 @@
     margin-top: -40px;
     padding-left: 7px;
     padding-bottom: 5px;
-    border-radius: 50px;
     width: 35px;
-    background-color: #d3d3d3;
 }
 #cancle{
     background-color: #F8F8F8;
@@ -100,6 +91,7 @@
     color: #d26903;
     width: 200px;
 }
+
 #accept{
     background-color: #d26903;
     border-color: #d26903;
@@ -139,9 +131,7 @@
     margin-top: 0px;
     padding-left: 8.5px;
     padding-bottom: 5px;
-    border-radius: 50px;
     width: 35px;
-    background-color: #d3d3d3;
 }
 .cite{
     padding-left: 10px;
@@ -185,5 +175,13 @@
 @media (max-width:630px){
     #containerID {
      width: 90%;
+    }
+
+    #features {
+        padding: 8px 16px 8px 4px;
+    }
+
+    .accordion{
+        min-width: 100%;
     }
 }

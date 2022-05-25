@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import AuthenticationDataService from "../../services/authentication.service";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import {FaEdit} from "react-icons/fa";
 import {RiDeleteBin6Fill} from "react-icons/ri";
 import ConfirmationPopUp from '../modals/confirmation-pop-up';
@@ -110,7 +111,7 @@ export default class DetailPengumuman extends Component{
             <div>
             {this.state.isStaf?
             <Dasbor>
-            <Container id={classes["containerID"]} className={classes.pengumumanstaf}>
+            <Container id={classes["containerID"]} className={[classes.pengumumanstaf, 'mt-5'].join(' ')}>
                  <ConfirmationPopUp action={() => this.handleDelete()}
                         show={this.state.isOpenDelete}
                         hide={this.hideDeleteButton}
@@ -149,9 +150,9 @@ export default class DetailPengumuman extends Component{
                     </Grid>
                 </Grid>
                 <div className={classes.area}>
-                    <p className={classes.date}>tgl dibuat : {this.state.tglDibuat}</p>
-                    <p className={classes.date}>tgl disunting : {this.state.tglDisunting}</p>
-                    <div className={classes.line}></div>
+                    <p className={classes.date}>Tanggal dibuat: {this.state.tglDibuat}</p>
+                    <p className={classes.date}>Tanggal disunting: {this.state.tglDisunting}</p>
+                    <div className={[classes.line, "mt-3"].join(" ")}></div>
                     <p className={classes.pesan}>{this.state.pesan}</p>
                     
                 </div>

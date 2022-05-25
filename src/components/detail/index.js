@@ -24,6 +24,9 @@ import Grid from '@mui/material/Grid';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import App from "../../App"; //buat sso
+import BarLoader from "react-spinners/BarLoader";
+import Box from "@mui/material/Box";
+import Stack from '@mui/material/Stack';
 
 var fileDownload = require('js-file-download');
 
@@ -62,6 +65,7 @@ export default class Detail extends (Component, App) {
             userPenandaBuku:[],
             userPengunggahId:"",
             profileId:"",
+            isLoading: true,
         };
         this.handleDetailKaryaIlimah = this.handleDetailKaryaIlimah.bind(this);
         this.handleToken = this.handleToken.bind(this);
@@ -91,6 +95,7 @@ export default class Detail extends (Component, App) {
             userPenandaBuku:data.userPenandaBuku,
             userPengunggahId:data.userPengunggah.id}) //tglDisetuji jgn lupa diganti tglVerfikasi
             this.setState({id:item})
+            this.setState({isLoading: false})
            
         }catch(error){
             alert("Oops terjadi masalah pada server")
@@ -334,205 +339,254 @@ export default class Detail extends (Component, App) {
 
 
     render (){
-        return (
-            <Container id={classes["containerID"]}>
-                <Grid container spacing={2}>
-                    <Grid item xs={10}>
-                        <h6>{this.state.jenis}</h6>
-                    <h3 id={classes["title"]}>{this.state.judul}</h3>
-                    <p className={classes.date}>{this.state.tglVerifikasi}</p>
-                    <p>{this.state.authors}</p>
-                    {this.state.kataKunci.map((item) => (
-                    <button className={classes.roundedPill}>{item}</button>
-                    ))}
-                    </Grid>
-                    <Grid item xs={2} id={classes["actionbutton"]}>
-                        {this.state.role === "staf" ?
-                        <div className="d-flex">
-                            <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
-                                <FaEdit size={24}/>
-                            </Link>
-                            <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
-                                <RiDeleteBin6Fill size={24}/>
-                            </button>
-                        </div>
-                        : null
-                        }
-                    </Grid>
-                </Grid>
-
-                <div className="row">
-                    {this.state.user == null ? 
-                    <button id={classes["features"]} onClick={this.handleToken} className="col">
-                    <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button>: 
-                     <button id={classes["features"]} onClick={this.showModal} className="col">
-                     <BoxArrowDown/> &nbsp;Unduh PDF
-                    </button> 
-                    }
-                    <button id={classes["features"]} onClick={this.showCite} className="col">
-                        <Files/>&nbsp;Dapatkan Sitasi
-                    </button>
-                    {this.state.user !== null ?
-                    <>
-                         {this.state.isFavorite === false ? (
-                            <button id={classes["features"]} onClick={this.favoriteControl} className="col">
-                                <Heart/> &nbsp;Tambahkan ke favorit
-                            </button>
-                        ):
-                            <button id={classes["features"]} onClick={this.favoriteControl} className="col">
-                                <HeartFill/> &nbsp;Karya Ilmiah sudah ada dalam daftar favorit!
-                            </button>
-                        }
-                    </> :
-                    <></>
-                    }
-                   
-
-                </div>
-
-                
-
-                <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
-                    <AccordionItem className="accordion-item">
-                        <AccordionHeader className="accordion-header" >
-                            Abstrak
-                            <div className="line"></div>
-                        </AccordionHeader>
-                        <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show"
-                             aria-labelledby="panelsStayOpen-headingOne">
-                            <AccordionBody className="accordion-body">
-                                {this.state.abstrak}
-                            </AccordionBody>
-                        </div>
-                    </AccordionItem>
-
-                </Accordion>
-
-                <br/>
-                {(this.state.role == "staf" || (this.state.role == "mahasiswa") && this.state.userPengunggahId == this.state.profileId) ?
-                <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
-                    <AccordionItem className="accordion-item">
-                        <AccordionHeader className="accordion-header" >
-                            Daftar Pengunduh
-                            <div className="line"></div>
-                        </AccordionHeader>
-                        <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show"
-                             aria-labelledby="panelsStayOpen-headingOne">
-                            <AccordionBody className="accordion-body">
-                                <ol>
-                                {this.state.daftarPengunduh.map((pengunduh) =>
-                                    (
-                                        <li>{
-                                            pengunduh
-                                        }</li>
-                                    )
-                                )
-                                }
-                                </ol>
-                            </AccordionBody>
-                        </div>
-                    </AccordionItem>
-                </Accordion>
-                    : <br/>
-                }
-
-                <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
-                    <ModalHeader className={classes.modalHeader} >
-                        <h5 className="modal-title" id="exampleModalLongTitle">Apakah anda yakin
-                            ingin mengunduh karya ilmiah ini?</h5>
-                        <h4 type="button" className={classes.close}  onClick={this.hideModal}>
-                            <span aria-hidden="true">&times;</span>
-                        </h4>
-                    </ModalHeader>
-                    <ModalBody className={classes.modalBody}>
-                        Penulis karya ilmiah, dosen pembimbing terkait, serta staf akan dapat
-                        melihat bahwa anda telah mengunguh karya ilmiah ini.
-                    </ModalBody>
-                    <ModalFooter className={classes.modalFooter}>
-                        <button type="button" className="btn btn-primary" onClick={this.hideModal}
-                                id={classes["cancle"]}>Batal</button>
-                        <button type="button" className="btn btn-primary" id={classes["accept"]}
-                        onClick={() => this.handlePDFDownload()}>Ya</button>
-                    </ModalFooter>
-
-                </Modal>
-
-                <Modal className={classes.modal}  show={this.state.isCite} onHide={this.hideCite}>
-                    <ModalHeader className={classes.modalCiteHeader} >
-                        <h5 className="modal-title" id="exampleModalLongTitle">Sitasi Karya Ilmiah</h5>
-                        <h4 type="button" className={classes.closeCite}  onClick={this.hideCite}>
-                            <span aria-hidden="true">&times;</span>
-                        </h4>
-                    </ModalHeader>
-                    <ModalBody className={classes.modalBody}>
-                        <div className="d-flex">
-                            <div className={classes.citeStyle}><b>APA</b></div>
-                            <p className={classes.cite}>
-                                {this.state.APAstyle}<i>{this.state.judul}. &nbsp;</i>
-                                Petra. <br/> {window.location.href}
-                            </p>
-                        </div>
-                        <div className="d-flex">
-                            <div className={classes.citeStyle}><b>IEEE</b></div>
-                            <p className={classes.cite}>
-                                {this.state.IEEEstyleU}<i>{this.state.judul}</i>{this.state.IEEEstyleL}<br/>
-                                Available: {window.location.href}
-                            </p>
-                        </div>
-                        <div className="d-flex">
-                            <div className={classes.citeStyle}><b>MLA</b></div>
-                            <p className={classes.cite}>
-                                {this.state.MLAstyleU}<i>Petra</i>{this.state.MLAstyleL}{window.location.href}
-                            </p>
-                        </div>
-
-                    </ModalBody>
-
-                </Modal>
-
-                <Modal className={classes.modal} show={this.state.isOpenDelete} onHide={this.hideDeleteButton}>
-                    <ModalHeader className={classes.modalHeader} >
-                        <h5 className="modal-title" id="exampleModalLongTitle">Apakah Anda yakin ingin menghapus karya ilmiah ini?</h5>
-                        <h4 type="button" className={classes.close}  onClick={this.hideDeleteButton}>
-                            <span aria-hidden="true">&times;</span>
-                        </h4>
-                    </ModalHeader>
-                    <ModalFooter className={classes.modalFooter}>
-                        <button type="button" className="btn btn-primary" onClick={this.hideDeleteButton}
-                                id={classes["cancle"]}>Batal</button>
-                        <button type="button" className="btn btn-primary" id={classes["accept"]}
-                        // tambahin onclick buat window pathname
-                        onClick={this.handleDelete}>Ya</button>
-                    </ModalFooter>
-
-                </Modal>
-
-                <Modal className="modal" show={this.state.successModal}>
-                    <Container className="px-4 pt-4 pb-4">
-                        <Row>
-                            <Col sm={2}>
-                                <div className="check-container text-white d-flex justify-content-center align-items-center">
-                                    <CheckCircleIcon fontSize="large" color="white"></CheckCircleIcon>
-                                </div>
-                            </Col>
-                            <Col sm={10}>
-                                <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">Karya ilmiah berhasil dihapus!</h5>
-                            </Col>
-                        </Row>
-                        <Row className="mt-2">
-                            <Col className="">
-                                <Link to="/Search" style={{textDecoration:"none"}}>
-                                    <Button className="btn btn-full-width btn-orange text-bold-large">
-                                        <span>Lihat daftar karya ilmiah</span>
-                                    </Button>
+        if(this.state.isLoading){
+            return(
+                <Container 
+                    sx={{
+                        height: '100vh',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '90vh',
+                            p: 1,
+                            m: 1,
+                            bgcolor: 'background.paper',
+                            borderRadius: 1,
+                        }}
+                        >
+                        <BarLoader color="#d26903" loading={this.state.isLoading} css="" size={100} />               
+                    </Box>
+                </Container> 
+            )
+        } else {
+            return (
+                <Container id={classes["containerID"]} className="my-5">
+                    <Grid container spacing={2}>
+                        <Grid item xs={10}>
+                            <h6>{this.state.jenis}</h6>
+                        <h3 id={classes["title"]}>{this.state.judul}</h3>
+                        <p className={classes.date}>{this.state.tglVerifikasi}</p>
+                        <p>{this.state.authors}</p>
+                        {this.state.kataKunci.map((item) => (
+                        <button className={classes.roundedPill}>{item}</button>
+                        ))}
+                        </Grid>
+                        <Grid item xs={2} id={classes["actionbutton"]}>
+                            {this.state.role === "staf" ?
+                            <div className="d-flex">
+                                <Link to={`/edit-karil/${this.state.id}`} id={classes["editbutton"]}>
+                                    <FaEdit size={24}/>
                                 </Link>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Modal>
+                                <button id={classes["deletebutton"]} onClick={this.openDeleteButton}>
+                                    <RiDeleteBin6Fill size={24}/>
+                                </button>
+                            </div>
+                            : null
+                            }
+                        </Grid>
+                    </Grid>
 
-            </Container>
-        )
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 0 }} justifyContent='flex-start' alignItems={{ xs: 'flex-start', sm: 'center' }} py={{ xs: 1, sm: 2 }}>
+                        {this.state.user == null ? 
+                        <button id={classes["features"]} onClick={this.handleToken} className="">
+                            <Stack direction="horizontal" gap={1} alignItems="center">
+                                <BoxArrowDown fontSize="large"></BoxArrowDown>
+                                Unduh PDF
+                            </Stack>
+                        </button>: 
+                        <button id={classes["features"]} onClick={this.showModal} className="">
+                            <Stack direction="horizontal" gap={1} alignItems="center">
+                                <BoxArrowDown fontSize="large"></BoxArrowDown>
+                                Unduh PDF
+                            </Stack>
+                        </button> 
+                        }
+                        <button id={classes["features"]} onClick={this.showCite} className="">
+                            <Stack direction="horizontal" gap={1} alignItems="center">
+                                <Files fontSize="large"></Files>
+                                Dapatkan Sitasi
+                            </Stack>
+                        </button>
+                        {this.state.user !== null ?
+                        <>
+                            {this.state.isFavorite === false ? (
+                                <button id={classes["features"]} onClick={this.favoriteControl} className="">
+                                    <Stack direction="horizontal" gap={1} alignItems="center">
+                                            
+                                        <Heart fontSize="large"></Heart>
+                                        Tambahkan ke favorit
+                                    </Stack>
+                                </button>
+                                
+                            ):
+                                <button id={classes["features"]} onClick={this.favoriteControl} className="">
+                                    <Stack direction="horizontal" gap={1} alignItems="center">
+                                        
+                                        <HeartFill fontSize="large"></HeartFill>
+                                    
+                                        Karya Ilmiah sudah ada dalam daftar favorit!
+                                    </Stack>
+                                </button>
+                            }
+                        </> :
+                        <></>
+                        }
+                    
+
+                    </Stack>
+
+                    
+
+                    <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
+                        <AccordionItem className="accordion-item">
+                            <AccordionHeader className="accordion-header" >
+                                Abstrak
+                                <div className="line"></div>
+                            </AccordionHeader>
+                            <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <AccordionBody className="accordion-body">
+                                    {this.state.abstrak}
+                                </AccordionBody>
+                            </div>
+                        </AccordionItem>
+
+                    </Accordion>
+
+                    <br/>
+                    {(this.state.role == "staf" || (this.state.role == "mahasiswa") && this.state.userPengunggahId == this.state.profileId) ?
+                    <Accordion className={classes.accordion} id="accordionPanelsStayOpenExample">
+                        <AccordionItem className="accordion-item">
+                            <AccordionHeader className="accordion-header" >
+                                Daftar Pengunduh
+                                <div className="line"></div>
+                            </AccordionHeader>
+                            <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <AccordionBody className="accordion-body">
+                                    {this.state.daftarPengunduh.length == 0 ?
+                                        <p>Belum ada yang mengunduh karya ilmiah ini</p>
+                                    : 
+                                        <ol>
+                                        {this.state.daftarPengunduh.map((pengunduh) =>
+                                            (
+                                                <li>{
+                                                    pengunduh
+                                                }</li>
+                                            )
+                                        )
+                                        }
+                                        </ol>
+                                    }
+                                    
+                                </AccordionBody>
+                            </div>
+                        </AccordionItem>
+                    </Accordion>
+                        : <br/>
+                    }
+
+                    <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
+                        <ModalHeader className={classes.modalHeader} >
+                            <h5 className="modal-title" id="exampleModalLongTitle">Apakah anda yakin
+                                ingin mengunduh karya ilmiah ini?</h5>
+                            <h4 type="button" className={classes.close}  onClick={this.hideModal}>
+                                <span aria-hidden="true">&times;</span>
+                            </h4>
+                        </ModalHeader>
+                        <ModalBody className={classes.modalBody}>
+                            Penulis karya ilmiah, dosen pembimbing terkait, serta staf akan dapat
+                            melihat bahwa anda telah mengunguh karya ilmiah ini.
+                        </ModalBody>
+                        <ModalFooter className={classes.modalFooter}>
+                            <button type="button" className="btn btn-primary" onClick={this.hideModal}
+                                    id={classes["cancle"]}>Batal</button>
+                            <button type="button" className="btn btn-primary" id={classes["accept"]}
+                            onClick={() => this.handlePDFDownload()}>Ya</button>
+                        </ModalFooter>
+
+                    </Modal>
+
+                    <Modal className={classes.modal}  show={this.state.isCite} onHide={this.hideCite}>
+                        <ModalHeader className={classes.modalCiteHeader} >
+                            <h5 className="modal-title" id="exampleModalLongTitle">Sitasi Karya Ilmiah</h5>
+                            <h4 type="button" className={classes.closeCite}  onClick={this.hideCite}>
+                                <span aria-hidden="true">&times;</span>
+                            </h4>
+                        </ModalHeader>
+                        <ModalBody className={classes.modalBody}>
+                            <div className="d-flex">
+                                <div className={classes.citeStyle}><b>APA</b></div>
+                                <p className={classes.cite}>
+                                    {this.state.APAstyle}<i>{this.state.judul}. &nbsp;</i>
+                                    Petra. <br/> {window.location.href}
+                                </p>
+                            </div>
+                            <div className="d-flex">
+                                <div className={classes.citeStyle}><b>IEEE</b></div>
+                                <p className={classes.cite}>
+                                    {this.state.IEEEstyleU}<i>{this.state.judul}</i>{this.state.IEEEstyleL}<br/>
+                                    Available: {window.location.href}
+                                </p>
+                            </div>
+                            <div className="d-flex">
+                                <div className={classes.citeStyle}><b>MLA</b></div>
+                                <p className={classes.cite}>
+                                    {this.state.MLAstyleU}<i>Petra</i>{this.state.MLAstyleL}{window.location.href}
+                                </p>
+                            </div>
+
+                        </ModalBody>
+
+                    </Modal>
+
+                    <Modal className={classes.modal} show={this.state.isOpenDelete} onHide={this.hideDeleteButton}>
+                        <ModalHeader className={classes.modalHeader} >
+                            <h5 className="modal-title" id="exampleModalLongTitle">Apakah Anda yakin ingin menghapus karya ilmiah ini?</h5>
+                            <h4 type="button" className={classes.close}  onClick={this.hideDeleteButton}>
+                                <span aria-hidden="true">&times;</span>
+                            </h4>
+                        </ModalHeader>
+                        <ModalFooter className={classes.modalFooter}>
+                            <button type="button" className="btn btn-primary" onClick={this.hideDeleteButton}
+                                    id={classes["cancle"]}>Batal</button>
+                            <button type="button" className="btn btn-primary" id={classes["accept"]}
+                            // tambahin onclick buat window pathname
+                            onClick={this.handleDelete}>Ya</button>
+                        </ModalFooter>
+
+                    </Modal>
+
+                    <Modal className="modal" show={this.state.successModal}>
+                        <Container className="px-4 pt-4 pb-4">
+                            <Row>
+                                <Col sm={2}>
+                                    <div className="check-container text-white d-flex justify-content-center align-items-center">
+                                        <CheckCircleIcon fontSize="large" color="white"></CheckCircleIcon>
+                                    </div>
+                                </Col>
+                                <Col sm={10}>
+                                    <h5 className="modal-title text-bold-large mb-2" id="exampleModalLongTitle">Karya ilmiah berhasil dihapus!</h5>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Col className="">
+                                    <Link to="/Search" style={{textDecoration:"none"}}>
+                                        <Button className="btn btn-full-width btn-orange text-bold-large">
+                                            <span>Lihat daftar karya ilmiah</span>
+                                        </Button>
+                                    </Link>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Modal>
+
+                </Container>
+            )
+        }
     }
 };
