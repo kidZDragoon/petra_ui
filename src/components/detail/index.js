@@ -364,7 +364,7 @@ export default class Detail extends (Component, App) {
             )
         } else {
             return (
-                <Container id={classes["containerID"]}>
+                <Container id={classes["containerID"]} className="my-5">
                     <Grid container spacing={2}>
                         <Grid item xs={10}>
                             <h6>{this.state.jenis}</h6>
@@ -390,7 +390,7 @@ export default class Detail extends (Component, App) {
                         </Grid>
                     </Grid>
 
-                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2 }} justifyContent='flex-start' alignItems={{ xs: 'flex-start', sm: 'center' }} py={{ xs: 1, sm: 2 }}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 0 }} justifyContent='flex-start' alignItems={{ xs: 'flex-start', sm: 'center' }} py={{ xs: 1, sm: 2 }}>
                         {this.state.user == null ? 
                         <button id={classes["features"]} onClick={this.handleToken} className="">
                             <Stack direction="horizontal" gap={1} alignItems="center">

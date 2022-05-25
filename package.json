@@ -1,7 +1,7 @@
 {
-  "proxy-development": "http://localhost:8000",
+  "proxy": "http://127.0.0.1:8000",
   "proxy-staging": "https://propensi-a03-staging.herokuapp.com",
-  "proxy": "https://petra-ui.herokuapp.com",
+  "proxy-prod": "https://petra-ui.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
