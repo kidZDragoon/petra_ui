@@ -23,7 +23,7 @@ export default class UserList extends Component {
                 'mahasiswa': "Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", 
                 'sivitas ui': "Sivitas UI", 
                 'staf' : "Staf Dept. Kesejahteraan Sosial FISIP UI", 
-                'dosen' : "Dosen"}
+            }
            ,
            selected_role:"",
            selected_name:"",
@@ -280,8 +280,7 @@ export default class UserList extends Component {
                                 <Form.Label className="text-large">Role</Form.Label>
                                     <Form.Select name="selected_role" aria-label="role"
                                         value={this.state.selected_role} onChange={this.handleChangeField} >
-                                         <option value='mahasiswa'>Mahasiswa</option>
-                                         <option value='dosen'>Dosen</option>
+                                         <option value='mahasiswa'>Mahasiswa Dept. Kesejahteraan Sosial FISIP UI</option>
                                          <option value='sivitas UI'>Sivitas UI</option>
                                          <option value='staf'>Staf</option>
                                 </Form.Select>

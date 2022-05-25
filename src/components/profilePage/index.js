@@ -190,8 +190,7 @@ const submitData = (event) => {
                                     <Form.Label className="text-large">Role</Form.Label>
                                         <Form.Select name="selected_role" aria-label="role"
                                             value={selectedRole} onChange={handleChangeField} >
-                                                <option value='mahasiswa'>Mahasiswa</option>
-                                                <option value='dosen'>Dosen</option>
+                                                <option value='mahasiswa'>Mahasiswa Dept. Kesejahteraan Sosial FISIP UI</option>
                                                 <option value='sivitas UI'>Sivitas UI</option>
                                                 <option value='staf'>Staf</option>
                                     </Form.Select>
