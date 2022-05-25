@@ -110,9 +110,13 @@ def login(request):
                            'npm': data.get('cas:npm'),
                            'peran_user': 'mahasiswa',
                            }
-        user = User.objects.create(**userData)
-        profile = Profile.objects.get(user=user)
-        save_user_attributes(user, profileData)
+        try: # user udah ada, tapi profile nya tidak ada
+            user = User.objects.create(**userData)
+            profile = Profile.objects.get(user=user)
+            save_user_attributes(user, profileData)
+        except:
+            profile = Profile.objects.get(user=user)
+            save_user_attributes(user, profileData)
 
     payload = JWT_PAYLOAD_HANDLER(user)
     jwtToken = JWT_ENCODE_HANDLER(payload)
