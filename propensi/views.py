@@ -115,6 +115,7 @@ def login(request):
             profile = Profile.objects.get(user=user)
             save_user_attributes(user, profileData)
         except:
+            user = User.objects.get(email=f'{data.get("cas:user", "")}@ui.ac.id')
             profile = Profile.objects.get(user=user)
             save_user_attributes(user, profileData)
 
