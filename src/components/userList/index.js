@@ -23,7 +23,7 @@ export default class UserList extends Component {
                 'mahasiswa': "Mahasiswa Dept. Kesejahteraan Sosial FISIP UI", 
                 'sivitas ui': "Sivitas UI", 
                 'staf' : "Staf Dept. Kesejahteraan Sosial FISIP UI", 
-                'dosen' : "Dosen"}
+            }
            ,
            selected_role:"",
            selected_name:"",
@@ -99,7 +99,7 @@ export default class UserList extends Component {
                     return obj.id === item;
                 });
                 var profile = this.state.profile.filter(function(obj) {
-                    return obj.id === item;
+                    return obj.user === item;
                 });
                 console.log(user[0])
                 console.log(profile[0])
@@ -248,7 +248,7 @@ export default class UserList extends Component {
                         {this.state.merge.map((usr, index) => (
                             <tr className="d-flex">
                             <td className="col-1">{index += 1}</td>
-                            <td className="col-3"><Link to={`/kelola-user/${usr.id}`} className="link">{usr.full_name}</Link></td> 
+                            <td className="col-3"><Link to={`/kelola-user/${usr.user}`} className="link">{usr.full_name}</Link></td> 
                             <td className="col-3">{usr.email}</td>
                             <td className="col-3">{usr.role}</td>
                         
@@ -280,8 +280,7 @@ export default class UserList extends Component {
                                 <Form.Label className="text-large">Role</Form.Label>
                                     <Form.Select name="selected_role" aria-label="role"
                                         value={this.state.selected_role} onChange={this.handleChangeField} >
-                                         <option value='mahasiswa'>Mahasiswa</option>
-                                         <option value='dosen'>Dosen</option>
+                                         <option value='mahasiswa'>Mahasiswa Dept. Kesejahteraan Sosial FISIP UI</option>
                                          <option value='sivitas UI'>Sivitas UI</option>
                                          <option value='staf'>Staf</option>
                                 </Form.Select>

@@ -6,6 +6,7 @@ import Detail from "./components/detail";
 import KaryaIlmiahSaya from './components/karya-ilmiah-saya';
 import DaftarVerifikasi from './components/verifikasi/verifpage';
 import ViewAllPage from './components/verifikasi/viewall'
+import ViewAllPermintaan from './components/verifikasi/viewall-permintaan'
 import UploadKaryaIlmiah from "./components/unggah-karya-ilmiah";
 import SeachList from "./components/cariKaril";
 import AdvancedSearch from './components/advancedSearch';
@@ -33,6 +34,7 @@ ReactDOM.render(
             <Route path="/KaryaIlmiah/:id" element={<Detail />}/>
             <Route path='/DaftarVerifikasi' element={<DaftarVerifikasi/>}/>
             <Route path='/DaftarVerifikasi/lihat-semua' element={<ViewAllPage/>}/>
+            <Route path='/DaftarVerifikasi/lihat-semua-permintaan' element={<ViewAllPermintaan/>}/>
             <Route path="/karya-ilmiah-saya/upload" element={<UploadKaryaIlmiah/>} />
             <Route path="/Search" element={<SeachList/>}/>
             <Route path="/Search/:keyword" element={<SeachList/>}/>

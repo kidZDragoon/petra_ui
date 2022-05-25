@@ -64,7 +64,7 @@ def save_user_attributes(user, attributes):
     if profile.study_program == 'Kesejahteraan Sosial':
         profile.role = attributes['peran_user']
     elif org_code == '03.06.09.01':
-        profile.role = 'dosen'
+        profile.role = 'sivitas UI'
     else:
         profile.role = 'sivitas UI'
     profile.educational_program = record['educational_program']
@@ -89,8 +89,6 @@ class KaryaIlmiah(models.Model):
         Semester, on_delete=models.DO_NOTHING, related_name="semester_disetujui")
     tglVerifikasi = models.DateField(null=True)
     userPengunggah = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="user_pengunggah", null=True)
-    dosenPembimbing = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="dosen_pembimbing", null=True)
-    verifikator = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="verifikator", null=True)
     fileURI = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
     userPenandaBuku = models.ManyToManyField(Profile)
 

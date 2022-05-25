@@ -35,11 +35,6 @@ class KaryaIlmiahSeriliazer(serializers.ModelSerializer):
         depth = 1
 
 
-class DosenPembimbingField(serializers.PrimaryKeyRelatedField):
-    def display_value(self, instance):
-        return instance.user.first_name + " " + instance.user.last_name
-
-
 class SemesterDisetujuiField(serializers.PrimaryKeyRelatedField):
     def display_value(self, instance):
         return instance.semester
@@ -56,12 +51,9 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
                   "abstrak",
                   "jenis",
                   "kataKunci",
-                  "dosenPembimbing",
                   "filePDF",
                   "userPengunggah"]
 
-    dosenPembimbing = DosenPembimbingField(
-        queryset=Profile.objects.filter(role='dosen'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):
@@ -73,12 +65,11 @@ class KaryaIlmiahUploadSerializer(serializers.ModelSerializer):
         abstrak = validated_data['abstrak']
         jenis = validated_data['jenis']
         filePDF = validated_data['filePDF']
-        dosenPembimbing = validated_data['dosenPembimbing']
         userPengunggah = validated_data['userPengunggah']
         kataKunci = validated_data['kataKunci']
         statusVerifikasi = 0
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
-                                  abstrak=abstrak, kataKunci=kataKunci, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing,
+                                  abstrak=abstrak, kataKunci=kataKunci, jenis=jenis, filePDF=filePDF,
                                   status=statusVerifikasi, userPengunggah=userPengunggah)
 
         karyaIlmiah.save()
@@ -97,12 +88,9 @@ class KaryaIlmiahEditUploadSerializer(serializers.ModelSerializer):
                   "abstrak",
                   "jenis",
                   "kataKunci",
-                  "dosenPembimbing",
                   "filePDF",
                   "userPengunggah"]
 
-    dosenPembimbing = DosenPembimbingField(
-        queryset=Profile.objects.filter(role='dosen'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):
@@ -114,12 +102,11 @@ class KaryaIlmiahEditUploadSerializer(serializers.ModelSerializer):
         abstrak = validated_data['abstrak']
         jenis = validated_data['jenis']
         filePDF = validated_data['filePDF']
-        dosenPembimbing = validated_data['dosenPembimbing']
         userPengunggah = validated_data['userPengunggah']
         kataKunci = validated_data['kataKunci']
         statusVerifikasi = validated_data['statusVerifikasi']
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
-                                  abstrak=abstrak, kataKunci=kataKunci, jenis=jenis, filePDF=filePDF, dosenPembimbing=dosenPembimbing,
+                                  abstrak=abstrak, kataKunci=kataKunci, jenis=jenis, filePDF=filePDF,
                                   status=statusVerifikasi, userPengunggah=userPengunggah)
 
         karyaIlmiah.save()
@@ -137,11 +124,8 @@ class KaryaIlmiahEditSerializer(serializers.ModelSerializer):
                   "abstrak",
                   "jenis",
                   "kataKunci",
-                  "dosenPembimbing",
                   "userPengunggah"]
 
-    dosenPembimbing = DosenPembimbingField(
-        queryset=Profile.objects.filter(role='dosen'))
     semesterDisetujui = SemesterDisetujuiField(queryset=Semester.objects.all())
 
     def create(self, validated_data):
@@ -152,35 +136,16 @@ class KaryaIlmiahEditSerializer(serializers.ModelSerializer):
         semesterDisetujui = validated_data['semesterDisetujui']
         abstrak = validated_data['abstrak']
         jenis = validated_data['jenis']
-        dosenPembimbing = validated_data['dosenPembimbing']
         userPengunggah = validated_data['userPengunggah']
         kataKunci = validated_data['kataKunci']
         statusVerifikasi = validated_data['statusVerifikasi']
         karyaIlmiah = KaryaIlmiah(author=author, npm=npm, judul=judul, tglDisetujui=tglDisetujui, semesterDisetujui=semesterDisetujui,
-                                  abstrak=abstrak, kataKunci=kataKunci, jenis=jenis, dosenPembimbing=dosenPembimbing,
+                                  abstrak=abstrak, kataKunci=kataKunci, jenis=jenis,
                                   status=statusVerifikasi, userPengunggah=userPengunggah)
 
         karyaIlmiah.save()
         return karyaIlmiah
 
-
-class VerificatorSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Profile
-
-    def to_representation(self, instance):
-        representation = dict()
-        representation["id"] = instance.id
-        representation["full_name"] = instance.full_name
-        representation["user"] = instance.user.id
-        representation["org_code"] = instance.org_code
-        representation["role"] = instance.role
-        representation["faculty"] = instance.faculty
-        representation["study_program"] = instance.study_program
-        representation["educational_program"] = instance.educational_program
-
-        return representation
 
 
 class SemesterSerializer(serializers.ModelSerializer):
@@ -193,7 +158,7 @@ class KarilSeriliazer(serializers.ModelSerializer):
     class Meta:
         model = KaryaIlmiah
         fields = ['id', 'judul', 'status', 'jenis',
-                  'kataKunci', 'tglDisetujui', 'dosenPembimbing', 'author', 'fileURI']
+                  'kataKunci', 'tglDisetujui', 'author', 'fileURI']
 
 
 class VisitorsSerializer(serializers.ModelSerializer):

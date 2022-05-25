@@ -15,8 +15,7 @@ from django.http import HttpResponse, Http404
 from propensi import serializer
 from propensi.models import Profile, User, save_user_attributes, KaryaIlmiah, Semester, DaftarUnduhan, Visitors, Pengumuman
 from propensi.serializer import UserSerializer, ProfileSerializer, KaryaIlmiahSeriliazer, \
-    KaryaIlmiahUploadSerializer, VerificatorSerializer, \
-    SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, \
+    KaryaIlmiahUploadSerializer, SemesterSerializer, KarilSeriliazer, KaryaIlmiahStatusSerializer, KaryaIlmiahEditUploadSerializer, \
     KaryaIlmiahEditSerializer, DaftarUnduhanSerializer, PengumumanSeriliazer, VisitorsSerializer
 from rest_framework import status, permissions, filters, viewsets
 from rest_framework.views import APIView
@@ -302,9 +301,9 @@ class KaryaIlmiahUploadView(APIView):
     parser = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         karya_ilmiah_serializer = KaryaIlmiahUploadSerializer(
             data=request.data)
-        print(request.data)
         if karya_ilmiah_serializer.is_valid():
             karya_ilmiah_serializer.save()
             return Response(karya_ilmiah_serializer.data, status=status.HTTP_201_CREATED)
@@ -338,14 +337,6 @@ class KaryaIlmiahUpdateView(UpdateAPIView):
             karya_ilmiah_serializer.save()
             return Response({"status": "success"}, status=status.HTTP_200_OK)
         return Response(karya_ilmiah_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class VerificatorView(APIView):
-    def get(self, request):
-        data = Profile.objects.filter(role="dosen")
-        serializer = VerificatorSerializer(data, many=True)
-        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-
 
 class SemesterView(APIView):
     def get(self, request):
@@ -732,7 +723,9 @@ class KaryaIlmiahSaya(APIView):
 class ProfilePageView(APIView):
     def get(self, request, userId):
         print("masuk")
-        profile = Profile.objects.get(id=userId)
+        user = User.objects.get(id=userId)
+        profile = Profile.objects.get(user=user)
+        
         profile_serialized = ProfileSerializer(profile)
         print(profile)
         nama_lengkap = profile.full_name
@@ -746,7 +739,6 @@ class ProfilePageView(APIView):
             role = profile.role.upper()[0] + profile.role[1:]
 
         print(role)
-        user = User.objects.get(id=profile.user_id)
         email = user.email
 
         karya_ilmiah = KaryaIlmiah.objects.filter(userPengunggah=userId)

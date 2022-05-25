@@ -15,7 +15,7 @@ const ConfirmationPopUp = (props) => {
                 <Row>
                     <Col className="justify-content-end text-end">
                         <h4 type="button" className=""  onClick={hide}>
-                            <span><CloseIcon fontsize="small"></CloseIcon></span>
+                            <span><CloseIcon fontSize="small"></CloseIcon></span>
                         </h4>
                     </Col>
                 </Row>
@@ -24,7 +24,7 @@ const ConfirmationPopUp = (props) => {
                         <h5 className="modal-title text-bold-title mb-2" id="exampleModalLongTitle">
                             {title}
                         </h5>
-                        <div class="modalBody mb-2 text-disabled">
+                        <div className="modalBody mb-2 text-disabled">
                             <p>{content}</p>
                         </div>
                     </Col>

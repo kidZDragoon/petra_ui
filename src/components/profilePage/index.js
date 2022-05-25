@@ -39,7 +39,6 @@ const ProfilePage = () => {
       .then(response => {
         setUser(response.data);
         setSelectedRole(response.data.profile.role);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -61,23 +60,19 @@ const hideModal = () => {
 
 const showSuccessModal = () => {
     setSuccessModal(true);
-    setIsOpen(true);
+    setIsOpen(false);
     let message = `Role dari akun dengan nama ${user.profile.full_name} berhasil diubah menjadi ${selectedRole}`;
     setMessage(message);
 };
 
 const hideSuccessModal = () => {
     setSuccessModal(false);
-    setIsOpen(false);
     fetchProfile();
     
 };
 
 const submitData = (event) => {
     event.preventDefault();
-    console.log("name:"+user.profile.full_name)
-    console.log("role:"+selectedRole)
-    console.log("id:"+user.profile.id)
 
     let formData = new FormData();
     formData.append('id', user.profile.id);
@@ -90,21 +85,15 @@ const submitData = (event) => {
     formData.append('study_program', user.profile.study_program);
     formData.append('educational_program', user.profile.educational_program);
 
-    const res = axios.put(
-            "/api/profile/" + user.profile.id + "/",
-            formData,
-            { headers: {
-                'content-type': 'multipart/form-data'
-            }
-            }
-        )
-
-    console.log("update success")
-
-    hideModal()
-    console.log("hide success")
-    showSuccessModal()
-    console.log("success success")
+    axios.put("/api/profile/" + user.profile.id + "/", 
+                formData, { headers: {'content-type': 'multipart/form-data'}})
+      .then(response => {
+        setIsOpen(false);
+        showSuccessModal();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 }
 
   return (
@@ -167,7 +156,7 @@ const submitData = (event) => {
                                         borderRadius: '16px',
                                     }}
                                 >
-                                    <p class="text-large">{user.profile.full_name} belum memiliki karya ilmiah</p>
+                                    <p className="text-large">{user.profile.full_name} belum memiliki karya ilmiah</p>
                                     
                                 </Box>
                             : 
@@ -201,8 +190,7 @@ const submitData = (event) => {
                                     <Form.Label className="text-large">Role</Form.Label>
                                         <Form.Select name="selected_role" aria-label="role"
                                             value={selectedRole} onChange={handleChangeField} >
-                                                <option value='mahasiswa'>Mahasiswa</option>
-                                                <option value='dosen'>Dosen</option>
+                                                <option value='mahasiswa'>Mahasiswa Dept. Kesejahteraan Sosial FISIP UI</option>
                                                 <option value='sivitas UI'>Sivitas UI</option>
                                                 <option value='staf'>Staf</option>
                                     </Form.Select>

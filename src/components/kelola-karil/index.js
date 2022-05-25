@@ -37,11 +37,11 @@ const KelolaKaril = () => {
   const [year, setYear] = useState(null);
   const [karilChecked, setKarilChecked] = useState({
     tesis: false,
-    skripsi: false,
+    skripsiTKA: false,
     disertasi: false,
-    nonskripsi: false,
+    nonKaryaAkhir: false,
   });
-  const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
+  const { tesis, skripsiTKA, disertasi, nonKaryaAkhir } = karilChecked;
 
   useEffect(() => {
     loadUser();
@@ -51,9 +51,9 @@ const KelolaKaril = () => {
   const getKarilQuery = () => {
     let karilType = [];
     if (tesis) karilType.push('Tesis');
-    if (skripsi) karilType.push('Skripsi');
+    if (skripsiTKA) karilType.push('Skripsi-TKA');
     if (disertasi) karilType.push('Disertasi');
-    if (nonskripsi) karilType.push('Non-skripsi');
+    if (nonKaryaAkhir) karilType.push('Non-karya akhir');
     let query = karilType.join();
     return query;
   }
@@ -174,8 +174,8 @@ const KelolaKaril = () => {
                   </Typography>
                   <FormGroup>
                     <FormControlLabel
-                      control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
-                      label="Skripsi"
+                      control={<Checkbox checked={skripsiTKA} onChange={handleKarilTypeChange} name="skripsiTKA" />}
+                      label="Skripsi-TKA"
                     />
                     <FormControlLabel
                       control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
@@ -186,8 +186,8 @@ const KelolaKaril = () => {
                       label="Disertasi"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
-                      label="Non-skripsi"
+                      control={<Checkbox checked={nonKaryaAkhir} onChange={handleKarilTypeChange} name="nonKaryaAkhir" />}
+                      label="Non-karya akhir"
                     />
                   </FormGroup>
                 </Box>

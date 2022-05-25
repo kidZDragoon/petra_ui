@@ -27,6 +27,7 @@ import App from "../../App"; //buat sso
 import BarLoader from "react-spinners/BarLoader";
 import Box from "@mui/material/Box";
 import Stack from '@mui/material/Stack';
+import ConfirmationPopUp from '../modals/confirmation-pop-up';
 
 var fileDownload = require('js-file-download');
 
@@ -490,26 +491,14 @@ export default class Detail extends (Component, App) {
                         : <br/>
                     }
 
-                    <Modal className={classes.modal} show={this.state.isOpen} onHide={this.hideModal}>
-                        <ModalHeader className={classes.modalHeader} >
-                            <h5 className="modal-title" id="exampleModalLongTitle">Apakah anda yakin
-                                ingin mengunduh karya ilmiah ini?</h5>
-                            <h4 type="button" className={classes.close}  onClick={this.hideModal}>
-                                <span aria-hidden="true">&times;</span>
-                            </h4>
-                        </ModalHeader>
-                        <ModalBody className={classes.modalBody}>
-                            Penulis karya ilmiah, dosen pembimbing terkait, serta staf akan dapat
-                            melihat bahwa anda telah mengunguh karya ilmiah ini.
-                        </ModalBody>
-                        <ModalFooter className={classes.modalFooter}>
-                            <button type="button" className="btn btn-primary" onClick={this.hideModal}
-                                    id={classes["cancle"]}>Batal</button>
-                            <button type="button" className="btn btn-primary" id={classes["accept"]}
-                            onClick={() => this.handlePDFDownload()}>Ya</button>
-                        </ModalFooter>
-
-                    </Modal>
+                    <ConfirmationPopUp action={() => this.handlePDFDownload()}
+                        show={this.state.isOpen}
+                        hide={this.hideModal}
+                        title="Apakah anda yakin
+                            ingin mengunduh karya ilmiah ini?"
+                        content="Penulis karya ilmiah serta staf Departemen Kesejahteraan Sosial FISIP UI akan dapat
+                        melihat bahwa anda telah mengunduh karya ilmiah ini.">
+                    </ConfirmationPopUp>
 
                     <Modal className={classes.modal}  show={this.state.isCite} onHide={this.hideCite}>
                         <ModalHeader className={classes.modalCiteHeader} >
@@ -544,22 +533,12 @@ export default class Detail extends (Component, App) {
 
                     </Modal>
 
-                    <Modal className={classes.modal} show={this.state.isOpenDelete} onHide={this.hideDeleteButton}>
-                        <ModalHeader className={classes.modalHeader} >
-                            <h5 className="modal-title" id="exampleModalLongTitle">Apakah Anda yakin ingin menghapus karya ilmiah ini?</h5>
-                            <h4 type="button" className={classes.close}  onClick={this.hideDeleteButton}>
-                                <span aria-hidden="true">&times;</span>
-                            </h4>
-                        </ModalHeader>
-                        <ModalFooter className={classes.modalFooter}>
-                            <button type="button" className="btn btn-primary" onClick={this.hideDeleteButton}
-                                    id={classes["cancle"]}>Batal</button>
-                            <button type="button" className="btn btn-primary" id={classes["accept"]}
-                            // tambahin onclick buat window pathname
-                            onClick={this.handleDelete}>Ya</button>
-                        </ModalFooter>
-
-                    </Modal>
+                    <ConfirmationPopUp action={() => this.handleDelete}
+                        show={this.state.isOpenDelete}
+                        hide={this.hideDeleteButton}
+                        title="Apakah Anda yakin ingin menghapus karya ilmiah ini?"
+                        content="Karya ilmiah akan terhapus secara permanen.">
+                    </ConfirmationPopUp>
 
                     <Modal className="modal" show={this.state.successModal}>
                         <Container className="px-4 pt-4 pb-4">
