@@ -18,6 +18,11 @@
   align-self: flex-start;
   margin-top: 20px;
 }
+
+#features:hover{
+  text-decoration: underline;
+}
+
 #featuresheart {
   /* margin-right: 18px; */
   color: #d26903;

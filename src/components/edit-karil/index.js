@@ -23,7 +23,6 @@ export default class EditKaryaIlmiah extends Component {
         this.handleChangeField = this.handleChangeField.bind(this);
         this.submitData = this.submitData.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.loadVerificatorData = this.loadVerificatorData.bind(this);
         this.loadSemesterData = this.loadSemesterData.bind(this);
         this.loadUser = this.loadUser.bind(this);
         this.handleFileField = this.handleFileField.bind(this);
@@ -34,7 +33,6 @@ export default class EditKaryaIlmiah extends Component {
 
         this.state = {
             //dropdown data
-            verificators: [],
             semesters: [],
 
             id:"",
@@ -47,9 +45,7 @@ export default class EditKaryaIlmiah extends Component {
             jenis: "",
             abstrak: "",
             kataKunci: "",
-            dosenPembimbing: "",
             filePDF: null,
-            check: null,
             userPengunggah: "",
 
             //result
@@ -71,7 +67,6 @@ export default class EditKaryaIlmiah extends Component {
         this.loadUser();
         const pathname = window.location.href.split("/edit-karil/")[1];
         this.loadDataKaril(pathname);
-        this.loadVerificatorData();
         this.loadSemesterData();
         this.loadUser();
     }
@@ -88,7 +83,6 @@ export default class EditKaryaIlmiah extends Component {
                 jenis: data.jenis, 
                 abstrak: data.abstrak, 
                 kataKunci: data.kataKunci, 
-                dosenPembimbing: data.dosenPembimbing.id, 
                 filePDF: data.filePDF,
                 filePDFcompare: data.filePDF,
                 userPengunggah: data.userPengunggah.id,
@@ -101,16 +95,6 @@ export default class EditKaryaIlmiah extends Component {
             alert("Oops terjadi masalah pada server");
             console.log(" gakdapet")
             console.log("/api/karyaIlmiah/" + item + "/")
-        }
-    }
-
-     //Untuk me-retrieve data verifikator dari backend buat ditampilin di dropdown
-    async loadVerificatorData(){
-        try {
-            const { data } = await axios.get("/api/get-verificator-data/");
-            this.setState({ verificators: data.data }); 
-        } catch (error) {
-            alert("Oops terjadi masalah pada server");
         }
     }
 
@@ -214,12 +198,6 @@ export default class EditKaryaIlmiah extends Component {
             errors["kataKunci"] = "Mohon lengkapi kata kunci karya ilmiah";
         }
 
-        //Dosen Pembimbing
-        if (this.state.dosenPembimbing == "") {
-            isValid = false;
-            errors["dosenPembimbing"] = "Mohon lengkapi dosen pembimbing karya ilmiah";
-        }
-
         //Abstrak
         if (this.state.filePDF == null) {
             isValid = false;
@@ -284,7 +262,6 @@ export default class EditKaryaIlmiah extends Component {
             formData.append('jenis', this.state.jenis);
             formData.append('abstrak', this.state.abstrak);
             formData.append('kataKunci', this.state.kataKunci);
-            formData.append('dosenPembimbing', this.state.dosenPembimbing);
             formData.append('filePDF', this.state.filePDF);
             formData.append('userPengunggah', this.state.userPengunggah);
 
@@ -420,33 +397,14 @@ export default class EditKaryaIlmiah extends Component {
                                     <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
                                     value={this.state.jenis} onChange={this.handleChangeField} >
                                         <option>Pilih jenis karya ilmiah</option>
-                                        <option value="Skripsi">Skripsi</option>
+                                        <option value="Skripsi-TKA">Skripsi-TKA</option>
                                         <option value="Tesis">Tesis</option>
                                         <option value="Disertasi">Disertasi</option>
-                                        <option value="Nonskripsi">Nonskripsi</option>
+                                        <option value="Non-karya akhir">Non-karya akhir</option>
 
                                     </Form.Select>
                                     <span className="text-error text-small">
                                         {this.state.errors["jenis"]}
-                                    </span>
-                                </Form.Group>
-
-                                <Form.Group className="">
-                                    <Form.Label className="text-large">Nama dosen pembimbing</Form.Label>
-
-                                    {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
-                                    Caranya diloop pake function map */}
-                                    <Form.Select name="dosenPembimbing" aria-label="Nama dosen pembimbing"
-                                    value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
-                                        <option>Pilih dosen pembimbing</option>
-                                        {this.state.verificators.map(verificator => (
-                                            <option key={verificator.id} value={verificator.id}>
-                                                {verificator.full_name}
-                                                </option>
-                                        ))}
-                                    </Form.Select>
-                                    <span className="text-error text-small">
-                                        {this.state.errors["dosenPembimbing"]}
                                     </span>
                                 </Form.Group>
 

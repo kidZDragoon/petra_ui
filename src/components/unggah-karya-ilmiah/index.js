@@ -23,7 +23,6 @@ export default class UploadKaryaIlmiah extends Component {
         this.handleChangeField = this.handleChangeField.bind(this);
         this.submitData = this.submitData.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.loadVerificatorData = this.loadVerificatorData.bind(this);
         this.loadSemesterData = this.loadSemesterData.bind(this);
         this.loadUser = this.loadUser.bind(this);
         this.handleFileField = this.handleFileField.bind(this);
@@ -36,7 +35,6 @@ export default class UploadKaryaIlmiah extends Component {
             authorized: false,
         
             //dropdown data
-            verificators: [],
             semesters: [],
 
             //form data
@@ -48,9 +46,7 @@ export default class UploadKaryaIlmiah extends Component {
             jenis: "",
             abstrak: "",
             kataKunci: "",
-            dosenPembimbing: "",
             filePDF: null,
-            check: null,
             userPengunggah: "",
 
             //result
@@ -71,20 +67,8 @@ export default class UploadKaryaIlmiah extends Component {
     }
 
     componentDidMount() {
-        this.loadVerificatorData();
         this.loadSemesterData();
         this.loadUser();
-    }
-
-    async loadVerificatorData(){
-        try {
-            console.log("load verificator data")
-            const { data } = await axios.get("/api/get-verificator-data/");
-            this.setState({ verificators: data.data }); 
-            console.log(this.state.verificators);
-        } catch (error) {
-            alert("Oops terjadi masalah pada server");
-        }
     }
 
     async loadSemesterData(){
@@ -199,13 +183,6 @@ export default class UploadKaryaIlmiah extends Component {
             document.getElementById("input-kataKunci").scrollIntoView();
         }
 
-        //Dosen Pembimbing
-        if (this.state.dosenPembimbing == "") {
-            isValid = false;
-            errors["dosenPembimbing"] = "Mohon lengkapi dosen pembimbing karya ilmiah";
-            document.getElementById("input-dosenPembimbing").scrollIntoView();
-        }
-
         //File PDF
         if (this.state.filePDF == null) {
             isValid = false;
@@ -237,9 +214,6 @@ export default class UploadKaryaIlmiah extends Component {
         }
         else if (this.state.kataKunci == "") {
             document.getElementById("input-kataKunci").scrollIntoView();
-        }
-        else if (this.state.dosenPembimbing == "") {
-            document.getElementById("input-dosenPembimbing").scrollIntoView();
         }
         else if (this.state.filePDF == null) {
             document.getElementById("input-filePDF").scrollIntoView();
@@ -299,7 +273,6 @@ export default class UploadKaryaIlmiah extends Component {
             formData.append('jenis', this.state.jenis);
             formData.append('abstrak', this.state.abstrak);
             formData.append('kataKunci', this.state.kataKunci);
-            formData.append('dosenPembimbing', this.state.dosenPembimbing);
             formData.append('filePDF', this.state.filePDF);
             formData.append('userPengunggah', this.state.userPengunggah);
             console.log(formData)
@@ -325,7 +298,6 @@ export default class UploadKaryaIlmiah extends Component {
                 jenis: "",
                 abstrak: "",
                 kataKunci: "",
-                dosenPembimbing: "",
                 userPengunggah: "",
                 filePDF: null
             })
@@ -454,32 +426,13 @@ export default class UploadKaryaIlmiah extends Component {
                                     <Form.Select name="jenis" aria-label="Jenis karya ilmiah"
                                     value={this.state.jenis} onChange={this.handleChangeField} >
                                         <option>Pilih jenis karya ilmiah</option>
-                                        <option value="Skripsi">Skripsi</option>
+                                        <option value="Skripsi-TKA">Skripsi-TKA</option>
                                         <option value="Tesis">Tesis</option>
                                         <option value="Disertasi">Disertasi</option>
-                                        <option value="Nonskripsi">Nonskripsi</option>
+                                        <option value="Non-karya akhir">Non-karya ilmiah</option>
                                     </Form.Select>
                                     <span className="text-error text-small">
                                         {this.state.errors["jenis"]}
-                                    </span>
-                                </Form.Group>
-    
-                                <Form.Group className="" id="input-dosenPembimbing">
-                                    <Form.Label className="text-large">Nama dosen pembimbing</Form.Label>
-    
-                                    {/* Isi setiap value dropdown dengan data verifikator yang sudah diretrieve. 
-                                    Caranya diloop pake function map */}
-                                    <Form.Select name="dosenPembimbing" aria-label="Nama dosen pembimbing"
-                                    value={this.state.dosenPembimbing} onChange={this.handleChangeField} >
-                                        <option>Pilih dosen pembimbing</option>
-                                        {this.state.verificators.map(verificator => (
-                                            <option key={verificator.id} value={verificator.id}>
-                                                {verificator.full_name}
-                                                </option>
-                                        ))}
-                                    </Form.Select>
-                                    <span className="text-error text-small">
-                                        {this.state.errors["dosenPembimbing"]}
                                     </span>
                                 </Form.Group>
     

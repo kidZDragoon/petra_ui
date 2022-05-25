@@ -13,6 +13,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CloseIcon from '@mui/icons-material/Close';
 import { Pagination } from "@material-ui/lab";
+import BarLoader from "react-spinners/BarLoader";
 
 import {
   Checkbox,
@@ -39,11 +40,11 @@ const SearchList = () => {
   const [foundKaril, setFoundKaril] = useState([]);
   const [karilChecked, setKarilChecked] = useState({
     tesis: false,
-    skripsi: false,
+    skripsiTKA: false,
     disertasi: false,
-    nonskripsi: false,
+    nonKaryaAkhir: false,
   });
-  const { tesis, skripsi, disertasi, nonskripsi } = karilChecked;
+  const { tesis, skripsiTKA, disertasi, nonKaryaAkhir } = karilChecked;
   const [isLoading, setIsLoading] = useState(true);
   const [totalPage, setTotalPage] = useState(0);
   const [listKarilBaru, setListKarilBaru] = useState([]);
@@ -56,9 +57,9 @@ const SearchList = () => {
   const getKarilQuery = () => {
     let karilType = [];
     if (tesis) karilType.push('Tesis');
-    if (skripsi) karilType.push('Skripsi');
+    if (skripsiTKA) karilType.push('Skripsi-TKA');
     if (disertasi) karilType.push('Disertasi');
-    if (nonskripsi) karilType.push('Non-skripsi');
+    if (nonKaryaAkhir) karilType.push('Non-karya akhir');
     let query = karilType.join();
     return query;
   }
@@ -112,137 +113,159 @@ const SearchList = () => {
   }
 
   return (
+    
     <Container>
-      <Container className="content-box">
-          <Grid container spacing={8}>
-          <Grid item lg={3} sx={{ display: { xs: "none", lg: "block" } }}>
-            <Box bgcolor="#F8F8F8" p={3}>
-              <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
-                Filter
-              </Typography>
-              <Box mt={4}>
-                <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                  Tahun Publikasi
-                </Typography>
-                <DatePicker
-                  selected={year}
-                  onChange={(date) => setYear(date)}
-                  showYearPicker
-                  dateFormat="yyyy"
-                  className="react-datepicker" />
-              </Box>
-              <Box mt={4}>
-                <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                  Tipe Karya Ilmiah
-                </Typography>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
-                    label="Skripsi" />
-                  <FormControlLabel
-                    control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
-                    label="Tesis" />
-                  <FormControlLabel
-                    control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
-                    label="Disertasi" />
-                  <FormControlLabel
-                    control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
-                    label="Non-skripsi" />
-                </FormGroup>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item lg={9}>
-            <Box>
-              <Typography fontFamily="Mulish" fontWeight={900} fontSize={{ xs: 20, md: 28 }}>
-                Hasil Pencarian Karya Ilmiah
-              </Typography>
-              <Box my={5}>
-                <TextField
-                  label="Cari Karya Ilmiah"
-                  helperText="Pencarian berdasarkan Judul, Penulis, atau Kata Kunci"
-                  fullWidth
-                  value={keyword}
-                  onChange={(event) => setKeyword(event.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">
-                        <Search />
-                      </InputAdornment>
-                    ),
-                    style: { borderRadius: 8 }
-                  }} />
-              </Box>
-              <Box my={2} sx={{ display: { xs: "block", lg: "none" } }}>
-                <Button className="btn-no-outline" onClick={showFilter}>
-                  <FilterAltIcon></FilterAltIcon> Filter
-                </Button>
-              </Box>
-              <Box>
-                <Typography>Ditemukan {foundKaril.length} Karya Ilmiah</Typography>
-                {listKarilBaru.map((karil, idx) => <Box my={3} key={idx}>
-                  {karil.status == 1
-                    ? <CardKaril
-                      data={karil} />
-                    : null}
-                </Box>
-                )}
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-        <Pagination onChange={handleChangePage} count={totalPage} size="large" class="d-flex justify-content-center"
-        id="pagination"/>
-      </Container>
+      {isLoading ?
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '80vh',
+                p: 1,
+                m: 1,
+                bgcolor: 'background.paper',
+                borderRadius: 1,
+            }}
+        >
+            <BarLoader color="#d26903" loading={isLoading} css="" size={100} />               
+        </Box>
+                
+        :  
+        <Container>
 
-    <Modal className="modal" show={isShow} onHide={hideFilter}>
-      <Container className="px-5 pt-2 pb-4">
-        <Row>
-          <Col className="justify-content-end text-end">
-            <h4 type="button" className="" onClick={hideFilter}>
-              <span><CloseIcon fontsize="small"></CloseIcon></span>
-            </h4>
-          </Col>
-        </Row>
-        <Row className="mt-1">
-          <Box p={3}>
-            <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
-              Filter
-            </Typography>
-            <Box mt={4}>
-              <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Tahun Publikasi
-              </Typography>
-              <DatePicker
-                selected={year}
-                onChange={(date) => setYear(date)}
-                showYearPicker
-                dateFormat="yyyy"
-                className="react-datepicker" />
-            </Box>
-            <Box mt={4}>
-              <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
-                Tipe Karya Ilmiah
-              </Typography>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={skripsi} onChange={handleKarilTypeChange} name="skripsi" />}
-                  label="Skripsi" />
-                <FormControlLabel
-                  control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
-                  label="Tesis" />
-                <FormControlLabel
-                  control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
-                  label="Disertasi" />
-                <FormControlLabel
-                  control={<Checkbox checked={nonskripsi} onChange={handleKarilTypeChange} name="nonskripsi" />}
-                  label="Non-skripsi" />
-              </FormGroup>
-            </Box>
-          </Box>
-        </Row>
+          <Container className="content-box">
+              <Grid container spacing={8}>
+              <Grid item lg={3} sx={{ display: { xs: "none", lg: "block" } }}>
+                <Box bgcolor="#F8F8F8" p={3}>
+                  <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
+                    Filter
+                  </Typography>
+                  <Box mt={4}>
+                    <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                      Tahun Publikasi
+                    </Typography>
+                    <DatePicker
+                      selected={year}
+                      onChange={(date) => setYear(date)}
+                      showYearPicker
+                      dateFormat="yyyy"
+                      className="react-datepicker" />
+                  </Box>
+                  <Box mt={4}>
+                    <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                      Tipe Karya Ilmiah
+                    </Typography>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={skripsiTKA} onChange={handleKarilTypeChange} name="skripsiTKA" />}
+                        label="Skripsi-TKA" />
+                      <FormControlLabel
+                        control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
+                        label="Tesis" />
+                      <FormControlLabel
+                        control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
+                        label="Disertasi" />
+                      <FormControlLabel
+                        control={<Checkbox checked={nonKaryaAkhir} onChange={handleKarilTypeChange} name="nonKaryaAkhir" />}
+                        label="Non-karya akhir" />
+                    </FormGroup>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item lg={9}>
+                <Box>
+                  <Typography fontFamily="Mulish" fontWeight={900} fontSize={{ xs: 20, md: 28 }}>
+                    Hasil Pencarian Karya Ilmiah
+                  </Typography>
+                  <Box my={5}>
+                    <TextField
+                      label="Cari Karya Ilmiah"
+                      helperText="Pencarian berdasarkan Judul, Penulis, atau Kata Kunci"
+                      fullWidth
+                      value={keyword}
+                      onChange={(event) => setKeyword(event.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            <Search />
+                          </InputAdornment>
+                        ),
+                        style: { borderRadius: 8 }
+                      }} />
+                  </Box>
+                  <Box my={2} sx={{ display: { xs: "block", lg: "none" } }}>
+                    <Button className="btn-no-outline" onClick={showFilter}>
+                      <FilterAltIcon></FilterAltIcon> Filter
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Typography>Ditemukan {foundKaril.length} Karya Ilmiah</Typography>
+                    {listKarilBaru.map((karil, idx) => <Box my={3} key={idx}>
+                      {karil.status == 1
+                        ? <CardKaril
+                          data={karil} />
+                        : null}
+                    </Box>
+                    )}
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+            <Pagination onChange={handleChangePage} count={totalPage} size="large" class="d-flex justify-content-center"
+            id="pagination"/>
+          </Container>
+
+        <Modal className="modal" show={isShow} onHide={hideFilter}>
+          <Container className="px-5 pt-2 pb-4">
+            <Row>
+              <Col className="justify-content-end text-end">
+                <h4 type="button" className="" onClick={hideFilter}>
+                  <span><CloseIcon fontsize="small"></CloseIcon></span>
+                </h4>
+              </Col>
+            </Row>
+            <Row className="mt-1">
+              <Box p={3}>
+                <Typography fontFamily="Mulish" fontSize={20} fontWeight={700}>
+                  Filter
+                </Typography>
+                <Box mt={4}>
+                  <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                    Tahun Publikasi
+                  </Typography>
+                  <DatePicker
+                    selected={year}
+                    onChange={(date) => setYear(date)}
+                    showYearPicker
+                    dateFormat="yyyy"
+                    className="react-datepicker" />
+                </Box>
+                <Box mt={4}>
+                  <Typography fontFamily="Mulish" color="#D26930" fontWeight={700}>
+                    Tipe Karya Ilmiah
+                  </Typography>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={skripsiTKA} onChange={handleKarilTypeChange} name="skripsiTKA" />}
+                      label="Skripsi-TKA" />
+                    <FormControlLabel
+                      control={<Checkbox checked={tesis} onChange={handleKarilTypeChange} name="tesis" />}
+                      label="Tesis" />
+                    <FormControlLabel
+                      control={<Checkbox checked={disertasi} onChange={handleKarilTypeChange} name="disertasi" />}
+                      label="Disertasi" />
+                    <FormControlLabel
+                      control={<Checkbox checked={nonKaryaAkhir} onChange={handleKarilTypeChange} name="nonKaryaAkhir" />}
+                      label="Non-karya akhir" />
+                  </FormGroup>
+                </Box>
+              </Box>
+            </Row>
+          </Container>
+        </Modal>
       </Container>
-    </Modal>
+    }
     </Container>
     
     

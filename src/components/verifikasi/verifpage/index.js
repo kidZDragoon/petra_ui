@@ -124,8 +124,12 @@ const DaftarVerifikasi = () => {
     return(
         <Dasbor>
             <Container className="pt-4 mt-4">
-                <h3 className="text-section-header px-0"><span class="pull-right"><LibraryBooksIcon className="pl-0 mx-4" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
+                <Stack direction="horizontal" gap={3} className="my-4">
+                    <h3 className="text-section-header px-0"><span class="pull-right"><LibraryBooksIcon className="pl-0 mx-4" fontSize="large"></LibraryBooksIcon></span>Permintaan Verifikasi Karya Ilmiah</h3>
+                    <a href="#/DaftarVerifikasi/lihat-semua-permintaan" className="ms-auto text-orange">Lihat Semua</a>
+                </Stack>
                 
+
                 <Box>
                 {listToVerify.length === 0 ? (
                     <div className="text-center m-5">
@@ -141,7 +145,7 @@ const DaftarVerifikasi = () => {
                     </div>
                 ):
                     <Box>
-                        {listToVerify.map((toVerify, i) =>
+                        {listToVerify.slice(0,2).map((toVerify, i) =>
                             <Box my={3} key={i} >
                                 <CardNotVerified className="p-0" data={toVerify}/>
                             </Box>
@@ -194,7 +198,7 @@ const DaftarVerifikasi = () => {
                             null
                         ):
                             <Box>
-                                {statusConfirmed.map((c, i) =>
+                                {statusConfirmed.slice(0,2).map((c, i) =>
                                     <Box my={3} key={i}>
                                         <CardKarilStatus data={c}/>
                                     </Box>
@@ -205,7 +209,7 @@ const DaftarVerifikasi = () => {
                             null 
                         ):
                             <Box>
-                                {listVerified.map((c, i) =>
+                                {listVerified.slice(0,2).map((c, i) =>
                                     <Box my={3} key={i}>
                                         <CardKarilStatus data={c}/>
                                     </Box>
@@ -216,7 +220,7 @@ const DaftarVerifikasi = () => {
                             null
                         ):
                             <Box>
-                                {listDeclined.map((c, i) =>
+                                {listDeclined.slice(0,2).map((c, i) =>
                                     <Box my={3} key={i}>
                                         <CardKarilStatus data={c}/>
                                     </Box>

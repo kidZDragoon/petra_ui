@@ -22,3 +22,21 @@
 .link:hover {
 color: #d26903;
 }
+
+#features {
+  /* margin-right: 18px; */
+  color: #d26903;
+  font-weight: 620;
+  padding: auto;
+  border: 0;
+  background-color: #ffffff;
+  /*background-color: #F8F8F8;*/
+  /* width: 140px; */
+  align-self: flex-start;
+  margin-top: 20px;
+  text-decoration: none;
+}
+
+#features:hover{
+  text-decoration: underline;
+}
