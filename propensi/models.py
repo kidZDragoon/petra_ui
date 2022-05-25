@@ -22,7 +22,7 @@ class Profile(models.Model):
     full_name = models.CharField('nama', max_length=128, blank=True)
     org_code = models.CharField('kode organisasi', max_length=11, blank=True)
     role = models.CharField('peran pengguna', max_length=128, blank=True)
-    npm = models.CharField('Nomor Pokok Mahasiswa', max_length=10, blank=True)
+    npm = models.CharField('Nomor Pokok Mahasiswa', max_length=30, blank=True)
     faculty = models.CharField('fakultas', max_length=128, blank=True)
     study_program = models.CharField(
         'program studi', max_length=128, blank=True)
