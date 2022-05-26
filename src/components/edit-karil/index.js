@@ -442,9 +442,6 @@ export default class EditKaryaIlmiah extends Component {
                                         <Form.Control type="text" name="filePDF" 
                                             placeholder={this.state.judul + ".pdf"} 
                                             disabled/>
-                                        <Button variant="outline-secondary" id="button-addon2">
-                                            <p style={{textAlign:"center", marginTop:'0.5rem', marginBottom: '0.5rem'}}>Preview</p>
-                                        </Button>
                                         <Button variant="outline-secondary" id="button-addon2" onClick={this.handleDropFile}>
                                             <CloseIcon fontsize="small"></CloseIcon>
                                         </Button>

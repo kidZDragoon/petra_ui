@@ -429,7 +429,7 @@ export default class UploadKaryaIlmiah extends Component {
                                         <option value="Skripsi-TKA">Skripsi-TKA</option>
                                         <option value="Tesis">Tesis</option>
                                         <option value="Disertasi">Disertasi</option>
-                                        <option value="Non-karya akhir">Non-karya ilmiah</option>
+                                        <option value="Non-karya akhir">Non-karya akhir</option>
                                     </Form.Select>
                                     <span className="text-error text-small">
                                         {this.state.errors["jenis"]}
